@@ -1,0 +1,232 @@
+
+[Messages]
+BeveledLabel={#APPURL}
+
+[Setup]
+AppCopyright={#APPCOPYRIGHT}
+AppId=7EB106DC-468D-4345-9CFE-B0021039114B
+AppMutex=Global\{#APPNAME}:7EB106DC-468D-4345-9CFE-B0021039114B
+AppName={#APPNAME}
+AppPublisher={#APPPUBLISHER}
+AppPublisherURL={#APPURL}
+AppSupportURL={#APPURL}
+AppVerName={#APPNAME} {#APPVERSION}
+AppVersion={#APPVERSION}
+ChangesAssociations=yes
+Compression=lzma/ultra
+DefaultDirName={pf}\{#APPNAME}
+DefaultGroupName={#APPNAME}
+DisableReadyPage=yes
+InfoBeforeFile={#APPBUILDPATH}\LICENSE.RTF
+InternalCompressLevel=ultra
+OutputBaseFilename={#APPNAME}_{#APPVERSION}_Setup
+OutputDir={#APPOUTPUTDIR}
+PrivilegesRequired=admin
+SetupIconFile={#APPICON}
+SetupMutex={#APPNAME}Installer,Global\{#APPNAME}Installer
+ShowLanguageDialog=auto
+SolidCompression=yes
+VersionInfoDescription={#APPVERSION} Installer
+#if Pos('WIP-', '{#APPVERSION}')
+VersionInfoVersion=0.0.0
+#elif Pos('-', '{#APPVERSION}')
+VersionInfoVersion={#Copy('{#APPVERSION}', 1, Pos('-', '{#APPVERSION}') - 1)}
+#else
+VersionInfoVersion={#APPVERSION}
+#endif
+WizardImageAlphaFormat=defined
+WizardImageFile={#APPLOGOLARGE}
+WizardImageStretch=no
+WizardSmallImageFile={#APPLOGOSMALL}
+
+[Code]
+function GetValue(Value: String): String;
+var
+  Subkey: String;
+begin
+  Subkey := 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{#APPNAME}_is1'
+  if not (RegQueryStringValue(HKCU, Subkey, Value, Result)) then begin
+    RegQueryStringValue(HKLM, Subkey, Value, Result)
+  end;
+end;
+
+function SafeRename(Src: String; Dest: String): Boolean;
+var
+  i: Integer;
+  Success: Boolean;
+begin
+  if (DirExists(Src)) then begin
+    i:= 0
+    Success:= False
+    repeat
+      if (i > 0) then begin
+        Sleep(500)
+      end;
+      Success:= RenameFile(Src, Dest)
+      i:= i + 1
+    until (i = 20) or (Success = True);
+    if (i = 20) then begin
+      Result:= False
+    end else begin
+      Result:= True
+    end;
+  end else begin
+    Result:= True
+  end;
+end;
+
+function Split(Text: String; Separator: String): TArrayOfString;
+var
+  i, p: Integer;
+  Dest: TArrayOfString;
+begin
+  i:= 0
+  repeat
+    SetArrayLength(Dest, i + 1)
+    p:= Pos(Separator, Text)
+    if (p > 0) then begin
+      Dest[i]:= Copy(Text, 1, p - 1)
+      Text:= Copy(Text, p + Length(Separator), Length(Text))
+      i:= i + 1
+    end else begin
+      Dest[i]:= Text
+      Text:= ''
+    end;
+  until (Length(Text) = 0)
+  Result := Dest
+end;
+
+function InitializeSetup: Boolean;
+var
+  MS, LS: Cardinal;
+begin
+  if (GetVersionNumbers(ExpandConstant('{sys}\gdiplus.dll'), MS, LS)) then begin
+    Result:= True
+  end else begin
+    Result:= False
+    MsgBox('You need to install GDI+ first.'#13#10#13#10 + 'Please visit {#APPURL}/docs/faq.html for instructions.', MBError, MB_OK)
+  end;
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+var
+  i: Integer;
+  Dirs: Array [0..1] of Array [0..1] of String;
+  DisplayVersion: String;
+  MajorVersion: Integer;
+  MinorVersion: Integer;
+  ResultCode: Integer;
+  SplitVersion: TArrayOfString;
+  UninstallString: String;
+begin
+  if (CurStep = ssInstall) then begin
+    UninstallString:= GetValue('UninstallString')
+    if (UninstallString <> '') then begin
+      Dirs[0][0]:= ExpandConstant('{commonappdata}\{#APPNAME}')
+      Dirs[0][1]:= ExpandConstant('{commonappdata}\{#APPNAME}.SetupBackup')
+      Dirs[1][0]:= ExpandConstant('{userappdata}\{#APPNAME}')
+      Dirs[1][1]:= ExpandConstant('{userappdata}\{#APPNAME}.SetupBackup')
+      MajorVersion:= -1
+      MinorVersion:= -1
+
+      // Read current major and minor version.
+      DisplayVersion:= GetValue('DisplayVersion')
+      StringChange(DisplayVersion, 'WIP-', '')
+      SplitVersion:= Split(DisplayVersion, '.')
+      MajorVersion:= StrToInt(SplitVersion[0])
+      MinorVersion:= StrToInt(SplitVersion[1])
+      if (MajorVersion = -1) or (MinorVersion = -1) then begin
+        MsgBox('Unable to read current version, so setup cannot continue. Please reinstall your current version of {#APPNAME} and try again.', mbCriticalError, MB_OK)
+        Abort()
+      end;
+
+      // Backup user data if it will be removed on uninstall.
+      if (MajorVersion = 0) and (MinorVersion <= 4) then begin
+        for i:= 0 to 1 do begin
+          if not (SafeRename(Dirs[i][0], Dirs[i][1])) then begin
+            MsgBox('Unable to backup user data, so setup cannot continue. Please reboot and try again.', mbCriticalError, MB_OK)
+            Abort()
+          end;
+        end;
+      end;
+
+      // Silently run uninstall command.
+      Exec(RemoveQuotes(UninstallString), '/SILENT', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode);
+
+      // Restore user data.
+      if (MajorVersion = 0) and (MinorVersion <= 4) then begin
+        for i := 0 to 1 do begin
+          if not (SafeRename(Dirs[i][1], Dirs[i][0])) then begin
+            MsgBox('Unable to restore user data. Please manually rename "' + Dirs[i][1] + '" to "' + Dirs[i][0] + '".', mbError, MB_OK)
+          end;
+        end;
+      end;
+    end;
+  end;
+end;
+
+[Icons]
+Name: "{group}\{#APPNAME}"; Filename: "{app}\{#APPNAME}.exe"
+Name: "{group}\{#APPNAME} Help"; Filename: "{app}\{#APPNAME}.chm"
+Name: "{group}\{#APPNAME} Web Site"; Filename: "{#APPURL}"
+Name: "{group}\Uninstall {#APPNAME}"; Filename: "{uninstallexe}"
+Name: "{commondesktop}\{#APPNAME}"; Filename: "{app}\{#APPNAME}.exe"; Tasks: desktopicon
+Name: "{userstartup}\{#APPNAME}"; Filename: "{app}\{#APPNAME}.exe"; Parameters: "-h -e OnInitAfterBoot"; Tasks: startupicon
+
+[Languages]
+Name: English; MessagesFile: "compiler:Default.isl"
+Name: BrazilianPortuguese; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
+Name: Catalan; MessagesFile: "compiler:Languages\Catalan.isl"
+Name: Corsican; MessagesFile: "compiler:Languages\Corsican.isl"
+Name: Czech; MessagesFile: "compiler:Languages\Czech.isl"
+Name: Danish; MessagesFile: "compiler:Languages\Danish.isl"
+Name: Dutch; MessagesFile: "compiler:Languages\Dutch.isl"
+Name: Finnish; MessagesFile: "compiler:Languages\Finnish.isl"
+Name: French; MessagesFile: "compiler:Languages\French.isl"
+Name: German; MessagesFile: "compiler:Languages\German.isl"
+Name: Greek; MessagesFile: "compiler:Languages\Greek.isl"
+Name: Hebrew; MessagesFile: "compiler:Languages\Hebrew.isl"
+Name: Hungarian; MessagesFile: "compiler:Languages\Hungarian.isl"
+Name: Italian; MessagesFile: "compiler:Languages\Italian.isl"
+Name: Japanese; MessagesFile: "compiler:Languages\Japanese.isl"
+Name: Norwegian; MessagesFile: "compiler:Languages\Norwegian.isl"
+Name: Polish; MessagesFile: "compiler:Languages\Polish.isl"
+Name: Portuguese; MessagesFile: "compiler:Languages\Portuguese.isl"
+Name: Russian; MessagesFile: "compiler:Languages\Russian.isl"
+Name: ScottishGaelic; MessagesFile: "compiler:Languages\ScottishGaelic.isl"
+Name: SerbianCyrillic; MessagesFile: "compiler:Languages\SerbianCyrillic.isl"
+Name: SerbianLatin; MessagesFile: "compiler:Languages\SerbianLatin.isl"
+Name: Slovenian; MessagesFile: "compiler:Languages\Slovenian.isl"
+Name: Spanish; MessagesFile: "compiler:Languages\Spanish.isl"
+Name: Turkish; MessagesFile: "compiler:Languages\Turkish.isl"
+Name: Ukrainian; MessagesFile: "compiler:Languages\Ukrainian.isl"
+
+[Registry]
+Root: HKCR; Subkey: ".egtree"; ValueType: string; ValueName: ""; ValueData: "{#APPNAME} Tree"; Flags: uninsdeletevalue
+Root: HKCR; Subkey: "{#APPNAME} Tree"; ValueType: string; ValueName: ""; ValueData: "{#APPNAME} Tree"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "{#APPNAME} Tree\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#APPNAME}.exe,0"
+Root: HKCR; Subkey: "{#APPNAME} Tree\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#APPNAME}.exe"" ""%%1"""
+
+Root: HKCR; Subkey: ".egplugin"; ValueType: string; ValueName: ""; ValueData: "{#APPNAME} Plugin"; Flags: uninsdeletevalue
+Root: HKCR; Subkey: "{#APPNAME} Plugin"; ValueType: string; ValueName: ""; ValueData: "{#APPNAME} Plugin"; Flags: uninsdeletekey
+Root: HKCR; Subkey: "{#APPNAME} Plugin\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#APPNAME}.exe,0"
+Root: HKCR; Subkey: "{#APPNAME} Plugin\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#APPNAME}.exe"" ""%%1"""
+
+[Run]
+; EG -install needs to be called with admin rights to install the COM-server
+Filename: "{app}\{#APPNAME}.exe"; Flags: runascurrentuser runhidden waituntilterminated; Parameters: "-install"
+Filename: "{app}\{#APPNAME}.exe"; Flags: postinstall nowait skipifsilent
+
+[Tasks]
+Name: "desktopicon"; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}
+Name: "startupicon"; Description: {cm:AutoStartProgram,{#SetupSetting('AppName')}}; GroupDescription: {cm:AutoStartProgramGroupDescription}
+
+[Files]
+Source: "{#APPBUILDPATH}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[UninstallDelete]
+Type: dirifempty; Name: "{app}"
+Type: files; Name: "{userstartup}\{#APPNAME}.lnk"
+
+[UninstallRun]
+Filename: "{app}\{#APPNAME}.exe"; Parameters: "-uninstall"
