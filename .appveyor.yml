@@ -111,7 +111,7 @@ install:
 
       # Make sure the appveyor cache is only saved if our build was successfull
       $Env:SetupExe = gci -recurse -filter "output\*Setup.exe" -name
-      If ($Env:SetupExe -eq null || -Not (Test-Path($Env:SetupExe))) {
+      If (($Env:SetupExe -eq null) -or (-Not (Test-Path($Env:SetupExe)))) {
         $env:APPVEYOR_CACHE_SKIP_SAVE = "true"
       } else {
         # update the appveyor build version to be the same as the EventGhost version
