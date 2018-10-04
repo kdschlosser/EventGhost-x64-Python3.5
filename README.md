@@ -33,4 +33,4 @@ This test version runs on Python 3.5 x64
 
 ## build command
 
-    python setup.py build-exe
+    python setup.py build_exe
