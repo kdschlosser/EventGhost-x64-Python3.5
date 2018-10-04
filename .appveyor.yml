@@ -32,7 +32,7 @@ cache:
 
 install:
   # HTML Help Workshop 1.32
-  # - cinst html-help-workshop
+  - cinst html-help-workshop
 
   # Microsoft Visual C++ Redistributable 2008 (version min: 9.0.21022.8)
   # - cinst vcredist2008
@@ -71,14 +71,14 @@ install:
         "    Done."
         " "
 
-        Get-Content -Path "C:\Stackless35\Lib\site.py"
-
-        PipInstall "setuptools"
-        "    Updating PIP..."
+        "    Updating pip..."
         python -m pip install -q -U "pip"
         "    Done."
         " "
-
+        "    Updating setuptools..."
+        python -m pip install -q -U "setuptools"
+        "    Done."
+        " "
         PipInstall "sphinx"
         PipInstall "commonmark"
         PipInstall "pillow"
@@ -107,30 +107,19 @@ install:
       " "
       "=============== start the EventGhost build ==============="
       " "
-      If ($Env:APPVEYOR_REPO_TAG.tolower() -eq "true" -and
-        $Env:APPVEYOR_REPO_TAG_NAME.tolower().startswith("deploy"))
-      {
-        # to do a release, create a tag in the form "Deploy_VERSION"
-        # VERSION must be a valid version string (without leading 'v')
-        # this tag will be deleted and a new release "vVERSION" created.
-        git checkout -q master
-        $release = $Env:APPVEYOR_REPO_TAG_NAME.split("_", 2)[1]
-        $url = if($Env:SFTP_URL){' --docs --url "' + $env:SFTP_URL + '"'} else {''}
-        python "_build\Build.py" --build --package --release --version $release $url
-      } Else {
-        # WIP
-        python "setup.py" build-exe
-      }
-      $Env:SetupExe = gci -recurse -filter "output\*Setup.exe" -name
-
-      # update the appveyor build version to be the same as the EventGhost version
-      $start = $env:SetupExe.IndexOf("_")
-      $length = $env:SetupExe.LastIndexOf("_") - $start
-      $build_version = $env:SetupExe.Substring($start + 1, $length - 1)
-      Update-AppveyorBuild -Version "$build_version"
+      python "setup.py" build-exe
 
       # Make sure the appveyor cache is only saved if our build was successfull
-      If (-Not (Test-Path(".\EventGhost.exe"))) {$env:APPVEYOR_CACHE_SKIP_SAVE = "true"}
+      $Env:SetupExe = gci -recurse -filter "output\*Setup.exe" -name
+      If (-Not (Test-Path($Env:SetupExe))) {
+        $env:APPVEYOR_CACHE_SKIP_SAVE = "true"
+      } else {
+        # update the appveyor build version to be the same as the EventGhost version
+        $start = $env:SetupExe.IndexOf("_")
+        $length = $env:SetupExe.LastIndexOf("_") - $start
+        $build_version = $env:SetupExe.Substring($start + 1, $length - 1)
+        Update-AppveyorBuild -Version "$build_version"
+      }
 
       " "
 
