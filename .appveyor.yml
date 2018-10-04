@@ -50,7 +50,13 @@ install:
       $InstallersFolder = $Env:APPVEYOR_BUILD_FOLDER + "\output\"
 
       # Remove-Item $PythonWindowsDLL
+      If (Test-Path $InstallersFolder)
+      {
+        Remove-Item $InstallersFolder
+      }
       New-Item $InstallersFolder -type directory | Out-Null
+      
+        
       " "
       "=============== prepare EventGhost build environment ==============="
       If (-not (Test-Path $PythonFolder))
@@ -71,6 +77,10 @@ install:
         Start-FileDownload $StacklessURL -Timeout 60000 -FileName $StacklessInstaller
         "    Installing Stackless 3.5.4..."
         Start-Process $StacklessInstaller "/quiet InstallAllUsers=1 TargetDir=$StacklessInstallDir" -Wait
+        "    Done."
+        " "
+        "    Updating Setuptools..."
+        python -m easy_install "setuptools"
         "    Done."
         " "
         "    Updating PIP..."
@@ -99,7 +109,7 @@ install:
       #$InnoInstaller = $InstallersFolder + "innosetup-5.5.9-unicode.exe"
       #$InnoURL = "http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe"
       #Start-FileDownload $InnoURL -Timeout 60000 -FileName $InnoInstaller | ForEach-Object { Write-Host "    " + $_ }
-      #"    Installing..."
+      #"    Installing Inno Setup 5.5.9..."
       #Start-Process $InnoInstaller -Arg "/SP /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /RESTARTAPPLICATIONS /NOICONS" -NoNewWindow -Wait
       #"    Done."
       " "
