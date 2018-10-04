@@ -70,8 +70,9 @@ install:
         Start-Process $StacklessInstaller "/quiet InstallAllUsers=1 TargetDir=$StacklessInstallDir" -Wait
         "    Done."
         " "
+        
+        Get-Content -Path "C:\Stackless35\Lib\site.py"
 
-        python -c "path=r'C:\Stackless35\Lib\site.py';f=open(path, 'r');print('\n'.join(str(i) + ': ' + line for i, line in enumerate(f.read().split('\n'))))"
         PipInstall "setuptools"
         "    Updating PIP..."
         python -m pip install -q -U "pip"
