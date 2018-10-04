@@ -159,6 +159,10 @@ for path in (
 ):
     os.mkdir(path)
 
+import eventghost_build_logging
+sys.stdout = eventghost_build_logging.STD(sys.stdout, 'INFO')
+sys.stderr = eventghost_build_logging.STD(sys.stderr, 'ERROR')
+
 iter_copy(SOURCE_PATH, EG_BUILD_PATH)
 iter_copy(DOCS_PATH, DOCS_BUILD_PATH)
 
