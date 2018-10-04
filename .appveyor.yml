@@ -57,7 +57,7 @@ install:
           " "
           "--- " + $mod
           "    Installing..."
-          pip install -q $mod
+          pip install --no-cache-dir -q $mod
           "    Done."
         }
         " "
@@ -72,11 +72,11 @@ install:
         " "
 
         "    Updating pip..."
-        python -m pip install -q -U "pip"
+        python -m pip install --no-cache-dir -q -U "pip"
         "    Done."
         " "
         "    Updating setuptools..."
-        python -m pip install -q -U "setuptools"
+        python -m pip install --no-cache-dir -q -U "setuptools"
         "    Done."
         " "
         PipInstall "sphinx"
@@ -107,11 +107,11 @@ install:
       " "
       "=============== start the EventGhost build ==============="
       " "
-      python "setup.py" build-exe
+      python "setup.py" build_exe
 
       # Make sure the appveyor cache is only saved if our build was successfull
       $Env:SetupExe = gci -recurse -filter "output\*Setup.exe" -name
-      If (-Not (Test-Path($Env:SetupExe))) {
+      If ($Env:SetupExe -eq null || -Not (Test-Path($Env:SetupExe))) {
         $env:APPVEYOR_CACHE_SKIP_SAVE = "true"
       } else {
         # update the appveyor build version to be the same as the EventGhost version
@@ -136,12 +136,6 @@ build:
   # We don't really "build" (with a compiler), but Appveyor finds the
   # solution files in the extension sub-directories and complains.
 
-
-#after_test:
-#  - cmd:  echo "=============== EventGhost build finished ==============="
-#  # - cmd: START /WAIT %setup-exe% /VERYSILENT /SUPPRESSMSGBOXES /NOCLOSEAPPLICATIONS
-
-
 artifacts:
   - path: _build\output\$(SetupExe)
     name: $(SetupExe)
@@ -154,46 +148,10 @@ artifacts:
   - path: _build\output\CHANGELOG_THIS_RELEASE.bb
     name: CHANGELOG_THIS_RELEASE.bb
 
+#after_test:
+#  - cmd:  echo "=============== EventGhost build finished ==============="
+#  # - cmd: START /WAIT %setup-exe% /VERYSILENT /SUPPRESSMSGBOXES /NOCLOSEAPPLICATIONS
 
-notifications:
-- provider: GitHubPullRequest
-  template: >-
-    [{{buildVersion}} {{status}}]({{buildUrl}}) (commit {{commitUrl}})
-
-    Artifacts:
-
-    {{#jobs}}
-    {{#artifacts}}
-    [{{name}}]({{permalink}})
-
-    {{/artifacts}}
-    {{/jobs}}
-
-  on_build_success: true
-  on_build_failure: true
-  on_build_status_changed: false
-
-- provider: Slack
-  incoming_webhook:
-    secure: DXo21MuJufndeGjaRDMxLgLo5yEaPf9uYg1YqrHPlfjsXUAzxRR2yGhCKcUwfLTT3gO192GKwkNAc52Y6TnxuKsNAgI+K5mBW40+6I9FOmU=
-
-  template: >-
-    <{{buildUrl}}|{{projectName}} {{buildVersion}} {{status}}>
-
-    Commit <{{commitUrl}}|{{commitId}}> by {{commitAuthor}} on {{commitDate}}:
-
-    Commit message: _{{commitMessage}}_
-
-
-    Artifacts:
-
-    {{#jobs}}{{#artifacts}}<{{permalink}}|{{name}}>
-
-    {{/artifacts}}{{/jobs}}
-
-  on_build_success: true
-  on_build_failure: true
-  on_build_status_changed: true
 
 
 
