@@ -46,7 +46,7 @@ install:
       $SysWOW = $Env:SYSTEMROOT + "\SysWOW64"
       $PythonWindowsDLL = $SysWOW + "\python35.dll"
       $PythonDLL = $PythonFolder + "\python35.dll"
-      $InstallersFolder = $Env:APPVEYOR_BUILD_FOLDER + "\_build\installers\"
+      $InstallersFolder = $Env:APPVEYOR_BUILD_FOLDER + "\output\"
 
       Remove-Item $PythonWindowsDLL
       New-Item $InstallersFolder -type directory | Out-Null
@@ -54,10 +54,10 @@ install:
       "=============== prepare EventGhost build environment ==============="
       If (-not (Test-Path $PythonFolder))
       {
-        Function PipInstall ($msg, $mod)
+        Function PipInstall ($mod)
         {
           " "
-          "--- " + $msg
+          "--- " + $mod
           "    Installing..."
           pip install -q $mod
           "    Done."
@@ -69,31 +69,30 @@ install:
         $StacklessURL = "http://www.stackless.com/binaries/MSI/3.5.4/stackless-3.5.4-amd64.exe"
         Start-FileDownload $StacklessURL -Timeout 60000 -FileName $StacklessInstaller
         "    Installing..."
-        Start-Process $StacklessInstaller /quiet /passive /qn /norestart $StacklessInstallDir" -Wait
+        Start-Process $StacklessInstaller "/quiet /passive /qn /norestart" -Wait
         "    Done."
         " "
-        "--- pip 9.0.1"
         "    Updating..."
         python -m pip install -q -U "pip"
         "    Done."
         " "
-        PipInstall "setuptools" "setuptools"
-        PipInstall "sphinx" "sphinx"
-        PipInstall "commonmark" "commonmark"
-        PipInstall "pillow" "pillow"
-        PipInstall "pycrypto" "pycrypto"
-        PipInstall "comtypes" "comtypes"
-        PipInstall "paramiko" "paramiko"
-        PipInstall "pywin32" "pywin32"
-        PipInstall "wxPython" "wxPython"
-        PipInstall "websocket-client-py3" "websocket-client-py3"
-        PipInstall "psutil" "psutil"
-        PipInstall "tornado" "tornado"
-        PipInstall "qrcode" "qrcode"
-        PipInstall "pycurl" "pycurl"
-        PipInstall "agithub" "agithub"
-        PipInstall "requests" "requests"
-        PipInstall "cx_Freeze" "cx_Freeze"
+        PipInstall "setuptools"
+        PipInstall "sphinx"
+        PipInstall "commonmark"
+        PipInstall "pillow"
+        PipInstall "pycrypto"
+        PipInstall "comtypes"
+        PipInstall "paramiko"
+        PipInstall "pywin32"
+        PipInstall "wxPython"
+        PipInstall "websocket-client-py3"
+        PipInstall "psutil"
+        PipInstall "tornado"
+        PipInstall "qrcode"
+        PipInstall "pycurl"
+        PipInstall "agithub"
+        PipInstall "requests"
+        PipInstall "cx_Freeze"
       }
       #"--- Inno Setup 5.5.9"
       #$InnoInstaller = $InstallersFolder + "innosetup-5.5.9-unicode.exe"
