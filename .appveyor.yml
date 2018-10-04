@@ -2,7 +2,7 @@
 # Set it to a token you've created on GitHub.
 # To draft a release on GitHub with AppVeyor, create a tag on master.
 
-
+image: Visual Studio 2017
 version: '{build}-{branch}'
 
 
@@ -12,8 +12,8 @@ version: '{build}-{branch}'
 
 
 environment:
-  PYTHON: 'C:\Stackless27'
-  PYTHONPATH: 'C:\Stackless27;C:\Stackless27\Scripts;C:\Stackless27\DLLs;C:\Stackless27\Lib;C:\Stackless27\Lib\site-packages;'
+  PYTHON: 'C:\Stackless35'
+  PYTHONPATH: 'C:\Stackless35;C:\Stackless35\Scripts;C:\Stackless35\DLLs;C:\Stackless35\Lib;C:\Stackless35\Lib\site-packages;'
 
 
 matrix:
@@ -22,7 +22,7 @@ matrix:
 
 cache:
   # Invalidate cache if .appveyor.yml has changed
-  - C:\Stackless27 -> .appveyor.yml
+  - C:\Stackless35 -> .appveyor.yml
   # Manually clear cache:
   # from agithub.AppVeyor import AppVeyor
   # ci = AppVeyor(<your appveyor API token>)
@@ -39,13 +39,13 @@ install:
 
   #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - ps: |
-      $Env:PATH = $Env:PATH -replace "Python27", "Stackless27"
+      $Env:PATH = $Env:PATH -replace "Python35", "Stackless35"
       $PythonFolder = $Env:PYTHON
       $PythonScripts = $PythonFolder + "\Scripts"
       $SitePackages = $PythonFolder + "\lib\site-packages"
       $SysWOW = $Env:SYSTEMROOT + "\SysWOW64"
-      $PythonWindowsDLL = $SysWOW + "\python27.dll"
-      $PythonDLL = $PythonFolder + "\python27.dll"
+      $PythonWindowsDLL = $SysWOW + "\python35.dll"
+      $PythonDLL = $PythonFolder + "\python35.dll"
       $InstallersFolder = $Env:APPVEYOR_BUILD_FOLDER + "\_build\installers\"
 
       Remove-Item $PythonWindowsDLL
@@ -63,53 +63,38 @@ install:
           "    Done."
         }
         " "
-        "--- Stackless 2.7.12150 x86"
-        $StacklessInstaller = $InstallersFolder + "python-2.7.12150-stackless.msi"
+        "--- Stackless 3.5.4 x86-64"
+        $StacklessInstaller = $InstallersFolder + "stackless-3.5.4-amd64.exe"
         $StacklessInstallDir = "TARGETDIR=" + $PythonFolder
-        $StacklessURL = "http://www.stackless.com/binaries/python-2.7.12150-stackless.msi"
+        $StacklessURL = "http://www.stackless.com/binaries/MSI/3.5.4/stackless-3.5.4-amd64.exe"
         Start-FileDownload $StacklessURL -Timeout 60000 -FileName $StacklessInstaller
         "    Installing..."
-        Start-Process MsiExec.exe -Arg "/I $StacklessInstaller /quiet /passive /qn /norestart $StacklessInstallDir" -Wait
-        "    Done."
-        " "
-        "--- wxPython 3.0.2.0"
-        $WXInstaller = $InstallersFolder + "wxPython3.0-win32-3.0.2.0-py27.exe"
-        $WXURL = "http://downloads.sourceforge.net/wxpython/wxPython3.0-win32-3.0.2.0-py27.exe"
-        Start-FileDownload $WXURL -Timeout 60000 -FileName $WXInstaller
-        "    Installing..."
-        Start-Process $WXInstaller -Arg "/VERYSILENT /SUPPRESSMSGBOXES" -NoNewWindow -Wait
+        Start-Process $StacklessInstaller /quiet /passive /qn /norestart $StacklessInstallDir" -Wait
         "    Done."
         " "
         "--- pip 9.0.1"
         "    Updating..."
-        python -m pip install -q -U "pip==9.0.1"
+        python -m pip install -q -U "pip"
         "    Done."
         " "
-        "--- setuptools 34.3.0"
-        "    Updating..."
-        pip install -q -U "setuptools==34.3.0"
-        "    Done."
-        PipInstall "wheel 0.29.0" "wheel==0.29.0"
-        # sphinx >= 1.4.9 installs jinja2 >= 2.3 as dependency,
-        # jinja2 >= 2.9 has an async module which py2exe has
-        # problems with (build of eg will fail)
-        PipInstall "jinja2 2.8.1" "jinja2==2.8.1"
-        PipInstall "sphinx 1.5.6" "sphinx==1.5.6"
-        PipInstall "commonmark 0.7.3" "commonmark==0.7.3"
-        PipInstall "pillow 3.4.2" "pillow==3.4.2"
-        PipInstall "py2exe 0.6.9" "py2exe_py2==0.6.9"
-        PipInstall "pycrypto 2.6.1" "pycrypto==2.6.1"
-        PipInstall "comtypes 1.1.3" "https://github.com/enthought/comtypes/archive/1.1.3.zip"
-        PipInstall "ctypeslib 0.5.6" "svn+http://svn.python.org/projects/ctypes/trunk/ctypeslib/#ctypeslib=0.5.6"
-        PipInstall "paramiko 2.2.1" "paramiko==2.2.1"
-        PipInstall "pywin32 223" pywin32==223
+        PipInstall "setuptools" "setuptools"
+        PipInstall "sphinx" "sphinx"
+        PipInstall "commonmark" "commonmark"
+        PipInstall "pillow" "pillow"
+        PipInstall "pycrypto" "pycrypto"
+        PipInstall "comtypes" "comtypes"
+        PipInstall "paramiko" "paramiko"
+        PipInstall "pywin32" "pywin32"
+        PipInstall "wxPython" "wxPython"
+        PipInstall "websocket-client-py3" "websocket-client-py3"
+        PipInstall "psutil" "psutil"
+        PipInstall "tornado" "tornado"
+        PipInstall "qrcode" "qrcode"
+        PipInstall "pycurl" "pycurl"
+        PipInstall "agithub" "agithub"
+        PipInstall "requests" "requests"
+        PipInstall "cx_Freeze" "cx_Freeze"
       }
-      " "
-      "--- pywin32 post install"
-      $PywinPostInstall = $PythonScripts +"\pywin32_postinstall.py"
-      Start-Process python -Arg "$PywinPostInstall -install -silent -quiet" -Wait
-      "    Done."
-      #" "
       #"--- Inno Setup 5.5.9"
       #$InnoInstaller = $InstallersFolder + "innosetup-5.5.9-unicode.exe"
       #$InnoURL = "http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe"
@@ -133,10 +118,9 @@ install:
         python "_build\Build.py" --build --package --release --version $release $url
       } Else {
         # WIP
-        python "_build\Build.py" --build --package
-        .\EventGhost.exe -install
+        python "setup.py" build-exe
       }
-      $Env:SetupExe = gci -recurse -filter "_build\output\*Setup.exe" -name
+      $Env:SetupExe = gci -recurse -filter "output\*Setup.exe" -name
 
       # update the appveyor build version to be the same as the EventGhost version
       $start = $env:SetupExe.IndexOf("_")
