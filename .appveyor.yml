@@ -39,6 +39,7 @@ install:
 
   #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - ps: |
+      $Env:PATH
       $Env:PATH = $Env:PATH -replace "Python35", "Stackless35"
       $PythonFolder = $Env:PYTHON
       $PythonScripts = $PythonFolder + "\Scripts"
@@ -48,7 +49,7 @@ install:
       $PythonDLL = $PythonFolder + "\python35.dll"
       $InstallersFolder = $Env:APPVEYOR_BUILD_FOLDER + "\output\"
 
-      Remove-Item $PythonWindowsDLL
+      # Remove-Item $PythonWindowsDLL
       New-Item $InstallersFolder -type directory | Out-Null
       " "
       "=============== prepare EventGhost build environment ==============="
@@ -65,11 +66,11 @@ install:
         " "
         "--- Stackless 3.5.4 x86-64"
         $StacklessInstaller = $InstallersFolder + "stackless-3.5.4-amd64.exe"
-        $StacklessInstallDir = "TARGETDIR=" + $PythonFolder
+        $StacklessInstallDir = $PythonFolder
         $StacklessURL = "http://www.stackless.com/binaries/MSI/3.5.4/stackless-3.5.4-amd64.exe"
         Start-FileDownload $StacklessURL -Timeout 60000 -FileName $StacklessInstaller
         "    Installing..."
-        Start-Process $StacklessInstaller "/quiet /passive /qn /norestart" -Wait
+        Start-Process $StacklessInstaller /quiet InstallAllUsers=1 TargetDir=$StacklessInstallDir" -Wait
         "    Done."
         " "
         "    Updating..."
