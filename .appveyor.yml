@@ -39,7 +39,7 @@ install:
 
   #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - ps: |
-      $Env:PATH = $Env:PATH -replace "Python35", "Stackless35"
+      $Env:PATH = $Env:PYTHONPATH + ";" + $Env:PATH
       $PythonFolder = $Env:PYTHON
       $PythonScripts = $PythonFolder + "\Scripts"
       $SitePackages = $PythonFolder + "\lib\site-packages"
@@ -70,7 +70,7 @@ install:
         Start-Process $StacklessInstaller "/quiet InstallAllUsers=1 TargetDir=$StacklessInstallDir" -Wait
         "    Done."
         " "
-        
+
         Get-Content -Path "C:\Stackless35\Lib\site.py"
 
         PipInstall "setuptools"
