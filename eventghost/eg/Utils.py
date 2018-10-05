@@ -427,7 +427,7 @@ def LogIt(func):
     if not eg.debugLevel:
         return func
 
-    if func.func_code.co_flags & 0x20:
+    if func.__code__.co_flags & 0x20:
         raise TypeError("Can't wrap generator function")
 
     def LogItWrapper(*args, **kwargs):

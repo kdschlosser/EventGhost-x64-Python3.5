@@ -1104,7 +1104,7 @@ class MainFrame(wx.Frame):
                 except:
                     pass
             self.setText(text)
-        FillingTree.display.im_func.func_code = display.func_code
+        FillingTree.display.im_func.__code__ = display.__code__
 
         fileName = join(eg.configDir, 'PyCrust')
         pyCrustConfig = wx.FileConfig(localFilename=fileName)
