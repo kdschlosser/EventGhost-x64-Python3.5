@@ -95,7 +95,7 @@ def send_message(msg, *msg_args):
     )
 
 if args.isMain:
-    for i, arg in argvIter[1:]:
+    for i, arg in enumerate(argvIter[1:]):
         arg = arg.lower()
 
         if arg in ('-e', '-event'):
