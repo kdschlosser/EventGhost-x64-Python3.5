@@ -1115,27 +1115,31 @@ wx.Menu.AppendMenu = append_menu
 wx.Menu.Append = append
 # wx.Menu.AppendItem = append_item
 #
-# def add_simple_tool(self, *args, **kwargs):
-#     args = list(args)
-#
-#     if 'id' in kwargs:
-#         kwargs['toolId'] = kwargs.pop('id')
-#     else:
-#         kwargs['toolId'] = args.pop(0)
-#
-#     if 'bitmap' not in kwargs:
-#         kwargs['bitmap'] = args.pop(0)
-#     if 'shortHelp' not in kwargs and len(args):
-#         kwargs['shortHelp'] = args.pop(0)
-#     if 'longHelp' not in kwargs and len(args):
-#         kwargs['longHelp'] = args.pop(0)
-#     if 'kind' not in kwargs and len(args):
-#         kwargs['kind'] = args.pop(0)
-#
-#     return self.AddTool(**kwargs)
-#
-#
-# wx.ToolBar.AddSimpleTool = add_simple_tool
+def add_simple_tool(self, *args, **kwargs):
+    args = list(args)
+
+    if 'id' in kwargs:
+        kwargs['toolId'] = kwargs.pop('id')
+    else:
+        kwargs['toolId'] = args.pop(0)
+
+    if 'bitmap' not in kwargs:
+        kwargs['bitmap'] = args.pop(0)
+    if 'shortHelp' not in kwargs and len(args):
+        kwargs['shortHelp'] = args.pop(0)
+    if 'longHelp' not in kwargs and len(args):
+        kwargs['longHelp'] = args.pop(0)
+    if 'kind' not in kwargs and len(args):
+        kwargs['kind'] = args.pop(0)
+
+    kwargs['label'] = ''
+    if 'longHelp' in kwargs:
+        kwargs['disabledBitmap'] = kwargs['bitmap'].ConvertToDisabled()
+
+    return self.AddTool(**kwargs)
+
+
+wx.ToolBar.AddSimpleTool = add_simple_tool
 
 
 wx.DECORATIVE = wx.FONTFAMILY_DECORATIVE
