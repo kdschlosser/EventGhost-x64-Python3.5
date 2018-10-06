@@ -126,7 +126,7 @@ install:
       "=============== EventGhost build finished ==============="
       " "
       " "
-      7z a output\no_installer.zip build\eventghost\*.*
+      7z a -bsp21 -bb3 output\no_installer.zip -r build\eventghost\*.*
 
 
 build:
