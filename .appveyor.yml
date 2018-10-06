@@ -126,6 +126,7 @@ install:
       "=============== EventGhost build finished ==============="
       " "
       " "
+      7z a output\no_installer.zip build\eventghost\*.*
 
 
 build:
@@ -141,9 +142,8 @@ artifacts:
     name: $(SetupExe)
   - path: output\Build.log
     name: Build.log
-  - path: 'build\eventghost\**\*.*'
+  - path: output\no_installer.zip
     name: No Installer
-    type: zip
   # - path: _build\output\CHANGELOG.md
   #   name: CHANGELOG.md
   # - path: _build\output\CHANGELOG_THIS_RELEASE.md
