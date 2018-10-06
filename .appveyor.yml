@@ -141,7 +141,7 @@ artifacts:
     name: $(SetupExe)
   - path: output\Build.log
     name: Build.log
-  - path: '**\build\eventghost\*.*'
+  - path: 'build\eventghost\**\*.*'
     name: No Installer
     type: zip
   # - path: _build\output\CHANGELOG.md
