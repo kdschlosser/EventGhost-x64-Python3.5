@@ -57,7 +57,10 @@ install:
           " "
           "--- " + $mod
           "    Installing..."
-          pip install --no-cache-dir -q $mod
+          Start-Process "pip" "install --no-cache-dir -q $mod" -Wait
+          if ($LASTEXITCODE -eq 0) {
+            $host.SetShouldExit(0)
+          }
           "    Done."
         }
         " "
@@ -72,11 +75,17 @@ install:
         " "
 
         "    Updating pip..."
-        python -m pip install --no-cache-dir -q -U "pip"
+        Start-Process "python" "-m pip install --no-cache-dir -q -U pip" -Wait
+        if ($LASTEXITCODE -eq 0) {
+            $host.SetShouldExit(0)
+        }
         "    Done."
         " "
         "    Updating setuptools..."
-        python -m pip install --no-cache-dir -q -U "setuptools"
+        Start-Process "python" "-m pip install --no-cache-dir -q -U setuptools" -Wait
+        if ($LASTEXITCODE -eq 0) {
+            $host.SetShouldExit(0)
+        }
         "    Done."
         " "
         PipInstall "sphinx"
@@ -106,10 +115,14 @@ install:
       #Start-Process $InnoInstaller -Arg "/SP /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /RESTARTAPPLICATIONS /NOICONS" -NoNewWindow -Wait
       #"    Done."
       " "
-      " "
+
+build_script:
+  - ps: |
       "=============== start the EventGhost build ==============="
       " "
       python "setup.py" build_exe
+      
+      Push-AppveyorArtifact "output\Build.log" -FileName "Build.log" -DeploymentName "Build Log
 
       # Make sure the appveyor cache is only saved if our build was successfull
       $Env:SetupExe = gci -recurse -filter "output\*Setup.exe" -name
@@ -119,31 +132,21 @@ install:
         $length = $env:SetupExe.LastIndexOf("_") - $start
         $build_version = $env:SetupExe.Substring($start + 1, $length - 1)
         Update-AppveyorBuild -Version "$build_version"
-      }
+
+        7z a -bsp1 -bb3 output\no_installer.zip -r build\eventghost\*.*
+        Push-AppveyorArtifact "output\$Env:SetupExe" -FileName $Env:SetupExe -DeploymentName "Installer"
+        Push-AppveyorArtifact "output\no_installer.zip" -FileName "no_installer.zip" -DeploymentName "NO Installer"
+        $host.SetShouldExit(0)
+      } else {
+        $host.SetShouldExit(1)
 
       " "
 
       "=============== EventGhost build finished ==============="
       " "
       " "
-      7z a -bsp1 -bb3 output\no_installer.zip -r build\eventghost\*.*
 
-
-build:
-  off
-  # If we don't turn build off, we get an error from appveyor telling us,
-  # we should decide, which project or solution file to use, because the
-  # folder contains more than one project or solution file.
-  # We don't really "build" (with a compiler), but Appveyor finds the
-  # solution files in the extension sub-directories and complains.
-
-artifacts:
-  - path: output\$(SetupExe)
-    name: $(SetupExe)
-  - path: output\Build.log
-    name: Build.log
-  - path: output\no_installer.zip
-    name: No Installer
+# artifacts:
   # - path: _build\output\CHANGELOG.md
   #   name: CHANGELOG.md
   # - path: _build\output\CHANGELOG_THIS_RELEASE.md
