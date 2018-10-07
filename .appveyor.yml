@@ -22,7 +22,7 @@ matrix:
 
 cache:
   # Invalidate cache if .appveyor.yml has changed
-  # - C:\Stackless35 -> .appveyor.yml
+  - C:\Stackless35 -> .appveyor.yml
   # Manually clear cache:
   # from agithub.AppVeyor import AppVeyor
   # ci = AppVeyor(<your appveyor API token>)
