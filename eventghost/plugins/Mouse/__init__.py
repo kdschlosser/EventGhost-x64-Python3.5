@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is part of EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -64,6 +65,7 @@ eg.RegisterPlugin(
 
 class Mouse(eg.PluginBase):
     def __init__(self):
+        super(Mouse, self).__init__()
         self.AddEvents()
         self.AddAction(LeftButton)
         self.AddAction(LeftDoubleClick)

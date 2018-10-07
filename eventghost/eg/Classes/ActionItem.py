@@ -163,19 +163,23 @@ class ActionItem(TreeItem):
 
     def GetLabel(self):
         if self.name:
-            return self.name
+            name = self.name
+        else:
+            # often the GetLabel() method of the executable can't handle
+            # a call without arguments, because suitable default arguments
+            # are missing. So we use a fallback in such cases.
+            executable = self.executable
+            try:
+                name = executable.GetLabel(*self.args)
+            except:
+                name = executable.name
+            pluginInfo = executable.plugin.info
+            if pluginInfo.kind != "core":
+                name = pluginInfo.label + ": " + name
 
-        # often the GetLabel() method of the executable can't handle
-        # a call without arguments, because suitable default arguments
-        # are missing. So we use a fallback in such cases.
-        executable = self.executable
-        try:
-            name = executable.GetLabel(*self.args)
-        except:
-            name = executable.name
-        pluginInfo = executable.plugin.info
-        if pluginInfo.kind != "core":
-            name = pluginInfo.label + ": " + name
+        if isinstance(name, bytes):
+            name = name.decode('utf-8')
+
         return name
 
     def GetTypeName(self):

@@ -40,6 +40,9 @@ from .Utils import (  # NOQA
     PySendMessageTimeout as SendMessageTimeout,
 )
 
+from . import SoundMixer
+
+
 def GetTopLevelWindowList(includeInvisible):
     """
     cFunctions.GetTopLevelWindowList() may return hwnds that are a larger

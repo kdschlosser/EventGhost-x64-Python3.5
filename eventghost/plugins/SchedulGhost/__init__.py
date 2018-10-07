@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 
 version="0.1.18"
 
@@ -1703,6 +1704,7 @@ class SchedulGhost(eg.PluginBase):
     prefix = None
 
     def __init__(self):
+        super(SchedulGhost, self).__init__()
         text=Text
         self.AddActionsFromList(Actions)
 

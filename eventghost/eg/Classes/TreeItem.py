@@ -63,6 +63,7 @@ class TreeItem(object):
         node.attrib = dict([(k.lower(), v) for k, v in node.attrib.items()])
         get = node.attrib.get
         self.name = get("name", "")
+
         guid = get("xml_guid", None)
         if guid is None:
             eg.document.SetIsDirty(True)
@@ -71,7 +72,8 @@ class TreeItem(object):
             self.guid = eg.GUID.AddId(self, guid)
 
         if isinstance(self.name, str):
-            self.name = unicode(self.name, "utf8")
+            self.name = self.name.encode("utf-8")
+
         self.isEnabled = not get('enabled') == "False"
         self.xmlId = TreeLink.NewXmlId(int(get('id', -1)), self)
 
@@ -243,16 +245,21 @@ class TreeItem(object):
         raise NotImplementedError
 
     def GetFullXml(self):
+        import io
         TreeLink.StartUndo()
-        output = StringIO()
+        output = io.BytesIO()
         self.WriteXmlString(output.write)
-        xmlString = output.getvalue()
+        xmlString = output.getvalue().decode('utf-8')
         output.close()
         TreeLink.StopUndo()
         return xmlString
 
     def GetLabel(self):
-        return self.name
+        if isinstance(self.name, bytes):
+            name = self.name.decode('utf-8')
+        else:
+            name = self.name
+        return name
 
     def GetNextItem(self):
         """
@@ -310,15 +317,19 @@ class TreeItem(object):
         raise NotImplementedError
 
     def GetXmlString(self):
-        stream = StringIO()
-        stream.write('<?xml version="1.0" encoding="UTF-8" ?>\r\n')
+        from io import BytesIO
+        stream = BytesIO()
+        stream.write(b'<?xml version="1.0" encoding="UTF-8" ?>\r\n')
         if isinstance(self, eg.RootItem):
             self.WriteXmlString(stream.write)
         else:
-            stream.write('<EventGhost Version="%s">\r\n' % str(eg.Version.string))
-            self.WriteXmlString(stream.write, "    ")
-            stream.write('</EventGhost>')
-        xmlString = stream.getvalue()
+            stream.write(
+                b'<EventGhost Version="%s">\r\n' %
+                str(eg.Version.string).encode('utf-8')
+            )
+            self.WriteXmlString(stream.write, b"    ")
+            stream.write(b'</EventGhost>')
+        xmlString = stream.getvalue().decode('utf-8')
         stream.close()
         return xmlString
 
@@ -417,20 +428,23 @@ class TreeItem(object):
         for child in self.childs:
             child.WriteXmlString(streamWriter, indent)
 
-    def WriteXmlString(self, streamWriter, indent=""):
+    def WriteXmlString(self, streamWriter, indent=b""):
         attr, text = self.GetData()
         attribStrs = "".join(
-            ' %s=%s' % (k, quoteattr(unicode(v)).encode("UTF-8"))
+            ' %s=%s' % (k, quoteattr(str(v)))
             for k, v in attr
         )
-        streamWriter("%s<%s%s" % (indent, self.xmlTag, attribStrs))
+        streamWriter(
+            b"%s<%s%s" % (indent, self.xmlTag, attribStrs.encode('utf-8'))
+        )
+
         if not text and len(self.childs) == 0:
-            streamWriter(" />\r\n")
+            streamWriter(b" />\r\n")
         else:
-            streamWriter(">\r\n")
-            newIndent = indent + "    "
+            streamWriter(b">\r\n")
+            newIndent = indent + b"    "
             if text is not None:
-                streamWriter(newIndent + escape(text).encode("UTF-8"))
-                streamWriter("\r\n")
+                streamWriter(newIndent + escape(text).encode("utf-8"))
+                streamWriter(b"\r\n")
             self.WriteXmlChilds(streamWriter, newIndent)
-            streamWriter(indent + "</%s>\r\n" % self.xmlTag)
+            streamWriter(indent + b"</%s>\r\n" % self.xmlTag.encode('utf-8'))

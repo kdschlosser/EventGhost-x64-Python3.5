@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# update_complete
 #
 # This file is part of EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>

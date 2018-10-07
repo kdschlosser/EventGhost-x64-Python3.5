@@ -1,4 +1,5 @@
 README = """\
+# super_class_updated
 <u><b>1) Bluetooth</b></u>
 
 Tested succesfully working with Bluetooth Software :
@@ -201,6 +202,7 @@ class PS3ParseError(Exception):
 
 class HIDPS3(eg.PluginClass):
     def __init__(self):
+        super(HIDPS3, self).__init__()
         self.text = Text
         self.thread = None
         self.PS3Remote = PS3Remote

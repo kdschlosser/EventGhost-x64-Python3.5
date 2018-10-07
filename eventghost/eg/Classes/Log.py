@@ -99,7 +99,7 @@ class Log(object):
                     try:
                         oldStdOut.write(data)
                     except:
-                        oldStdOut.write(data.decode("mbcs"))
+                        oldStdOut.write(data.encode("utf-8"))
 
         class StdErr:
             def write(self, data):
@@ -108,14 +108,16 @@ class Log(object):
                     try:
                         oldStdErr.write(data)
                     except:
-                        oldStdErr.write(data.decode("mbcs"))
+                        oldStdErr.write(data.encode("utf-8"))
 
         if eg.startupArguments.isMain:
             sys.stdout = StdOut()
             sys.stderr = StdErr()
+
         if eg.debugLevel == 2:
             if hasattr(_oldStdErr, "_displayMessage"):
                 _oldStdErr._displayMessage = False
+
         if eg.debugLevel:
             import platform
             import warnings
@@ -282,10 +284,15 @@ class Log(object):
                 data.popleft()
 
     def _Print(self, args, sep=" ", end="\n", icon=INFO_ICON, source=None):
+        new_args = []
+        for arg in args:
+            if isinstance(arg, bytes):
+                arg = arg.decode('utf-8')
+            new_args += [arg]
         if source is not None:
             source = ref(source)
         #strs = [unicode(arg) for arg in args]
-        self.Write(sep.join(args) + end, icon, source)
+        self.Write(sep.join(new_args) + end, icon, source)
 
     def _WriteLine(self, line, icon, wRef, when, indent):
         if self.NativeLog:

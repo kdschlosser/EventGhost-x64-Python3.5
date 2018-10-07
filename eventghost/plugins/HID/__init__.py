@@ -1,4 +1,5 @@
 eg.RegisterPlugin(
+# super_class_updated
     name = "Generic HID",
     author = "Bartman",
     version = "1.5.1246",
@@ -35,6 +36,7 @@ class Text:
 
 class HID(eg.PluginClass):
     def __init__(self):
+        super(HID, self).__init__()
         self.thread = None
 
     def RawCallback(self, data):

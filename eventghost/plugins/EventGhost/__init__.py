@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is part of EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -45,6 +46,7 @@ eg.RegisterPlugin(
 
 class EventGhost(eg.PluginBase):
     def __init__(self):
+        super(EventGhost, self).__init__()
         self.AddAction(PythonCommand)
         self.AddAction(PythonScript)
         self.AddAction(AutoRepeat)

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -129,6 +130,7 @@ class HarmanKardon(eg.RawReceiverPlugin):
     text = Text
 
     def __init__(self):
+        super(HarmanKardon, self).__init__()
         eg.RawReceiverPlugin.__init__(self)
         self.AddAction(self.Send2hk)
         self.serial = None

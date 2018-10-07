@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # plugins/ProcessWatcher/__init__.py
 #
@@ -55,6 +56,7 @@ import threading # NOQA
 class Process(eg.PluginClass):
 
     def __init__(self):
+        super(Process, self).__init__()
         self.thread = None
         self.startException = None
         self.event = threading.Event()

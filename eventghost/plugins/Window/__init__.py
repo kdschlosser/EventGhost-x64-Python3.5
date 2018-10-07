@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -110,6 +111,7 @@ LVIS_SELECTED    = 2
 
 class Window(eg.PluginBase):
     def __init__(self):
+        super(Window, self).__init__()
         self.AddAction(FindWindow)
         self.AddAction(SetAlwaysOnTop)
         self.AddAction(BringToFront)

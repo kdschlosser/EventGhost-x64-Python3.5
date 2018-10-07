@@ -18,6 +18,9 @@
 
 import stackless
 import sys
+import os
+
+_old_stderr = sys.stderr
 
 
 class StdErrReplacement(object):
@@ -28,40 +31,42 @@ class StdErrReplacement(object):
     _displayMessage = True
     encoding = "mbcs"
 
+    def __init__(self):
+        self._registered = False
+        prgName = os.path.splitext(os.path.basename(sys.executable))[0]
+        prgAppDataPath = os.path.join(os.environ["APPDATA"], prgName)
+        self._logFilePath = os.path.join(prgAppDataPath, "Log.txt")
+        if not os.path.exists(prgAppDataPath):
+            os.mkdir(prgAppDataPath)
+
+        try:
+            self._file = open(self._logFilePath, 'a')
+
+        except Exception as details:
+            self._error = details
+            self._file = None
+            if "-q" not in sys.argv and "-quiet" not in sys.argv:  # NOQA
+                import atexit
+                import ctypes
+
+                atexit.register(
+                    ctypes.windll.user32.MessageBoxA,
+                    0,
+                    "The logfile '%s' could not be opened:\n %s" % (
+                        self._logFilePath,
+                        details
+                    ),
+                    "Error occurred in EventGhost",
+                    0
+                )
+
     def write(self, text):
-        if self._file is None and self._error is None:
-            import os
+        if self._error is None and not self._registered:
+            if "-q" not in sys.argv and "-quiet" not in sys.argv:  # NOQA
+                import atexit
+                atexit.register(self.__DisplayMessage)
+            self._registered = True
 
-            if self._logFilePath is None:
-                prgName = os.path.splitext(os.path.basename(sys.executable))[
-                    0]  # NOQA
-                prgAppDataPath = os.path.join(os.environ["APPDATA"], prgName)
-                self._logFilePath = os.path.join(prgAppDataPath, "Log.txt")
-            try:
-                if not os.path.exists(prgAppDataPath):
-                    os.mkdir(prgAppDataPath)
-                self._file = open(self._logFilePath, 'a')
-            except Exception as details:
-                self._error = details
-                if "-q" not in sys.argv and "-quiet" not in sys.argv:  # NOQA
-                    import atexit
-                    import ctypes
-
-                    atexit.register(
-                        ctypes.windll.user32.MessageBoxA,
-                        0,
-                        "The logfile '%s' could not be opened:\n %s" % (
-                            self._logFilePath,
-                            details
-                        ),
-                        "Error occurred in EventGhost",
-                        0
-                    )
-            else:
-                if "-q" not in sys.argv and "-quiet" not in sys.argv:  # NOQA
-                    import atexit
-
-                    atexit.register(self.__DisplayMessage)
         if self._file is not None:
             self._file.write(text)
             self._file.flush()
@@ -74,49 +79,38 @@ class StdErrReplacement(object):
         if not self._displayMessage:
             return
         import ctypes
-        result = ctypes.windll.user32.MessageBoxA(
-            0,
-            (
-                'See the logfile "%s" for details.\n\n'
-                "Do you want to open the file now?"
-            ) % self._logFilePath,
-            "Errors occurred in EventGhost",
-            4
+
+        message = ctypes.create_unicode_buffer(
+            'See the logfile "%s" for details.\n\n'
+            'Do you want to open the file now?'
+            % self._logFilePath,
         )
-        if result == 6:
+        caption = ctypes.create_unicode_buffer(
+            'Errors occurred in EventGhost'
+        )
+        res = ctypes.windll.user32.MessageBoxA(0, message, caption, 4)
+        if res == 6:
             import subprocess
 
             subprocess.Popen('Notepad.exe "%s"' % self._logFilePath)
 
 
-# Replace stderr.
 sys.stderr = StdErrReplacement()
-
-# py2exe disables linecache.getline() in boot_common.py.
-# py2exe disabls linecache.getline() which is called by
-# traceback.extract_stack() when an exception occurs to try and read
-# the filenames embedded in the packaged python code.
-# We re-enable it here.
-# linecache.getline = linecache.orig_getline
-
-# Clean up.
-# del linecache
-
-del StdErrReplacement
+logger = sys.stderr
 
 # the following three import are needed if we are running from source and the
 # Python distribution was not installed by the installer. See the following
 # link for details:
 # http://www.voidspace.org.uk/python/movpy/reference/win32ext.html#id10
-import pywintypes  # NOQA
-import pythoncom  # NOQA
-import win32api  # NOQA
+import pywintypes # NOQA
+import pythoncom # NOQA
+import win32api # NOQA
 
 # Local imports
-from . import Python3Conversion
-from . import Cli
+from . import Python3Conversion # NOQA
+from . import Cli # NOQA
 from .Utils import *  # NOQA
-from .Classes.WindowsVersion import WindowsVersion
+from .Classes.WindowsVersion import WindowsVersion # NOQA
 
 
 APP_NAME = "EventGhost"
@@ -134,11 +128,13 @@ class DynamicModule(object):
         builtins.eg = self
 
     def __getattr__(self, name):
+        if name in self.__dict__:
+            return self.__dict__[name]
         try:
-            mod = __import__("Classes." + name, self.__dict__, {}, [name], 1)
-            self.__dict__[name] = attr = getattr(mod, name)
+            attr = __import__('eg.' + name, self.__dict__)
         except ImportError:
-            attr = __import__(name, self.__dict__, {}, [], 1)
+            mod = __import__("eg.Classes." + name, self.__dict__, {}, [name])
+            self.__dict__[name] = attr = getattr(mod, name)
         return attr
 
     def __repr__(self):
@@ -164,6 +160,14 @@ class DynamicModule(object):
             object.__setattr__(self, name, value)
         self.__class__.__setattr__ = __setattr__
 
+    def tl(self, *args):
+        out = ''
+        for arg in args:
+            out += repr(arg) + ','
+        logger.write(out + '\n')
+        # if sys.stdout is not None:
+        #     sys.stdout.write(out + '\n')
+
     def Main(self):
         if Cli.args.install:
             return
@@ -183,15 +187,10 @@ class DynamicModule(object):
         stackless.run()
 
 
-sys.stderr.write('loading dynamic module\n')
 eg = DynamicModule()
-sys.stderr.write('dynamic module loaded\n')
 
-sys.stderr.write('loading core\n')
 __import__('Core', eg.__dict__, level=1)
 # from . import Core  # NOQA
-
-sys.stderr.write('core loaded\n')
 
 # this is here to make an IDE properly populate the AutoComplete
 if "EventGhost.exe" not in sys.executable and not sys.argv[0].endswith('setup.py'):

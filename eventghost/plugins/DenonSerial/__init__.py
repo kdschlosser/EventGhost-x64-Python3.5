@@ -1,4 +1,5 @@
 #
+# super_class_updated
 # DenonSerial V0.5
 # ================
 # Written by Oliver Wagner, <owagner@hometheatersoftware.com>
@@ -356,6 +357,7 @@ class Raw(eg.ActionWithStringParameter):
 class DenonSerial(eg.PluginClass):
 
     def __init__(self):
+        super(DenonSerial, self).__init__()
         self.serial = None
         group = self
 

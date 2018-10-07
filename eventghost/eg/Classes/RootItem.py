@@ -81,9 +81,9 @@ class RootItem(ContainerItem):
     def WriteXmlChilds(self, streamWriter, indent):
         content = eg.Password.GetDatabaseContent()
         if content:
-            streamWriter("    <Passwords>\r\n")
+            streamWriter(b"    <Passwords>\r\n")
             for line in content.encode("base64").splitlines():
-                streamWriter("        %s\r\n" % line)
-            streamWriter("    </Passwords>\r\n")
+                streamWriter(b"        %s\r\n" % line.encode('utf-8'))
+            streamWriter(b"    </Passwords>\r\n")
         for child in self.childs:
             child.WriteXmlString(streamWriter, indent)

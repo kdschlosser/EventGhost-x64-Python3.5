@@ -494,8 +494,8 @@ RegisterEventFunc(PyObject *self, PyObject *args)
 
 static PyMethodDef _dxJoystick_methods[] = {
 //	{"foo", ex_foo, 1, "foo() doc string"},
-	{"RegisterEventFunc", RegisterEventFunc, 1, ""},
-	{NULL, NULL}
+	{"RegisterEventFunc", (PyCFunction)RegisterEventFunc, METH_VARARGS, NULL },
+	{NULL, NULL, 0, NULL}
 };
 
 static struct PyModuleDef _dxJoystick_module = {

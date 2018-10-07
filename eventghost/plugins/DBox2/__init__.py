@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -158,6 +159,7 @@ class ActionPrototype(eg.ActionBase):
 class DBox2(eg.PluginBase):
 
     def __init__(self):
+        super(DBox2, self).__init__()
         self.AddActionsFromList(ACTIONS, ActionPrototype)
 
 

@@ -40,12 +40,9 @@ import threading
 import time
 import wx
 
-_stderr = sys.stderr
-
 # Local imports
 import eg
 
-eg.stderr = _stderr
 from . import Init
 from . import NamedPipe
 
@@ -334,7 +331,6 @@ eg.StopException = StopException
 eg.StopMacro = StopMacro
 eg.Unbind = Unbind
 eg.Wait = Wait
-
 eg.messageReceiver = eg.MainMessageReceiver()
 eg.app = eg.App()
 
@@ -355,18 +351,25 @@ eg.config = eg.Config()
 eg.debugLevel = int(eg.config.logDebug) or eg.debugLevel
 
 def TracebackHook(tType, tValue, traceback):
-    eg.log.PrintTraceback(excInfo=(tType, tValue, traceback))
+    eg.tl(tType, tValue, traceback)
+    # eg.log.PrintTraceback(excInfo=(tType, tValue, traceback))
 sys.excepthook = TracebackHook
 
 eg.colour = eg.Colour()
+
 if eg.startupArguments.isMain and not eg.startupArguments.translate:
     eg.text = eg.Text(eg.config.language)
 else:
     eg.text = eg.Text('en_EN')
+
 eg.actionThread = eg.ActionThread()
+
 eg.eventThread = eg.EventThread()
+
 eg.pluginManager = eg.PluginManager()
+
 eg.scheduler = eg.Scheduler()
+
 
 eg.TriggerEvent = eg.eventThread.TriggerEvent
 eg.TriggerEnduringEvent = eg.eventThread.TriggerEnduringEvent
@@ -377,7 +380,6 @@ eg.SendKeys = SendKeysParser()
 setattr(eg, "PluginClass", eg.PluginBase)
 setattr(eg, "ActionClass", eg.ActionBase)
 
-_stderr.write('loading taskbar icon\n')
 eg.taskBarIcon = eg.TaskBarIcon(
     eg.startupArguments.isMain and
     eg.config.showTrayIcon and
@@ -385,13 +387,11 @@ eg.taskBarIcon = eg.TaskBarIcon(
     not eg.startupArguments.install and
     not eg.startupArguments.pluginFile
 )
-_stderr.write('taskbar icon loaded\n')
+
 
 eg.SetProcessingState = eg.taskBarIcon.SetProcessingState
 eg.wit = None
 
-_stderr.write('loading init\n')
 eg.Init = Init
-eg.Init.Init()
-_stderr.write('init loaded\n')
 
+eg.Init.Init()

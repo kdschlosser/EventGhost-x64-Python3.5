@@ -28,7 +28,8 @@ import eg
 
 gTriggerEventLock = Lock()
 
-class PluginBase(object):
+
+class PluginBase(object, metaclass=eg.PluginMetaClass):
     """
     Base class of every EventGhost plugin written in Python.
 
@@ -56,8 +57,6 @@ class PluginBase(object):
     info = None
     text = None
     Exceptions = None
-
-    __metaclass__ = eg.PluginMetaClass
 
     # used for automatic documentation creation
     __docsort__ = (

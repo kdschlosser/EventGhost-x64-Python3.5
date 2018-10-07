@@ -1,4 +1,6 @@
 #
+# update_complete
+# super_class_updated
 # This file is a plugin for EventGhost.
 # plugins/RFXcom_xPL/__init__.py
 #
@@ -72,6 +74,7 @@ class RFXcom(eg.PluginClass):
 
 
     def __init__(self):
+        super(RFXcom, self).__init__()
         self.LocalIP=gethostbyname(gethostname())
         self.hostname="RFXcom."+str(gethostname())
         self.AddAction(sendRFXcom_x10_basic)
@@ -213,9 +216,9 @@ class RFXcom(eg.PluginClass):
                 if self.bDebug:
                     print(message)
 
-                if msgschema <> "hbeat.app" :
+                if msgschema != "hbeat.app" :
                     if xplsource == self.xplDeviceName:
-                        if message <> messageOld:
+                        if message != messageOld:
                             for element in msgbody:
                                 msgbody2 = msgbody2 + element + ","
                             self.TriggerEvent(

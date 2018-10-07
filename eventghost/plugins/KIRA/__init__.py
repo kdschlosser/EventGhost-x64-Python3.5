@@ -1,4 +1,6 @@
 eg.RegisterPlugin(
+# update_complete
+# super_class_updated
     name = 'Keene IR Anywhere',
     author = 'ldobson',
     version = '1.0.5',
@@ -120,6 +122,7 @@ class KIRA(eg.PluginClass):
     text = Text
 
     def __init__(self):
+        super(KIRA, self).__init__()
         self.AddAction(Transmit)
         self.AddAction(SendToMe)
         self.AddAction(SetAsTarget)
@@ -334,8 +337,8 @@ class Server(asyncore.dispatcher):
         except socket.timeout:
             pass
 
-        except socket.error, (errno, strerror):
-            if (errno == 10054):
+        except socket.error as err:
+            if err.errno == 10054:
                 # this happens when we transmit from the server socket
                 pass
             else:

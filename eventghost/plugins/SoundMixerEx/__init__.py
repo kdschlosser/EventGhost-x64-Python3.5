@@ -1,4 +1,5 @@
 eg.RegisterPlugin(
+# super_class_updated
     name = "Sound Mixer Ex",
     author = "Dexter",
     version = "1.1.1204",
@@ -361,6 +362,7 @@ class SoundMixerWin32():
 class SoundMixerEx(eg.PluginClass):
 
     def __init__(self):
+        super(SoundMixerEx, self).__init__()
         self.mixer = SoundMixerWin32()
         self.mixers = None
         self.controls = None

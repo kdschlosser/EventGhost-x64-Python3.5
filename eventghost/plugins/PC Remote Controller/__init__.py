@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -16,7 +18,7 @@
 # You should have received a copy of the GNU General Public License along
 # with EventGhost. If not, see <http://www.gnu.org/licenses/>.
 
-ur"""<rst>
+r"""<rst>
 Plugin for the PC Remote Controller.
 
 |
@@ -88,6 +90,8 @@ BUTTONS = {
 
 
 class PcRemoteController(eg.PluginBase):
+    def __init__(self):
+        super(PcRemoteController, self).__init__()
 
     def __start__(self):
         self.winUsb = eg.WinUsb(self)

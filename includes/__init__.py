@@ -73,7 +73,9 @@ PACKAGES = [
     'crypto',
     'wx',
     'websocket',
-    'docutils'
+    'docutils',
+    'winsound',
+    'difflib',
 ]
 
 INCLUDES = [

@@ -19,7 +19,7 @@
 # Local imports
 import eg
 from .MacroItem import MacroItem
-from .TreeItem import HINT_MOVE_INSIDE, HINT_MOVE_AFTER
+from .TreeItem import TreeItem, HINT_MOVE_INSIDE, HINT_MOVE_AFTER
 from datetime import datetime
 
 
@@ -60,7 +60,8 @@ class AutostartItem(MacroItem):
 
     @eg.AssertInActionThread
     def __init__(self, parent, node):
-        eg.TreeItem.__init__(self, parent, node)
+        TreeItem.__init__(self, parent, node)
+
         tagDict = self.document.XMLTag2ClassDict
         self.childs = []
         for childNode in node:
@@ -77,8 +78,9 @@ class AutostartItem(MacroItem):
             self.childs[i] = tagDict[childTag](self, childNode)
         if node.attrib.get("expanded", "").lower() == "true":
             self.document.expandedNodes.add(self)
-        self.name = eg.text.General.autostartItem
+
         self.document.autostartMacro = self
+        self.name = eg.text.General.autostartItem.encode('utf-8')
 
     def CanCut(self):
         return False

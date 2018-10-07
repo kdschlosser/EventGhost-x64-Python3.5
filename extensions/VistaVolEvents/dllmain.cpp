@@ -374,13 +374,13 @@ static PyObject *Register_Mute_Handler(PyObject *self, PyObject *args) {
 }
 
 static struct PyMethodDef VistaVolEvents_methods[] = {
-    {"RegisterVolumeHandler", Register_Volume_Handler},
-    {"RegisterMuteHandler",   Register_Mute_Handler},
-    {"GetMute",               Get_Mute},
-    {"SetMute",               Set_Mute},
-    {"GetMasterVolume",       Get_MasterVolume},
-    {"SetMasterVolume",       Set_MasterVolume},
-    {NULL, NULL}
+    {"RegisterVolumeHandler", (PyCFunction)Register_Volume_Handler, METH_VARARGS, NULL},
+    {"RegisterMuteHandler",   (PyCFunction)Register_Mute_Handler, METH_VARARGS, NULL},
+    {"GetMute",               (PyCFunction)Get_Mute, METH_VARARGS, NULL},
+    {"SetMute",               (PyCFunction)Set_Mute, METH_VARARGS, NULL},
+    {"GetMasterVolume",       (PyCFunction)Get_MasterVolume, METH_VARARGS, NULL},
+    {"SetMasterVolume",       (PyCFunction)Set_MasterVolume, METH_VARARGS, NULL},
+    {NULL, NULL, 0, NULL}
 };
 
 
@@ -401,7 +401,13 @@ PyObject* PyInit_VistaVolEvents(void) {
     int iMute;
     float fVolume;
     skipCOM = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
-    hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), NULL, CLSCTX_INPROC_SERVER, __uuidof(IMMDeviceEnumerator), (LPVOID *)&deviceEnumerator);
+    hr = CoCreateInstance(
+        __uuidof(MMDeviceEnumerator),
+        NULL,
+        CLSCTX_INPROC_SERVER,
+        __uuidof(IMMDeviceEnumerator),
+        (LPVOID *)&deviceEnumerator
+    );
     EXIT_ON_ERROR(hr);
     hr = deviceEnumerator->RegisterEndpointNotificationCallback((IMMNotificationClient*)&EPDevEvents);
     EXIT_ON_ERROR(hr);

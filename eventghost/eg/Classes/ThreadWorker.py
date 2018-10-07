@@ -18,7 +18,7 @@
 
 from collections import deque
 from functools import partial
-from sys import exc_info, _getframe
+from sys import _getframe
 from threading import currentThread, Event, Thread
 from time import clock
 from traceback import extract_stack, format_list
@@ -131,8 +131,8 @@ class ThreadWorker(object):
                 eg.PrintStack()
                 raise Exception("Timeout while calling %s" % func.__name__)
             if action.exceptionInfo is not None:
-                excType, excValue, excTraceback = action.exceptionInfo
-                raise excType(excValue, excTraceback)
+                raise action.exceptionInfo
+            
             return action.returnValue
         return Wrapper
 
@@ -322,11 +322,11 @@ class ThreadWorkerAction(object):
     def __call__(self):
         try:
             self.returnValue = self.func(*self.args, **self.kwargs)
-        except Exception:
+        except Exception as err:
             if self.raiseException:
                 raise
             else:
-                self.exceptionInfo = exc_info()
+                self.exceptionInfo = err
         finally:
             self.processed.set()
 

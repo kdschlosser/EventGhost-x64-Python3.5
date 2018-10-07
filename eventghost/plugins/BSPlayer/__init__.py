@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # plugins/BSlayer/__init__.py
 #
@@ -241,4 +242,5 @@ class ActionPrototype(eg.ActionClass):
 class BSPlayer(eg.PluginClass):
 
     def __init__(self):
+        super(BSPlayer, self).__init__()
         self.AddActionsFromList(ACTIONS, ActionPrototype)

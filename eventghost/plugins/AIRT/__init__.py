@@ -1,4 +1,5 @@
 
+# super_class_updated
 import eg
 
 eg.RegisterPlugin(
@@ -161,6 +162,7 @@ def hexstring2bin(str):
 class AIRT(eg.PluginClass):
 
     def __init__(self):
+        super(AIRT, self).__init__()
         self.devicename = 'AIRT'
         self.thread = None
         self.AddEvents()

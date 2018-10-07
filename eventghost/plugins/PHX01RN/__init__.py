@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # PHX01RN plugin v3.0
 #
@@ -115,6 +116,8 @@ BUTTON_RELEASE_2 = {
 }
 
 class PHX01RN(eg.PluginBase):
+    def __init__(self):
+        super(PHX01RN, self).__init__()
 
     def __start__(self):
         self.winUsb = eg.WinUsb(self)

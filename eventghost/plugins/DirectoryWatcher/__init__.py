@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -87,6 +88,8 @@ class Text:
 
 
 class DirectoryWatcher(eg.PluginClass):
+    def __init__(self):
+        super(DirectoryWatcher, self).__init__()
     text = Text
 
     def __start__(self, path, includeSubdirs):

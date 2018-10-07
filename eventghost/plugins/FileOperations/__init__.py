@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 
 version="0.1.7"
 
@@ -172,6 +173,7 @@ class ObservationThread(Thread):
 
 class FileOperations(eg.PluginClass):
     def __init__(self):
+        super(FileOperations, self).__init__()
         self.AddAction(Read)
         self.AddAction(ReadPeriodically)
         self.AddAction(AbortPeriodicalRead)

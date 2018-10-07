@@ -48,7 +48,7 @@ if __name__ == "__main__":
 #-----------------------------------------------------------------------------#
 # everything after the following line is automatically created
 #-----------------------------------------------------------------------------#
-MIXERCONTROL_CT_CLASS_MASK = 4026531840L  # Variable c_ulong '-268435456ul'
+MIXERCONTROL_CT_CLASS_MASK = 4026531840  # Variable c_ulong '-268435456ul'
 MIXERCONTROL_CT_CLASS_FADER = 1342177280  # Variable c_long '1342177280l'
 MIXERCONTROL_CONTROLTYPE_VOLUME = 1342373889  # Variable c_long '1342373889l'
 MIXERCONTROL_CONTROLTYPE_BASS = 1342373890  # Variable c_long '1342373890l'
@@ -118,7 +118,7 @@ tagMIXERCONTROLDETAILS_LISTTEXTW._fields_ = [
     ('dwParam2', DWORD),
     ('szName', WCHAR * 64),
 ]
-MIXERCONTROL_CONTROLF_DISABLED = 2147483648L  # Variable c_ulong '-2147483648ul'
+MIXERCONTROL_CONTROLF_DISABLED = 2147483648  # Variable c_ulong '-2147483648ul'
 MIXERCONTROL_CONTROLF_MULTIPLE = 2  # Variable c_long '2l'
 MIXERCONTROL_CONTROLF_UNIFORM = 1  # Variable c_long '1l'
 MMSYSERR_NOERROR = 0  # Variable c_int '0'

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # Copyright (C) 2007 Ralph Eisenbach
 #
@@ -634,6 +635,7 @@ class wmAction(eg.ActionClass):
 class TheaterTek(eg.PluginClass):
 
     def __init__(self):
+        super(TheaterTek, self).__init__()
         self.host = "localhost"
         self.port = 2663
         self.isSessionRunning = False

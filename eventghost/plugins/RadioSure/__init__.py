@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 
 version="0.2.22"
 
@@ -28,7 +30,7 @@ version="0.2.22"
 #     - bugfix - scheduler size, when system font > 100%
 # 0.2.21 by Pako 2012-12-02 13:06 UTC+1
 #     - added "Stop processing event" feature (Menu frame)
-# 0.2.20 by Pako 2011-08-24 09:12 UTC+1
+# 0.2.20 by Pako 2011-08-24 0o9:12 UTC+1
 #     - bugfix - wrong stored last position of manager and scheduler
 # 0.2.19 by Pako 2011-06-27 13:54 UTC+1
 #     - added action "Get last played favorite station" (retrieved from RS menu)
@@ -53,10 +55,10 @@ version="0.2.22"
 #     - Added first version of Favorites manager
 #     - Added "menu browser"
 #     - Added many new actions
-# 0.2.11 by Pako 2011-03-03 09:08 UTC+1
+# 0.2.11 by Pako 2011-03-03 0o9:08 UTC+1
 #     - The cursor is changed to indicate the existence of a context menu
-#     - If exists file "contextCursor.cur", used as the cursor where there is a contextual menu
-# 0.2.10 by Pako 2011-02-12 09:53 UTC+1
+#     - If exists file "contextCursor.cr", used as the cursor where there is a contextual menu
+# 0.2.10 by Pako 2011-02-12 0o9:53 UTC+1
 #     - FixedTimeCtrl replaced by eg.TimeCtrl
 # 0.2.9 by Pako 2011-01-15 11:50 UTC+1
 #     - different shape of the cursor on the table of schedules indicate that there is context menu available
@@ -71,11 +73,11 @@ version="0.2.22"
 #     - added popup menu and features "Move schedule up/down"
 # 0.2.4 by Pako 2010-12-24 12:08 UTC+1
 #     - there is no need to reinstall this plugin, when changing the way the installation (especially the paths) of Radio?Sure!
-# 0.2.3 by Pako 2010-12-24 08:30 UTC+1
+# 0.2.3 by Pako 2010-12-24 0o8:30 UTC+1
 #     - scheduler dialog opens, even though there is no node "Favorites" in RadioSure.xml
 # 0.2.2 by Pako 2010-12-19 15:54 UTC+1
 #     - changed the way of paths settings to the RadioSure.exe and RadioSure.xml
-# 0.2.1 by Pako 2010-12-19 08:19 UTC+1
+# 0.2.1 by Pako 2010-12-19 0o8:19 UTC+1
 #     - scheduler dialog remembers its position even after closing EventGhost
 #     - bugfix - "Add schedule" enable buttons, when schedule list is empty
 # 0.2.0 by Pako 2010-12-14 11:13 UTC+1
@@ -96,12 +98,12 @@ version="0.2.22"
 #     - bugfix
 # 0.1.6 by Pako 2010-07-22 10:30 GMT+1
 #     - added wx.ComboBox for Scheduler actions
-# 0.1.5 by Pako 2010-07-10 08:21 GMT+1
+# 0.1.5 by Pako 2010-07-10 0o8:21 GMT+1
 #     - added Scheduler
 #     - added guid attribute
 # 0.1.4 by Pako 2010-03-23 11:20 GMT+1
 #     - added action Random favorite
-# 0.1.3 by Pako 2010-03-22 09:09 GMT+1
+# 0.1.3 by Pako 2010-03-22 0o9:09 GMT+1
 #     - added actions Start and Stop observation of titlebar
 #===============================================================================
 
@@ -111,7 +113,7 @@ eg.RegisterPlugin(
     version = version,
     kind = "program",
     guid = "{84703620-87B4-4982-A9AB-DA1B3F8D22EA}",
-    description = ur'''<rst>
+    description = r'''<rst>
 Adds actions to control the `Radio?Sure!`_
 
 .. _Radio?Sure!: http://www.radiosure.com/ ''',
@@ -326,7 +328,7 @@ because the option "Allow only one instance" is chosen!'''
     clear  = "Clear all"
     opened = "Opened"
     closed = "Closed"
-    root = "Main (root) menu"
+    root = "Main (root) men"
 
     class OpenManager:
         dialogTitle = "Radio?Sure! Favorites manager %s  (plugin for EventGhost)"
@@ -432,7 +434,7 @@ File type (as .mp3) need not be completed. Will be added automatically."""
         chooseDay = "Choose day"
         theEvery = "The every"
         yearly = "Every year on the same day"
-        chooseTime = "Choose start time and duration (00:00 = constantly)"
+        chooseTime = "Choose start time and duration (0o0:00 = constantly)"
         choosePeriod = "Choose period"
         andThenEvery = "Repeat every"
         units = (
@@ -954,7 +956,7 @@ class CheckListCtrl(wx.ListCtrl, CheckListCtrlMixin):
             style = wx.LC_REPORT|wx.LC_HRULES|wx.LC_VRULES|wx.LC_SINGLE_SEL
         )
         CheckListCtrlMixin.__init__(self)
-        curFile = abspath(join(dirname(__file__), "contextCursor.cur"))
+        curFile = abspath(join(dirname(__file__), "contextCursor.cr"))
         img = None
         if exists(curFile):
             img = wx.EmptyImage(32, 32)
@@ -1073,7 +1075,7 @@ class ManagerDialog(wx.Dialog):
         titles = unique(titles)
         f.close()
 
-        curFile = abspath(join(dirname(__file__), "contextCursor.cur"))
+        curFile = abspath(join(dirname(__file__), "contextCursor.cr"))
         img = None
         if exists(curFile):
             img = wx.EmptyImage(32, 32)
@@ -1530,24 +1532,24 @@ class ManagerDialog(wx.Dialog):
             if flag and elm > max:
                 break
             item = tmp[i]
-            itemNode = dom.createElement(u'Item-%i' % elm)
-            sourceNode = dom.createElement(u'Source')
+            itemNode = dom.createElement('Item-%i' % elm)
+            sourceNode = dom.createElement('Source')
             sourceText = dom.createTextNode(unicode(item[0]))
             sourceNode.appendChild(sourceText)
             itemNode.appendChild(sourceNode)
-            titleNode = dom.createElement(u'Title')
+            titleNode = dom.createElement('Title')
             titleText = dom.createTextNode(unicode(item[1]))
             titleNode.appendChild(titleText)
             itemNode.appendChild(titleNode)
-            genreNode = dom.createElement(u'Genre')
+            genreNode = dom.createElement('Genre')
             genreText = dom.createTextNode(unicode(item[2]))
             genreNode.appendChild(genreText)
             itemNode.appendChild(genreNode)
-            languageNode = dom.createElement(u'Language')
+            languageNode = dom.createElement('Language')
             languageText = dom.createTextNode(unicode(item[3]))
             languageNode.appendChild(languageText)
             itemNode.appendChild(languageNode)
-            countryNode = dom.createElement(u'Country')
+            countryNode = dom.createElement('Country')
             countryText = dom.createTextNode(unicode(item[4]))
             countryNode.appendChild(countryText)
             itemNode.appendChild(countryNode)
@@ -1556,7 +1558,7 @@ class ManagerDialog(wx.Dialog):
 
     def UpdateRadioSureXml(self):
         # create a backup of original file
-        new_file_name = u'%s\\RadioSure.xml' % self.plugin.xmlpath
+        new_file_name = '%s\\RadioSure.xml' % self.plugin.xmlpath
         old_file_name = new_file_name + "~"
         if exists(old_file_name):
             remove(old_file_name)
@@ -1566,7 +1568,7 @@ class ManagerDialog(wx.Dialog):
             doc = miniDom.parse(old_file_name)
             node = doc.getElementsByTagName('XMLConfigSettings')[0]
             oldFavorites = node.getElementsByTagName('Favorites')[0]
-            newFavorites = doc.createElement(u'Favorites')
+            newFavorites = doc.createElement('Favorites')
             self.CreateFavorites(doc, newFavorites, save = True)
             node.replaceChild(newFavorites, oldFavorites)
             # persist changes to new file
@@ -1601,7 +1603,7 @@ class ManagerDialog(wx.Dialog):
 
         def UpdateXml():
             closeFlag = self.UpdateRadioSureXml()
-            rs = u'%s\\RadioSure.exe' % self.plugin.RadioSurePath
+            rs = '%s\\RadioSure.exe' % self.plugin.RadioSurePath
             rs = rs.encode(FSE) if isinstance(rs, unicode) else rs
             args = [rs]
             if isfile(rs):
@@ -1844,13 +1846,13 @@ class ManagerDialog(wx.Dialog):
 
     def Export(self, path, id):
         impl = miniDom.getDOMImplementation()
-        dom = impl.createDocument(None, u'XMLConfigSettings', None)
+        dom = impl.createDocument(None, 'XMLConfigSettings', None)
         root = dom.documentElement
         commentNode = dom.createComment(self.text.xmlComment1)
         dom.insertBefore(commentNode, root)
         commentNode = dom.createComment(self.text.xmlComment2 % str(dt.now())[:19])
         dom.insertBefore(commentNode, root)
-        favNode = dom.createElement(u'Favorites')
+        favNode = dom.createElement('Favorites')
         root.appendChild(favNode)
         if id == wx.ID_SAVEAS and self.grid.GetSelectedItemCount():
             itmList = [itm for itm in range(len(self.tmpFavs)) if self.grid.IsSelected(itm)]
@@ -2754,12 +2756,12 @@ class SchedulerDialog(wx.Dialog):
         filename_label = wx.StaticText(self, -1, self.text.filename)
         schedulerName = wx.TextCtrl(self, -1, "")
         typeChoice = wx.Choice(self, -1, choices = self.text.sched_type)
-        xmltoparse = u'%s\\RadioSure.xml' % self.plugin.xmlpath
+        xmltoparse = '%s\\RadioSure.xml' % self.plugin.xmlpath
         xmltoparse = xmltoparse.encode(FSE) if isinstance(xmltoparse, unicode) else xmltoparse
         xmldoc = miniDom.parse(xmltoparse)
         recordings = xmldoc.getElementsByTagName('Recordings')
         if not recordings:
-            folder = u'%s\\RadioSure Recordings' % self.plugin.xmlpath
+            folder = '%s\\RadioSure Recordings' % self.plugin.xmlpath
         else:
             folder = recordings[0].getElementsByTagName('Folder')[0].firstChild.data
         recordCtrl = MyFileBrowseButton(
@@ -3038,9 +3040,9 @@ class SchedulerDialog(wx.Dialog):
 def HandleRS():
 
     FindRS = eg.WindowMatcher(
-                u'RadioSure.exe',
+                'RadioSure.exe',
                 None,
-                u'#32770',
+                '#32770',
                 None,
                 None,
                 None,
@@ -3222,10 +3224,10 @@ class MenuGrid(gridlib.Grid):
         elif oldLen < newLen:
             self.AppendRows(newLen-oldLen, False)
         for i in range(len(choices)):
-            chr = u"\u25a0" if choices[i][2] else ""
+            chr = "\u25a0" if choices[i][2] else ""
             self.SetCellValue(i,0,chr)
             self.SetCellValue(i,1," "+choices[i][0])
-            chr = u"\u25ba" if choices[i][3] == -1 else ""
+            chr = "\u25ba" if choices[i][3] == -1 else ""
             self.SetCellValue(i,2, chr)
             self.SetRowSize(i,h)
 
@@ -3559,7 +3561,7 @@ class Menu(wx.Frame):
             self,
             None,
             -1,
-            'MPC_menu',
+            'MPC_men',
             style = wx.STAY_ON_TOP|wx.SIMPLE_BORDER
         )
         self.flag = False
@@ -3605,12 +3607,12 @@ class Menu(wx.Frame):
         for n in range(1,1000):
             arial.SetPointSize(n)
             self.SetFont(arial)
-            h = self.GetTextExtent(u"\u25a0")[1]
+            h = self.GetTextExtent("\u25a0")[1]
             if h > hght:
                 break
         arial.SetPointSize(2*n/3)
         self.SetFont(arial)
-        self.w0 = 2 * self.GetTextExtent(u"\u25a0")[0]
+        self.w0 = 2 * self.GetTextExtent("\u25a0")[0]
         attr = gridlib.GridCellAttr()
         attr.SetFont(arial)
         attr.SetAlignment(wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
@@ -3618,12 +3620,12 @@ class Menu(wx.Frame):
         for n in range(1,1000):
             arial.SetPointSize(n)
             self.SetFont(arial)
-            h = self.GetTextExtent(u"\u25ba")[1]
+            h = self.GetTextExtent("\u25ba")[1]
             if h > hght:
                 break
         arial.SetPointSize(n/2)
         self.SetFont(arial)
-        self.w2 = 2 * self.GetTextExtent(u"\u25ba")[0]
+        self.w2 = 2 * self.GetTextExtent("\u25ba")[0]
         attr = gridlib.GridCellAttr()
         attr.SetFont(arial)
         attr.SetAlignment(wx.ALIGN_RIGHT, wx.ALIGN_CENTRE)
@@ -3658,7 +3660,7 @@ class Menu(wx.Frame):
             self.menuGridCtrl.SetRowSize(i,h)
             self.menuGridCtrl.SetCellValue(i,1," "+self.choices[i])
             if self.items[i][3] == -1:
-                self.menuGridCtrl.SetCellValue(i,2, u"\u25ba")
+                self.menuGridCtrl.SetCellValue(i,2, "\u25ba")
         height0 = len(self.choices)*h
         height1 = h*((hs-20)/h)
         height = min(height0, height1)+6
@@ -3813,11 +3815,13 @@ class Menu(wx.Frame):
 
 
 class RadioSure(eg.PluginBase):
+    def __init__(self):
+        super(RadioSure, self).__init__()
 
     text=Text
     menuDlg = None
-    RadioSurePath = u''
-    xmlPath = u''
+    RadioSurePath = ''
+    xmlPath = ''
     data = []
     tmpData = []
     dialog = None
@@ -3849,16 +3853,16 @@ class RadioSure(eg.PluginBase):
             _fields_ = [
                 ('cbSize',  c_ulong),
                 ('rcBar',  RECT),            # rect of bar, popup, item
-                ('hMenu',  c_long),          # real menu handle of bar, popup
-                ('hwndMenu',  c_long),       # hwnd of item submenu if one
+                ('hMen',  c_long),          # real menu handle of bar, popup
+                ('hwndMen',  c_long),       # hwnd of item submenu if one
                 ('fBarFocused',  c_int, 1),  # bar, popup has the focus
                 ('fFocused',  c_int, 1),     # item has the focus
             ]
 
         findMenu = eg.WindowMatcher(
-                    u'RadioSure.exe',
+                    'RadioSure.exe',
                     None,
-                    u'#32768',
+                    '#32768',
                     None,
                     None,
                     None,
@@ -3922,7 +3926,7 @@ class RadioSure(eg.PluginBase):
 
 
     def GetLanguageXml(self):
-        xmltoparse = u'%s\\RadioSure.xml' % self.xmlpath
+        xmltoparse = '%s\\RadioSure.xml' % self.xmlpath
         xmltoparse = xmltoparse.encode(FSE) if isinstance(xmltoparse, unicode) else xmltoparse
         xmldoc = miniDom.parse(xmltoparse)
         general = xmldoc.getElementsByTagName('General')
@@ -3936,7 +3940,7 @@ class RadioSure(eg.PluginBase):
 
 
     def GetLastPlayed(self):
-        xmltoparse = u'%s\\RadioSure.xml' % self.xmlpath
+        xmltoparse = '%s\\RadioSure.xml' % self.xmlpath
         xmltoparse = xmltoparse.encode(FSE) if isinstance(xmltoparse, unicode) else xmltoparse
         xmldoc = miniDom.parse(xmltoparse)
         lastPlayed = xmldoc.getElementsByTagName('LastPlayed')
@@ -3959,7 +3963,7 @@ class RadioSure(eg.PluginBase):
 
 
     def GetOneInstance(self):
-        xmltoparse = u'%s\\RadioSure.xml' % self.xmlpath
+        xmltoparse = '%s\\RadioSure.xml' % self.xmlpath
         xmltoparse = xmltoparse.encode(FSE) if isinstance(xmltoparse, unicode) else xmltoparse
         xmldoc = miniDom.parse(xmltoparse)
         advanced = xmldoc.getElementsByTagName('Advanced')
@@ -3995,8 +3999,8 @@ class RadioSure(eg.PluginBase):
             choices.append(title[0].firstChild.data)
             choices.append(mainWindow[0].getElementsByTagName('Back')[0].firstChild.data)
             choices.append(equaliser[0].getElementsByTagName('Title')[0].firstChild.data)
-            choices.append(mainWindow[0].getElementsByTagName('WindowMenu')[0].firstChild.data)
-            choices.append(mainWindow[0].getElementsByTagName('ClipboardMenu')[0].firstChild.data)
+            choices.append(mainWindow[0].getElementsByTagName('WindowMen')[0].firstChild.data)
+            choices.append(mainWindow[0].getElementsByTagName('ClipboardMen')[0].firstChild.data)
             choices.append(sleeptimer[0].getElementsByTagName('Title')[0].firstChild.data)
             choices.append(mainWindow[0].getElementsByTagName('Language')[0].firstChild.data)
         return choices
@@ -4030,7 +4034,7 @@ class RadioSure(eg.PluginBase):
 
 
     def RefreshVariables(self):
-        xmltoparse = u'%s\\RadioSure.xml' % self.xmlpath
+        xmltoparse = '%s\\RadioSure.xml' % self.xmlpath
         xmltoparse = xmltoparse.encode(FSE) if isinstance(xmltoparse, unicode) else xmltoparse
         if not exists(xmltoparse):
             return
@@ -4380,7 +4384,7 @@ class RadioSure(eg.PluginBase):
         playRec = modes & 6
         args = []
         if playRec != 6:
-            args.append(u'%s\\RadioSure.exe' % self.RadioSurePath)
+            args.append('%s\\RadioSure.exe' % self.RadioSurePath)
             if playRec:
                 args.append("/record")
             else:
@@ -4389,7 +4393,7 @@ class RadioSure(eg.PluginBase):
                 args.append("/mute")
             if modes & 1:
                 args.append("/hidden")
-            args.append(u'/source="%s"' % params[5])
+            args.append('/source="%s"' % params[5])
             duration = 60*int(params[3][1][:2])+int(params[3][1][-2:])
             if duration:
                 args.append('/duration=%i' % duration)
@@ -4399,9 +4403,9 @@ class RadioSure(eg.PluginBase):
                     recfile = eval(recfile)
                 except:
                     pass
-                args.append(u'/filename="%s"' % recfile)
+                args.append('/filename="%s"' % recfile)
             elif playRec:
-                args.append(u'/filename="%s"' % params[1])
+                args.append('/filename="%s"' % params[1])
             Popen(args)
         if not immed and next: # new schedule, if valid next run time and not TEST/IMMEDIATELY run
             startTicks = mktime(strptime(next, "%Y-%m-%d %H:%M:%S"))
@@ -4466,127 +4470,127 @@ class RadioSure(eg.PluginBase):
 
     def dataToXml(self):
         impl = miniDom.getDOMImplementation()
-        dom = impl.createDocument(None, u'Document', None)
+        dom = impl.createDocument(None, 'Document', None)
         root = dom.documentElement
         commentNode = dom.createComment(self.text.xmlComment % str(dt.now())[:19])
         dom.insertBefore(commentNode, root)
         for item in self.data:
-            schedNode = dom.createElement(u'Schedule')
-            schedNode.setAttribute(u'Name', unicode(item[1]))
-            schedNode.setAttribute(u'Type', unicode(item[2]))
-            enableNode = dom.createElement(u'Enable')
+            schedNode = dom.createElement('Schedule')
+            schedNode.setAttribute('Name', unicode(item[1]))
+            schedNode.setAttribute('Type', unicode(item[2]))
+            enableNode = dom.createElement('Enable')
             enableText = dom.createTextNode(unicode(item[0]))
             enableNode.appendChild(enableText)
             schedNode.appendChild(enableNode)
-            last_runNode = dom.createElement(u'Last_run')
+            last_runNode = dom.createElement('Last_run')
             last_runText = dom.createTextNode(unicode(item[4]))
             last_runNode.appendChild(last_runText)
             schedNode.appendChild(last_runNode)
-            sourceNode = dom.createElement(u'Source')
+            sourceNode = dom.createElement('Source')
             sourceText = dom.createTextNode(unicode(item[5]))
             sourceNode.appendChild(sourceText)
             schedNode.appendChild(sourceNode)
-            filenameNode = dom.createElement(u'Filename')
+            filenameNode = dom.createElement('Filename')
             filenameText = dom.createTextNode(unicode(item[6]))
             filenameNode.appendChild(filenameText)
             schedNode.appendChild(filenameNode)
-            modesNode = dom.createElement(u'Modes')
+            modesNode = dom.createElement('Modes')
             modesText = dom.createTextNode(unicode(item[7]))
             modesNode.appendChild(modesText)
             schedNode.appendChild(modesNode)
-            dateTimeNode = dom.createElement(u'Datetime')
-            start_timeNode = dom.createElement(u'Start_time')
+            dateTimeNode = dom.createElement('Datetime')
+            start_timeNode = dom.createElement('Start_time')
             start_timeText = dom.createTextNode(unicode(item[3][0]))
             start_timeNode.appendChild(start_timeText)
             dateTimeNode.appendChild(start_timeNode)
-            durationNode = dom.createElement(u'Duration')
+            durationNode = dom.createElement('Duration')
             durationText = dom.createTextNode(unicode(item[3][1]))
             durationNode.appendChild(durationText)
             dateTimeNode.appendChild(durationNode)
             if item[2] == 0:
-                dateNode = dom.createElement(u'Date')
+                dateNode = dom.createElement('Date')
                 dateText = dom.createTextNode(unicode(item[3][2]))
                 dateNode.appendChild(dateText)
                 dateTimeNode.appendChild(dateNode)
-                yearlyNode = dom.createElement(u'Yearly')
+                yearlyNode = dom.createElement('Yearly')
                 yearlyText = dom.createTextNode(unicode(item[3][3]))
                 yearlyNode.appendChild(yearlyText)
                 dateTimeNode.appendChild(yearlyNode)
             if item[2] == 2:
-                weekdayNode = dom.createElement(u'Weekday')
+                weekdayNode = dom.createElement('Weekday')
                 weekdayText = dom.createTextNode(unicode(item[3][2]))
                 weekdayNode.appendChild(weekdayText)
                 dateTimeNode.appendChild(weekdayNode)
-                holidayNode = dom.createElement(u'HolidayCheck')
+                holidayNode = dom.createElement('HolidayCheck')
                 holidayText = dom.createTextNode(unicode(item[3][4]))
                 holidayNode.appendChild(holidayText)
                 dateTimeNode.appendChild(holidayNode)
-                holiday2Node = dom.createElement(u'HolidayCheck_2')
+                holiday2Node = dom.createElement('HolidayCheck_2')
                 holiday2Text = dom.createTextNode(unicode(item[3][3]))
                 holiday2Node.appendChild(holiday2Text)
                 dateTimeNode.appendChild(holiday2Node)
             if item[2] == 3:
-                orderNode = dom.createElement(u'Order')
+                orderNode = dom.createElement('Order')
                 orderText = dom.createTextNode(unicode(item[3][2]))
                 orderNode.appendChild(orderText)
                 dateTimeNode.appendChild(orderNode)
-                weekdayNode = dom.createElement(u'Weekday')
+                weekdayNode = dom.createElement('Weekday')
                 weekdayText = dom.createTextNode(unicode(item[3][3]))
                 weekdayNode.appendChild(weekdayText)
                 dateTimeNode.appendChild(weekdayNode)
-                first_halfNode = dom.createElement(u'First_half')
+                first_halfNode = dom.createElement('First_half')
                 first_halfText = dom.createTextNode(unicode(item[3][4]))
                 first_halfNode.appendChild(first_halfText)
                 dateTimeNode.appendChild(first_halfNode)
-                second_halfNode = dom.createElement(u'Second_half')
+                second_halfNode = dom.createElement('Second_half')
                 second_halfText = dom.createTextNode(unicode(item[3][5]))
                 second_halfNode.appendChild(second_halfText)
                 dateTimeNode.appendChild(second_halfNode)
-                holidayNode = dom.createElement(u'HolidayCheck')
+                holidayNode = dom.createElement('HolidayCheck')
                 holidayText = dom.createTextNode(unicode(item[3][6]))
                 holidayNode.appendChild(holidayText)
                 dateTimeNode.appendChild(holidayNode)
             if item[2] == 4:
-                q_1_Node = dom.createElement(u'Q_1')
+                q_1_Node = dom.createElement('Q_1')
                 q_1_Text = dom.createTextNode(unicode(item[3][2]))
                 q_1_Node.appendChild(q_1_Text)
                 dateTimeNode.appendChild(q_1_Node)
-                q_2_Node = dom.createElement(u'Q_2')
+                q_2_Node = dom.createElement('Q_2')
                 q_2_Text = dom.createTextNode(unicode(item[3][3]))
                 q_2_Node.appendChild(q_2_Text)
                 dateTimeNode.appendChild(q_2_Node)
-                q_3_Node = dom.createElement(u'Q_3')
+                q_3_Node = dom.createElement('Q_3')
                 q_3_Text = dom.createTextNode(unicode(item[3][4]))
                 q_3_Node.appendChild(q_3_Text)
                 dateTimeNode.appendChild(q_3_Node)
-                q_4_Node = dom.createElement(u'Q_4')
+                q_4_Node = dom.createElement('Q_4')
                 q_4_Text = dom.createTextNode(unicode(item[3][5]))
                 q_4_Node.appendChild(q_4_Text)
                 dateTimeNode.appendChild(q_4_Node)
-                first_halfNode = dom.createElement(u'First_half')
+                first_halfNode = dom.createElement('First_half')
                 first_halfText = dom.createTextNode(unicode(item[3][6]))
                 first_halfNode.appendChild(first_halfText)
                 dateTimeNode.appendChild(first_halfNode)
-                second_halfNode = dom.createElement(u'Second_half')
+                second_halfNode = dom.createElement('Second_half')
                 second_halfText = dom.createTextNode(unicode(item[3][7]))
                 second_halfNode.appendChild(second_halfText)
                 dateTimeNode.appendChild(second_halfNode)
             if item[2] == 5:
-                dateNode = dom.createElement(u'Date')
+                dateNode = dom.createElement('Date')
                 dateText = dom.createTextNode(unicode(item[3][2]))
                 dateNode.appendChild(dateText)
                 dateTimeNode.appendChild(dateNode)
-                numberNode = dom.createElement(u'Number')
+                numberNode = dom.createElement('Number')
                 numberText = dom.createTextNode(unicode(item[3][3]))
                 numberNode.appendChild(numberText)
                 dateTimeNode.appendChild(numberNode)
-                unitNode = dom.createElement(u'Unit')
+                unitNode = dom.createElement('Unit')
                 unitText = dom.createTextNode(unicode(item[3][4]))
                 unitNode.appendChild(unitText)
                 dateTimeNode.appendChild(unitNode)
             schedNode.appendChild(dateTimeNode)
             root.appendChild(schedNode)
-        f = file(u'%s\\Scheduler.xml' % self.xmlpath, 'wb')
+        f = file('%s\\Scheduler.xml' % self.xmlpath, 'wb')
         writer = lookup('utf-8')[3](f)
         dom.writexml(writer, encoding = 'utf-8')
         f.close()
@@ -4595,7 +4599,7 @@ class RadioSure(eg.PluginBase):
 
     def xmlToData(self):
         data = []
-        xmlfile = u'%s\\Scheduler.xml' % self.xmlpath
+        xmlfile = '%s\\Scheduler.xml' % self.xmlpath
         if not exists(xmlfile):
             return data
         xmldoc = miniDom.parse(xmlfile)
@@ -4722,7 +4726,7 @@ class RadioSure(eg.PluginBase):
             return []
         i = 0
         hwnds = oldHwnds if oldHwnds else []
-        rs = u'%s\\RadioSure.exe' % self.RadioSurePath
+        rs = '%s\\RadioSure.exe' % self.RadioSurePath
         rs = rs.encode(FSE) if isinstance(rs, unicode) else rs
         args = [rs, "/play"]
         if mut:
@@ -4730,7 +4734,7 @@ class RadioSure(eg.PluginBase):
         if hid:
             args.append("/hidden")
         if src:
-            args.append(u'/source="%s"' % src)
+            args.append('/source="%s"' % src)
         if isfile(rs):
             Popen(args)
             while i < 100 and hwnds == oldHwnds:
@@ -4888,8 +4892,8 @@ class RadioSure(eg.PluginBase):
                 if exists(RSpath):
                     self.RadioSurePath = RSpath
             else: #Portable installation
-                self.RadioSurePath = u"%s\\RadioSure" % unicode(eg.folderPath.LocalAppData)
-            xmlPath = u"%s\\RadioSure" % unicode(eg.folderPath.LocalAppData)
+                self.RadioSurePath = "%s\\RadioSure" % unicode(eg.folderPath.LocalAppData)
+            xmlPath = "%s\\RadioSure" % unicode(eg.folderPath.LocalAppData)
             if exists(xmlPath):
                 self.xmlpath = xmlPath
         if exists(join(self.RadioSurePath, "RadioSure.exe")):
@@ -4928,9 +4932,9 @@ class RadioSure(eg.PluginBase):
         if self.logfile is None:
             logCheckBox.SetValue(True)
             if NotHiddenAttr(self.xmlpath) or NotHidden():
-                self.logfile = u'%s\\RadioSureSchedulerLog.txt' % self.xmlpath
+                self.logfile = '%s\\RadioSureSchedulerLog.txt' % self.xmlpath
             else:
-                self.logfile = u'%s\\RadioSureSchedulerLog.txt' % unicode(eg.folderPath.Documents)
+                self.logfile = '%s\\RadioSureSchedulerLog.txt' % unicode(eg.folderPath.Documents)
         else:
             val = self.logfile != ""
             logCheckBox.SetValue(val)
@@ -4938,7 +4942,7 @@ class RadioSure(eg.PluginBase):
         logFileCtrl.GetTextCtrl().ChangeValue(self.logfile)
         rsPathCtrl.startDirectory = self.RadioSurePath
         xmlPathCtrl.startDirectory = self.xmlpath
-        logFileCtrl.startDirectory = self.logfile or u"%s\\RadioSure" % unicode(eg.folderPath.LocalAppData)
+        logFileCtrl.startDirectory = self.logfile or "%s\\RadioSure" % unicode(eg.folderPath.LocalAppData)
         sizerAdd = panel.sizer.Add
         sizerAdd(label1Text, 0)
         sizerAdd(rsPathCtrl,0,wx.TOP|wx.EXPAND,2)
@@ -5048,7 +5052,7 @@ class RadioSure(eg.PluginBase):
             self.logfile = logFileCtrl.GetValue()
             tmpVal = self.logfile
             if not tmpVal:
-                tmpPath = u"%s\\RadioSure" % unicode(eg.folderPath.LocalAppData)
+                tmpPath = "%s\\RadioSure" % unicode(eg.folderPath.LocalAppData)
                 tmpVal = tmpPath if exists(tmpPath) else self.RadioSurePath
             logFileCtrl.startDirectory = tmpVal
             Validation()
@@ -5599,7 +5603,7 @@ class EnableSchedule(eg.ActionBase):
 
     def __call__(self, schedule=""):
         schedule = eg.ParseString(schedule)
-        xmlfile = u'%s\\Scheduler.xml' % self.plugin.xmlpath
+        xmlfile = '%s\\Scheduler.xml' % self.plugin.xmlpath
         if not exists(xmlfile):
             return
         data = self.plugin.data
@@ -5619,7 +5623,7 @@ class EnableSchedule(eg.ActionBase):
 
     def Configure(self, schedule=""):
         panel = eg.ConfigPanel()
-        xmlfile = u'%s\\Scheduler.xml' % self.plugin.xmlpath
+        xmlfile = '%s\\Scheduler.xml' % self.plugin.xmlpath
         if not exists(xmlfile):
             return
         data = self.plugin.xmlToData()
@@ -5635,7 +5639,7 @@ class EnableSchedule(eg.ActionBase):
 class EnableAll(eg.ActionBase):
 
     def __call__(self):
-        xmlfile = u'%s\\Scheduler.xml' % self.plugin.xmlpath
+        xmlfile = '%s\\Scheduler.xml' % self.plugin.xmlpath
         if not exists(xmlfile):
             return
         data = self.plugin.data
@@ -5655,7 +5659,7 @@ class DeleteSchedule(eg.ActionBase):
 
     def __call__(self, schedule=""):
         schedule = eg.ParseString(schedule)
-        xmlfile = u'%s\\Scheduler.xml' % self.plugin.xmlpath
+        xmlfile = '%s\\Scheduler.xml' % self.plugin.xmlpath
         if not exists(xmlfile):
             return
         data = self.plugin.data
@@ -5671,7 +5675,7 @@ class DeleteSchedule(eg.ActionBase):
 
     def Configure(self, schedule=""):
         panel = eg.ConfigPanel()
-        xmlfile = u'%s\\Scheduler.xml' % self.plugin.xmlpath
+        xmlfile = '%s\\Scheduler.xml' % self.plugin.xmlpath
         if not exists(xmlfile):
             return
         data = self.plugin.xmlToData()
@@ -5731,7 +5735,7 @@ class AddSchedule(eg.ActionBase):
 
     class text:
         python_expr = "Python expression:"
-        descr = u'''<rst>**Add schedule**.
+        descr = '''<rst>**Add schedule**.
 
 In the edit box, enter a python expression with the parameters of the plan.
 This may be for example *eg.result*, *eg.event.payload* or the entire list
@@ -5768,7 +5772,7 @@ This action works in two ways (depending on the title of the schedule):
 
 class ShowMenu(eg.ActionClass):
 
-    name = "Show Radio Sure menu"
+    name = "Show Radio Sure men"
     description = "Show Radio Sure menu."
     panel = None
 
@@ -5776,10 +5780,10 @@ class ShowMenu(eg.ActionClass):
         OSELabel = 'Menu show on:'
         menuPreview = 'RS On Screen Menu preview:'
         menuFont = 'Font:'
-        txtColour = 'Text colour'
-        background = 'Background colour'
-        txtColourSel = 'Selected text colour'
-        backgroundSel = 'Selected background colour'
+        txtColour = 'Text color'
+        background = 'Background color'
+        txtColourSel = 'Selected text color'
+        backgroundSel = 'Selected background color'
         dialog = "Events ..."
         btnToolTip = """Press this button to assign events to control the menu !!!"""
         evtAssignTitle = "Menu control - events assignement"
@@ -5891,12 +5895,12 @@ class ShowMenu(eg.ActionClass):
         for n in range(1,1000):
             arial.SetPointSize(n)
             fontButton.SetFont(arial)
-            h = fontButton.GetTextExtent(u"\u25a0")[1]
+            h = fontButton.GetTextExtent("\u25a0")[1]
             if h > hght:
                 break
         arial.SetPointSize(2*n/3)
         fontButton.SetFont(arial)
-        w0 = 2 * fontButton.GetTextExtent(u"\u25a0")[0]
+        w0 = 2 * fontButton.GetTextExtent("\u25a0")[0]
         attr = gridlib.GridCellAttr()
         attr.SetFont(arial)
         attr.SetAlignment(wx.ALIGN_CENTRE, wx.ALIGN_CENTRE)
@@ -5904,12 +5908,12 @@ class ShowMenu(eg.ActionClass):
         for n in range(1,1000):
             arial.SetPointSize(n)
             fontButton.SetFont(arial)
-            h = fontButton.GetTextExtent(u"\u25ba")[1]
+            h = fontButton.GetTextExtent("\u25ba")[1]
             if h > hght:
                 break
         arial.SetPointSize(n/2)
         fontButton.SetFont(arial)
-        w2 = 2 * fontButton.GetTextExtent(u"\u25ba")[0]
+        w2 = 2 * fontButton.GetTextExtent("\u25ba")[0]
         attr = gridlib.GridCellAttr()
         attr.SetFont(arial)
         attr.SetAlignment(wx.ALIGN_RIGHT, wx.ALIGN_CENTRE)
@@ -6114,7 +6118,7 @@ ACTIONS = (
     (GetPlayingTitle,"GetPlayingTitle","Get currently playing station/title","Gets the name of currently playing station/title.", None),
     (StartTitlebarObservation,"StartTitlebarObservation","Start periodical observation","Starts periodical observation.", None),
     (StopTitlebarObservation,"StopTitlebarObservation","Stop periodical observation","Stops periodical observation.", None),
-    (ShowMenu,"ShowMenu","ShowMenu","ShowMenu.",None),
+    (ShowMenu,"ShowMen","ShowMen","ShowMenu.",None),
     (eg.ActionGroup, 'Window', 'Window', 'Window',(
         (SendMessageActions,"Minimize","Minimize window","Minimize window.",2),
         (WindowControl,"Restore","Restore window","Restore window.",SC_RESTORE),

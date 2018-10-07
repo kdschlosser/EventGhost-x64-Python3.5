@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -85,6 +86,8 @@ REMOTE_BUTTONS = {
 
 
 class TerratecUsb(eg.PluginBase):
+    def __init__(self):
+        super(TerratecUsb, self).__init__()
 
     def __start__(self):
         self.winUsb = eg.WinUsb(self)

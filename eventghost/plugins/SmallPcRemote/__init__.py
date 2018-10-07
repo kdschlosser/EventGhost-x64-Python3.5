@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -16,7 +18,7 @@
 # You should have received a copy of the GNU General Public License along
 # with EventGhost. If not, see <http://www.gnu.org/licenses/>.
 
-ur"""<rst>
+r"""<rst>
 Plugin for some small no-name USB-PC-Remote from China.
 """
 
@@ -169,6 +171,8 @@ CODES = {
 
 
 class SmallPcRemote(eg.PluginBase):
+    def __init__(self):
+        super(SmallPcRemote, self).__init__()
 
     def __start__(self):
         self.buf = []

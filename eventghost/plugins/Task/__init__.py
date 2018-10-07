@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -64,6 +65,7 @@ WM_SHELLHOOKMESSAGE = RegisterWindowMessage("SHELLHOOK")
 
 class Task(eg.PluginBase):
     def __init__(self):
+        super(Task, self).__init__()
         self.AddEvents()
 
     def __start__(self, *dummyArgs):

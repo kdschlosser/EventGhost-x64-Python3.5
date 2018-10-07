@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -232,9 +234,9 @@ class ReadStatus(ActionBase):
                 print("Orbiting installed:", bool(dat4 & (1 << 0)))
                 print("Soft edge installed:", bool(dat4 & (1 << 1)))
                 print("Contrast modulation installed:", bool(dat4 & (1 << 2)))
-                print("NS is mounted on the convergence:", bool()
+                print("NS is mounted on the convergence:", bool(
                     dat4 & (1 << 3)
-                )
+                ))
                 print("Controller with ASIC:", bool(dat4 & (1 << 4)))
                 print("IRIS is installed:", bool(dat4 & (1 << 5)))
                 print("Dynamic stigmators:", bool(dat4 & (1 << 6)))
@@ -249,9 +251,9 @@ class ReadVersion(ActionBase):
             self.SendCommand(serial, 0x4c)
             dat1, dat2, dat3, dat4 = self.GetResponse(serial, 0x4c)
             print("Identifier:", chr(dat1))
-            print("Version: %d%d.%d%d" % ()
+            print("Version: %d%d.%d%d" % (
                 dat2 / 16, dat2 & 0x0f, dat3 / 16, dat3 & 0x0f
-            )
+            ))
             print("Model:", dat4)
 
 
@@ -298,9 +300,9 @@ class GetInfo(ActionBase):
                 print("Orbiting installed:", bool(dat4 & (1 << 0)))
                 print("Soft edge installed:", bool(dat4 & (1 << 1)))
                 print("Contrast modulation installed:", bool(dat4 & (1 << 2)))
-                print("NS is mounted on the convergence:", bool()
+                print("NS is mounted on the convergence:", bool(
                     dat4 & (1 << 3)
-                )
+                ))
                 print("Controller with ASIC:", bool(dat4 & (1 << 4)))
                 print("IRIS is installed:", bool(dat4 & (1 << 5)))
                 print("Dynamic stigmators:", bool(dat4 & (1 << 6)))
@@ -324,9 +326,9 @@ class GetInfo(ActionBase):
             self.SendCommand(serial, 0x4c)
             dat1, dat2, dat3, dat4 = self.GetResponse(serial, 0x4c)
             print("Identifier:", chr(dat1))
-            print("Version: %d%d.%d%d" % ()
+            print("Version: %d%d.%d%d" % (
                 dat2 / 16, dat2 & 0x0f, dat3 / 16, dat3 & 0x0f
-            )
+            ))
             print("Model:", dat4)
             self.SendCommand(serial, 0x4a)
             dat1, dat2, dat3, dat4 = self.GetResponse(serial, 0x4a)
@@ -375,9 +377,9 @@ class RequestShape(ActionBase):
             ("Vertical line in center of zones", 0x02),
             ("Crosshatch in zone XY", 0x05),
             ("Convergence contour around zone XY", 0x06),
-            ("Erase shape, switch colour", 0x07),
-            ("Vertical bars, switch colour", 0x08),
-            ("Horizontal bars, switch colour", 0x09),
+            ("Erase shape, switch color", 0x07),
+            ("Vertical bars, switch color", 0x08),
+            ("Horizontal bars, switch color", 0x09),
         ]
         panel = eg.ConfigPanel()
         shapeCtrl = panel.SpinIntCtrl(shape, max=255)
@@ -504,6 +506,7 @@ class WritePotentiometer(ActionBase):
 class Barco(eg.PluginBase):
 
     def __init__(self):
+        super(Barco, self).__init__()
         self.AddActionsFromList(ACTIONS, ActionBase)
         group = self.AddGroup("Unfinished")
         group.AddAction(SetText)

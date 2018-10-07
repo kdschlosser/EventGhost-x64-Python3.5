@@ -1,4 +1,5 @@
 """EventGhost Plugin for BT8x8 GPIO-based remotes.
+# super_class_updated
 
 Requires DScaler to be installed.
 
@@ -57,6 +58,8 @@ def _GetModulePath():
 
 
 class BtRemote(eg.PluginClass):
+    def __init__(self):
+        super(BtRemote, self).__init__()
     """Plugin for generating events from a bt8x8 card"""
     # There are many different vendor/device combinations.
     # See DScaler's Regspy.exe tool for more detail if you want to generalize this

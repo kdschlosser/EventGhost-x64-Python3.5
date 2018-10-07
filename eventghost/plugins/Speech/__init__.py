@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # Plugins/Speech/__init__.py
 #
@@ -210,6 +211,7 @@ class Speech(eg.PluginClass):
     text = Text
 
     def __init__(self):
+        super(Speech, self).__init__()
         self.threads = []
         self.AddAction(TextToSpeech)
 

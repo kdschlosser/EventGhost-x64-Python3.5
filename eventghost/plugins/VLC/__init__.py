@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # Copyright (C) 2006 MonsterMagnet
 #
@@ -580,6 +581,7 @@ class VLC(eg.PluginBase):
 
 
     def __init__(self):
+        super(VLC, self).__init__()
         self.AddEvents()
         self.AddActionsFromList(ACTIONS)
         self.waitFlag = Event()

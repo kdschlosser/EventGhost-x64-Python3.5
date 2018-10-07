@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # plugins/SamsungTV/__init__.py
 #
@@ -211,6 +212,7 @@ class Raw(eg.ActionWithStringParameter):
 
 class SamsungSerial(eg.PluginClass):
     def __init__(self):
+        super(SamsungSerial, self).__init__()
         self.serial = None
         group = self
 

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 #
 # plugins/Ping/__init__.py
 #
@@ -39,6 +41,7 @@ prefix="Ping"
 
 class PingPlugin(eg.PluginBase):
     def __init__(self):
+        super(PingPlugin, self).__init__()
         self.hosts = {}
         self.AddAction(OnePing)
         self.AddAction(AddHost)
@@ -177,7 +180,7 @@ class OnePing(eg.ActionBase):
 
 class AddHost(eg.ActionBase):
     name = "Add Host"
-    description = "Adds a host to the list of watched host. Once done, you'll get an event when the state of the host changes."
+    description = "Adds a host to the list of watched host. Once done, yo'll get an event when the state of the host changes."
 
     def __call__(self,hostName,hostFriendlyName,pingDelay,eventAlive,eventDead,delayEventAlive,delayEventDead):
         host = Host(hostName,hostFriendlyName,pingDelay,eventAlive,eventDead,delayEventAlive,delayEventDead,self.plugin.pingString)
@@ -230,16 +233,23 @@ class RemoveHost(eg.ActionBase):
 
 class GetHostsStatus(eg.ActionBase):
     name="Get Hosts Status"
-    description="Set eg.result with a python dict containing the config and status of all watched hosts. The key of the dict is the host name.\n"
-    description+="Each dict entry is a string where values are separated by a coma.\n the values are :\n"
-    description+="hostName,hostFriendlyName,pingDelay,eventAlive,eventDead,delayEventAlive,delayEventDead, status,lastPingResult.\n"
-    description+="Here is an exemple of a python script you could run jus after this action :\n"
-    description+="hosts=eg.result\n"
-    description+="for host in hosts:\n"
-    description+="    print(host + \" : \" + hosts[host]\n")
-    description+="    hostData=hosts[host].split(\",\")\n"
-    description+="    for idx in range(0,len(hostData)):\n"
-    description+="        print(hostData[idx]\n")
+    description=(
+        "Set eg.result with a python dict containing the config and status of "
+        "all watched hosts. The key of the dict is the host name.\n"
+        "Each dict entry is a string where values are separated by a coma.\n "
+        "the values are :\n"
+        "hostName,hostFriendlyName,pingDelay,eventAlive,eventDead,"
+        "delayEventAlive,delayEventDead, status,lastPingResult.\n"
+        "Here is an exemple of a python script you could run jus after "
+        "this action :\n"
+        "hosts=eg.result\n"
+        "for host in hosts:\n"
+        "    print host + \" : \" + hosts[host]\n"
+        "    hostData=hosts[host].split(\",\")\n"
+        "    for idx in range(0,len(hostData)):\n"
+        "        printhostData[idx]\n"
+    )
+    
     def __call__(self):
         res={}
         for hostName in self.plugin.hosts:

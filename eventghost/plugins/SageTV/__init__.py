@@ -1,4 +1,5 @@
 eg.RegisterPlugin(
+# super_class_updated
     name = "SageTV",
     author = "Bitmonster",
     version = "1.2.1093",
@@ -173,6 +174,7 @@ class ActionPrototype(eg.ActionClass):
 class SageTV(eg.PluginClass):
 
     def __init__(self):
+        super(SageTV, self).__init__()
         self.targetClass = "SageApp"
         self.AddActionsFromList(ACTIONS, ActionPrototype)
 

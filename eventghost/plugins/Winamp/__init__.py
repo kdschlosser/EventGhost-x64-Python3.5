@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is part of EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -178,6 +179,7 @@ class Winamp(eg.PluginClass):
         )
 
     def __init__(self):
+        super(Winamp, self).__init__()
         self.AddAction(TogglePlay)
         self.AddAction(Play)
         self.AddAction(Pause)

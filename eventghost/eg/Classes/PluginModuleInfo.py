@@ -31,11 +31,11 @@ class PluginModuleInfo(object):
     eg.RegisterPlugin call inside the plugin module. So it imports the main
     module, but stops the import immediately after the eg.RegisterPlugin call.
     """
-    name = u"Unknown Plugin"
-    description = u""
-    author = u"[unknown author]"
-    version = u"[unknown version]"
-    kind = u"other"
+    name = "Unknown Plugin"
+    description = ""
+    author = "[unknown author]"
+    version = "[unknown version]"
+    kind = "other"
     guid = ""
     canMultiLoad = False
     createMacrosOnAdd = False
@@ -51,28 +51,23 @@ class PluginModuleInfo(object):
     def __init__(self, path):
         self.description = self.path = path
         self.name = self.pluginName = os.path.basename(path)
+
         originalRegisterPlugin = eg.RegisterPlugin
         eg.RegisterPlugin = self.RegisterPlugin
-        sys.path.insert(0, self.path)
-        try:
-            if self.path.startswith(eg.corePluginDir):
-                moduleName = "eg.CorePluginModule." + self.pluginName
-            else:
-                moduleName = "eg.UserPluginModule." + self.pluginName
-            if moduleName in sys.modules:
-                del sys.modules[moduleName]
-            __import__(moduleName, None, None, [''])
-        except RegisterPluginException:
-            # It is expected that the loading will raise
-            # RegisterPluginException because eg.RegisterPlugin() is called
-            # inside the module
-            self.valid = True
-        except:
-            if eg.debugLevel:
-                eg.PrintTraceback(eg.text.Error.pluginLoadError % self.path)
-        finally:
-            del sys.path[0]
-            eg.RegisterPlugin = originalRegisterPlugin
+
+        if self.path.startswith(eg.corePluginDir):
+            self.RegisterPluginException = (
+                eg.CorePluginModule.RegisterPluginException
+            )
+            self.valid = getattr(eg.CorePluginModule, self.pluginName)
+        else:
+            self.RegisterPluginException = (
+                eg.UserPluginModule.RegisterPluginException
+            )
+
+            self.valid = getattr(eg.UserPluginModule, self.pluginName)
+
+        eg.RegisterPlugin = originalRegisterPlugin
 
     if eg.debugLevel:
         def __setattr__(self, name, value):
@@ -138,12 +133,5 @@ class PluginModuleInfo(object):
 
         # we are done with this plugin module, so we can interrupt further
         # processing by raising RegisterPluginException
-        raise RegisterPluginException
+        raise self.RegisterPluginException
 
-
-class RegisterPluginException(Exception):
-    """
-    RegisterPlugin will raise this exception to interrupt the loading
-    of the plugin module file.
-    """
-    pass

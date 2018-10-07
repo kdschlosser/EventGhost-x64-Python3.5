@@ -1,4 +1,5 @@
 ### Script for handling (Win)Lirc events by jinxdone - 16th December 2007
+# super_class_updated
 ###
 ###
 ### EventGhost plugin for receiving Lirc-style events written in python.
@@ -380,6 +381,7 @@ class Lirc(eg.RawReceiverPlugin):
         "LIRC Client Error:"
 
     def __init__(self):
+        super(Lirc, self).__init__()
         eg.RawReceiverPlugin.__init__(self)
         self.AddAction(self.Send)
         self.Send.remotes = []

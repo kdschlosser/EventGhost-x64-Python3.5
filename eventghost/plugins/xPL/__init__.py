@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # plugins/xPL/__init__.py
 #
@@ -42,6 +43,7 @@ class xPL(eg.PluginClass):
   # Define maximum xPL message size
     buff = 1500
     def __init__(self):
+        super(xPL, self).__init__()
         self.LocalIP=gethostbyname(gethostname())
         self.hostname="doghouse-eg."+str(gethostname())
         # add class to send messages
@@ -117,8 +119,8 @@ class xPL(eg.PluginClass):
                 msgbody = message[8:-1]
                 msgbody2 = ""
                 # ignore heartbeat messages and messages from myself
-                if msgschema <> "hbeat.app" :
-                    if xplsource <> self.hostname:
+                if msgschema != "hbeat.app" :
+                    if xplsource != self.hostname:
                         for element in msgbody:
                             msgbody2 = msgbody2 + element + ","
                         self.TriggerEvent(xpltype+":"+msgschema+":"+xplsource+":"+xpltarget+":"+msgbody2)

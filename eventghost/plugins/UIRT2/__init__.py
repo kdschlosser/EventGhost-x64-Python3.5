@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -175,6 +176,7 @@ class HexValidator(wx.PyValidator):
 class UIRT2(eg.IrDecoderPlugin):
 
     def __init__(self):
+        super(UIRT2, self).__init__()
         eg.IrDecoderPlugin.__init__(self, 50.0)
         self.buffer = ""
         self.AddAction(TransmitIR)

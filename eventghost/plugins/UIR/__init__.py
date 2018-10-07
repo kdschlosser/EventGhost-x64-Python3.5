@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -49,6 +50,7 @@ import time
 class UIR(eg.RawReceiverPlugin):
 
     def __init__(self):
+        super(UIR, self).__init__()
         eg.RawReceiverPlugin.__init__(self)
         self.AddEvents()
 

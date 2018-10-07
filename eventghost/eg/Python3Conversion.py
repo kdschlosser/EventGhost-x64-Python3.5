@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# update_complete
 #
 # This file is part of EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.net/>
@@ -32,6 +33,7 @@ import urllib.response
 import types
 import ctypes.wintypes
 import ctypes
+import _thread
 
 
 ctypes.wintypes.GetLastError = ctypes.GetLastError
@@ -99,7 +101,10 @@ class StringIO(object):
     StringIO = _StringIO
 
 
-def import_(name, globals=None, locals=None, fromlist=(), level=0):
+def import_(name, globals={}, locals={}, fromlist=(), level=0):
+
+    if '__name__' not in globals:
+        globals['__name__'] = __name__
     try:
         return _import(name, globals, locals, fromlist, level)
     except ImportError:
@@ -122,5 +127,7 @@ sys.modules['urllib2'] = urllib2
 sys.modules['urllib'] = urllib2
 sys.modules['types'] = types
 sys.modules['ctypes.wintypes'] = ctypes.wintypes
+sys.modules['thread'] = _thread
+sys.modules['urlparse'] = _urllib_parse
 
-from . import wxPython3to4
+from . import wxPython3to4 # NOQA

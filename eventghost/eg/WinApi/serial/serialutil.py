@@ -18,12 +18,6 @@ PARITY_NAMES = {
 XON  = chr(17)
 XOFF = chr(19)
 
-#Python < 2.2.3 compatibility
-try:
-    True
-except:
-    True = 1
-    False = not True
 
 # Exceptions
 class SerialException(Exception):

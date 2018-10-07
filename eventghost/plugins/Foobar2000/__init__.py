@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # plugins/Foobar2000/__init__.py
 #
@@ -304,6 +305,7 @@ class ActionPrototype(eg.ActionClass):
 class Foobar2000(eg.PluginClass):
 
     def __init__(self):
+        super(Foobar2000, self).__init__()
         self.AddActionsFromList(ACTIONS, ActionPrototype)
 
 

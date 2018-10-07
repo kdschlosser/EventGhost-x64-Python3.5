@@ -167,7 +167,7 @@ class RegistryChange(eg.ActionBase):
                 #delete value
                 _winreg.DeleteValue(regHandle, valueName)
             return 1
-        except (EnvironmentError, ValueError as  exc:
+        except (EnvironmentError, ValueError) as exc:
             self.PrintError(self.text2.valueChangeError + ": " + str(exc))
             return 0
 

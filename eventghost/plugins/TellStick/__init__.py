@@ -1,4 +1,6 @@
 #
+# update_complete
+# super_class_updated
 # plugins/TellStick/__init__.py
 #
 # Copyright (C) 2008 Telldus Technologies
@@ -20,7 +22,7 @@ eg.RegisterPlugin(
     """,
     icon = (
         "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAZi"
-        "S0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9gDGxAtBidu"
+        "S0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9gDGxAtBid"
         "wgYAAAGjSURBVDjL7ZIxaxphAIbfqxIvcuoVDpJcliDoYikdJNBDCTWQIXQqJXTJlKF7"
         "/4FLnTs4OARcpBJMliQki2QQpA6KioeQHNpioVG+Xr8e33lX8L7rFtIh0B+QZ3+f4eEF"
         "HvkvJEkKFIvFrXa7/Wk0Go2Hw+GoUqnsAoDw0CgSiTwpFApZTdP2ZFl+Y1nWqiRJmEwm"
@@ -44,6 +46,7 @@ from ctypes import windll, c_char_p
 class TellStick(eg.PluginClass):
 
     def __init__(self):
+        super(TellStick, self).__init__()
         self.AddAction(TurnOn)
         self.AddAction(Dim)
         self.AddAction(TurnOff)
@@ -109,7 +112,7 @@ class TurnOn(DeviceBase, eg.ActionClass):
 
     def __call__(self, device):
         ret = self.plugin.dll.devTurnOn(device)
-        if (ret <> True):
+        if (ret != True):
             raise eg.Exception("An error occurred while trying to transmit")
 
 
@@ -121,7 +124,7 @@ class TurnOff(DeviceBase, eg.ActionClass):
 
     def __call__(self, device):
         ret = self.plugin.dll.devTurnOff(device)
-        if (ret <> True):
+        if (ret != True):
             raise eg.Exception("An error occurred while trying to transmit")
 
 
@@ -133,7 +136,7 @@ class Bell(DeviceBase, eg.ActionClass):
 
     def __call__(self, device):
         ret = self.plugin.dll.devBell(device)
-        if (ret <> True):
+        if (ret != True):
             raise eg.Exception("An error occurred while trying to transmit")
 
 
@@ -145,7 +148,7 @@ class Dim(eg.ActionClass):
 
     def __call__(self, device, level):
         ret = self.plugin.dll.devDim(device, level)
-        if (ret <> True):
+        if (ret != True):
             raise eg.Exception("An error occurred while trying to transmit")
 
 

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 
 version="0.0.1"
 
@@ -150,6 +151,7 @@ class SplashLite(eg.PluginBase):
 
 
     def __init__(self):
+        super(SplashLite, self).__init__()
         text=Text
         self.AddActionsFromList(ACTIONS)
 

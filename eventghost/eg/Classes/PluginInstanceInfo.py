@@ -140,20 +140,13 @@ class PluginInstanceInfo(PluginModuleInfo):
             eg.PrintError("File %s does not exist" % pathname)
             return None
         if self.path.startswith(eg.corePluginDir):
-            moduleName = "eg.CorePluginModule." + self.pluginName
+            module = getattr(eg.CorePluginModule, self.pluginName)
         else:
-            moduleName = "eg.UserPluginModule." + self.pluginName
-        try:
-            if moduleName in sys.modules:
-                module = sys.modules[moduleName]
-            else:
-                module = __import__(moduleName, None, None, [''])
-        except:
-            eg.PrintTraceback(
-                eg.text.Error.pluginLoadError % self.path,
-                1
-            )
-            raise eg.Exceptions.PluginLoadError()
+            module = getattr(eg.UserPluginModule, self.pluginName)
+
+        if not module:
+            eg.Exceptions.PluginLoadError()
+
         pluginCls = module.__pluginCls__
         self.module = module
         self.pluginCls = pluginCls

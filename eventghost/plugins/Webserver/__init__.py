@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 version = "3.13.3"
 #
 # This file is part of EventGhost.
@@ -4383,6 +4384,7 @@ class Webserver(eg.PluginBase):
         )
 
     def __init__(self):
+        super(Webserver, self).__init__()
         self.AddEvents()
         self.AddActionsFromList(ACTIONS)
 

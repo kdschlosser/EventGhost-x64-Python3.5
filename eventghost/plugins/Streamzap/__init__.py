@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -152,6 +153,7 @@ def Decode(data):
 class Streamzap(eg.PluginBase):
 
     def __init__(self):
+        super(Streamzap, self).__init__()
         eg.PluginBase.__init__(self)
         self.AddEvents()
 

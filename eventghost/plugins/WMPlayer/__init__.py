@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # Plugins/WMPlayer/__init__.py
 #
@@ -102,5 +103,6 @@ class ActionPrototype(eg.ActionClass):
 class WMPlayer(eg.PluginClass):
 
     def __init__(self):
+        super(WMPlayer, self).__init__()
         # Add all actions of our list
         self.AddActionsFromList(ACTIONS, ActionPrototype)

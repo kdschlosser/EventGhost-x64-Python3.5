@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
+# update_complete
 
 version="0.0.1"
 
@@ -42,7 +44,7 @@ eg.RegisterPlugin(
     version = version,
     kind = "other",
     guid = "{FF85940E-9E93-453C-903B-736FCE0863FF}",
-    description = u'''<rst>
+    description = '''<rst>
 **This plugin is designed for easy remapping of events from remote controls.**
 
 Using this plugin has several advantages:
@@ -151,6 +153,7 @@ class RemoteEventMapper(eg.PluginBase):
     def __init__(
         self,
     ):
+        super(RemoteEventMapper, self).__init__()
         self.default = eg.EventGhostEvent.__init__
 
 
@@ -918,29 +921,29 @@ class RemoteEventMapper(eg.PluginBase):
 
     def dataToXml(self, data, xmlpath):
         impl = miniDom.getDOMImplementation()
-        dom = impl.createDocument(None, u'Remote', None)
+        dom = impl.createDocument(None, 'Remote', None)
         root = dom.documentElement
         commentNode1 = dom.createComment(self.text.xmlComment1)
         dom.insertBefore(commentNode1, root)
         commentNode2 = dom.createComment(self.text.xmlComment2 % str(dt.now())[:19])
         dom.insertBefore(commentNode2, root)
-        root.setAttribute(u'Name', unicode(data[0]))
-        prefixNode = dom.createElement(u'Prefix')
+        root.setAttribute('Name', unicode(data[0]))
+        prefixNode = dom.createElement('Prefix')
         prefixText = dom.createTextNode(unicode(data[1]))
         prefixNode.appendChild(prefixText)
         root.appendChild(prefixNode)
-        suffixesNode = dom.createElement(u'Suffixes')
+        suffixesNode = dom.createElement('Suffixes')
         for item in data[2]:
-            suffixNode = dom.createElement(u'Suffix')
-            natSuffNode = dom.createElement(u'Native_event_suffix')
+            suffixNode = dom.createElement('Suffix')
+            natSuffNode = dom.createElement('Native_event_suffix')
             natSuffText = dom.createTextNode(unicode(item[0]))
             natSuffNode.appendChild(natSuffText)
             suffixNode.appendChild(natSuffNode)
-            labelNode = dom.createElement(u'Button_label')
+            labelNode = dom.createElement('Button_label')
             labelText = dom.createTextNode(unicode(item[1]))
             labelNode.appendChild(labelText)
             suffixNode.appendChild(labelNode)
-            newSuffNode = dom.createElement(u'New_event_suffix')
+            newSuffNode = dom.createElement('New_event_suffix')
             newSuffixText = dom.createTextNode(unicode(item[2]))
             newSuffNode.appendChild(newSuffixText)
             suffixNode.appendChild(newSuffNode)
@@ -1136,7 +1139,7 @@ class SuffixesFrame(wx.Dialog):
 
 
         def OnTxtChange(evt):
-            if self.suffixes<>[]:
+            if self.suffixes!=[]:
                 sel = self.oldSel
                 label = labelCtrl.GetValue()
                 self.suffixes[sel] = label
@@ -1150,7 +1153,7 @@ class SuffixesFrame(wx.Dialog):
         def onClick(evt):
             sel = listBoxCtrl.GetSelection()
             label = labelCtrl.GetValue()
-            if label.strip()<>"":
+            if label.strip()!="":
                 if self.suffixes.count(label)==1:
                     self.oldSel=sel
                     labelCtrl.ChangeValue(self.suffixes[sel])

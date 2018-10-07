@@ -1,4 +1,5 @@
 """<rst>
+# super_class_updated
 Allows to send commands to FS20 receivers.
 
 |
@@ -65,6 +66,7 @@ class FS20PCS(eg.PluginClass):
         root.AddAction(tmpAction)
 
     def __init__(self):
+        super(FS20PCS, self).__init__()
         self.version = None
         self.thread = None
 

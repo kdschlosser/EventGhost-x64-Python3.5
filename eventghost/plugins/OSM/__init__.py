@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 #
 # plugins/OSM/__init__.py
 #
@@ -25,13 +27,13 @@
 # 0.2.11 by Pako 2015-02-01 18:41 UTC+1
 #     - The Back part is divided only by the first found dot
 # 0.2.10 by Pako 2014-12-23 15:59 UTC+1
-#     - bugfix - Test button on dialog "Show menu"
+#     - bugfix - Test button on dialog "Show men"
 # 0.2.9 by Pako 2012-01-18 11:13 UTC+1
 #     - fixed bug - inversion of option "Show a menu without stealing focus (prevents keyboard control)"
 # 0.2.8 by Pako 2012-01-18 10:23 UTC+1
 #     - added option "Show a menu without stealing focus (prevents keyboard control)"
 # 0.2.7 by Pako 2011-07-03 19:16 UTC+1
-#     - added option "Trigger an event if the user has moved the selection in the menu"
+#     - added option "Trigger an event if the user has moved the selection in the men"
 # 0.2.6 by Pako 2011-06-27 12:40 UTC+1
 #     - bugfix: problem when any menu action is called too soon after its opening
 # 0.2.5 by Pako 2011-06-24 14:22 UTC+1
@@ -46,12 +48,12 @@
 #===============================================================================
 
 eg.RegisterPlugin(
-    name = "OS Menu",
+    name = "OS Men",
     author = "Pako",
     version = "0.2.11",
     kind = "other",
     guid = "{FCF3C7A7-FBC1-444D-B768-9477521946DC}",
-    description = u"""<rst>
+    description = """<rst>
 Allows you to create custom On Screen Menu.
 
 Plugin OSM has built-in a function **"Stop processing this event"**,
@@ -80,7 +82,7 @@ as possible in the configuration tree.""",
         "/663t///qKhr/5OFhf//d3dZ/080NP//7u68/zEzM///+flk/9C1tf//nJxS/y2Xl///"
         "wsJK/5nw8P//Vlam/6p+fv//wMBi/4ri4v//kZHR/3pvb///RkZo/+Dq6v//6Og//zA+"
         "Pv//Ly/k/zdxcf//QkKy/8hbW///1dWJ/6zb2///dnY8/7mPj///np57/3Spqf//09Ov"
-        "/6NlZf//19dD/zjx8f8AAAAABWgAABfHxtwAEQTHyQAAAGjHzBjHzBgAAFxuZVJpcmUu"
+        "/6NlZf//19dD/zjx8f8AAAAABWgAABfHxtwAEQTHyQAAAGjHzBjHzBgAAFxuZVJpcmU"
         "LmcAABwAAENCblQAAABBmj0AAAAAAAAAAAAAAAAAAAABAAFCadPG/kwAAADabVLsAAAA"
         "AXRSTlMAQObYZgAAAAlwSFlzAAALEgAACxIB0t1+/AAAAThJREFUeNp9kudWAjEQRkcQ"
         "BxSkWSgKVlAXBFQUVBTF3ju2938O55sJ7i/NOZvcL3fPTrIJ0b9tKIAWtDCsIeTUCKOF"
@@ -103,10 +105,10 @@ SYS_VSCROLL_X = wx.SystemSettings.GetMetric(wx.SYS_VSCROLL_X)
 
 class Text:
     picker = "Colour Picker"
-    triggEvt = "Trigger an event if the user has moved the selection in the menu"
+    triggEvt = "Trigger an event if the user has moved the selection in the men"
     focus = "Show a menu without stealing focus (prevents keyboard control)"
     selMoved = "SelectionMoved"
-    showMenu = u'''<rst>The selected monitor shows the menu, created by user.
+    showMenu = '''<rst>The selected monitor shows the menu, created by user.
 
 *Basic rules for the compilation of event string:*
 
@@ -137,18 +139,18 @@ Some examples of event string compilation in mode **"payload"**:
 +=======================+==============+==========================+
 |         OSM           | test         | **OSM.test**             |
 +-----------------------+--------------+--------------------------+
-|         OSM.Main      | test         | **OSM.Main u"test"**     |
+|         OSM.Main      | test         | **OSM.Main "test"**     |
 +-----------------------+--------------+--------------------------+
-|         OSM           | Second.Third | **OSM.Second u"Third"**  |
+|         OSM           | Second.Third | **OSM.Second "Third"**  |
 +-----------------------+--------------+--------------------------+
-|         OSM.Main      | OnInit.dummy | **Main.OnInit u"dummy"** |
+|         OSM.Main      | OnInit.dummy | **Main.OnInit "dummy"** |
 +-----------------------+--------------+--------------------------+
 
 '''
 
-    showMenuExpr = u'''<rst>The selected monitor shows the menu, created from python expression.
+    showMenuExpr = '''<rst>The selected monitor shows the menu, created from python expression.
 
-This action is almost identical with the action **"Show menu"**. Different is just
+This action is almost identical with the action **"Show men"**. Different is just
 a way of creating menu. Here is a menu defined by using python expression. This
 expression you enter in the edit box **"List of menu items:"**. He may contain also
 variables (eg **eg.result** or **eg.event.payload**).
@@ -163,12 +165,12 @@ list item also used as a label in the menu and as part of the resulting event
 **(( "Item1", "event1"), ( "Item2", "event2"), ( "Item3", "event3"))**.
 In this case, the first items of nested lists apply as a label in the menu and
 the seconds items are applied as **"Back part(s) of event string"** (see the edit box
-**"Back part(s) of event string:"** in configuration dialog of action **"Show menu"**).
+**"Back part(s) of event string:"** in configuration dialog of action **"Show men"**).
 
 3) Both the previous form can be freely combined. Tuple (list) can look as follows:
 **(("Item1","event1"), ("Item2"), ("Item3","event3"))**
 
-Please see the description of the action **"Show menu"**. There are examples,
+Please see the description of the action **"Show men"**. There are examples,
 which naturally also applies to this action.'''
 #===============================================================================
 
@@ -261,10 +263,10 @@ class ShowMenu(eg.ActionBase):
         delete = 'Delete'
         insert = 'Insert new'
         menuFont = 'Menu font:'
-        txtColour = 'Text colour'
-        background = 'Background colour'
-        txtColourSel = 'Selected text colour'
-        backgroundSel = 'Selected background colour'
+        txtColour = 'Text color'
+        background = 'Background color'
+        txtColourSel = 'Selected text color'
+        backgroundSel = 'Selected background color'
         prefixLabel = 'Front of event string:'
         modeLabel = "The third part applied as:"
         mode = ("event suffix", "event payload")
@@ -555,7 +557,7 @@ class ShowMenu(eg.ActionBase):
             sel = evt.GetRow()
             label = labelCtrl.GetValue()
             event = eventCtrl.GetValue()
-            if label.strip()<>"":
+            if label.strip()!="":
                 if [item[0] for item in self.choices].count(label)==1:
                     self.oldSel=sel
                     item = self.choices[sel]
@@ -624,7 +626,7 @@ class ShowMenu(eg.ActionBase):
 
 
         def OnTextChange(evt):
-            if self.choices<>[]:
+            if self.choices!=[]:
                 flag = False
                 sel = self.oldSel
                 label = labelCtrl.GetValue()
@@ -632,8 +634,8 @@ class ShowMenu(eg.ActionBase):
                 self.choices[sel]=(label,event)
                 listBoxCtrl.Set([item[0] for item in self.choices])
                 listBoxCtrl.SetSelection(sel)
-                if label.strip()<>"":
-                    if event.strip()<>"":
+                if label.strip()!="":
+                    if event.strip()!="":
                         if [item[0] for item in self.choices].count(label)==1:
                             flag = True
                 panel.EnableButtons(flag)
@@ -720,10 +722,10 @@ class CreateMenuFromList(eg.ActionBase):
         osmLabel = 'OSM show on:'
         menuPreview = 'On screen menu preview:'
         menuFont = 'Menu font:'
-        txtColour = 'Text colour'
-        background = 'Background colour'
-        txtColourSel = 'Selected text colour'
-        backgroundSel = 'Selected background colour'
+        txtColour = 'Text color'
+        background = 'Background color'
+        txtColourSel = 'Selected text color'
+        backgroundSel = 'Selected background color'
         prefixLabel = 'Front of event string:'
         modeLabel = "The third part applied as:"
         mode = ("event suffix", "event payload")
@@ -1138,7 +1140,7 @@ class Get_Btn (eg.ActionBase):
 #===============================================================================
 
 ACTIONS = (
-    (ShowMenu, 'ShowMenu', 'Show menu', Text.showMenu, None),
+    (ShowMenu, 'ShowMen', 'Show men', Text.showMenu, None),
     (CreateMenuFromList, 'CreateMenuFromList', 'Show menu, created from expression', Text.showMenuExpr, None),
     (MoveCursor, 'MoveDown', 'Cursor Down', 'Cursor Down.', 1),
     (MoveCursor, 'MoveUp', 'Cursor Up', 'Cursor Up.', -1),
@@ -1167,6 +1169,7 @@ class OSM(eg.PluginBase):
     text = Text
 
     def __init__(self):
+        super(OSM, self).__init__()
         self.AddActionsFromList(ACTIONS)
 #===============================================================================
 
@@ -1193,7 +1196,7 @@ class Menu(wx.Frame):
             self,
             None,
             -1,
-            'OS_Menu',
+            'OS_Men',
             style = wx.STAY_ON_TOP|wx.SIMPLE_BORDER
         )
         self.plugin  = plugin

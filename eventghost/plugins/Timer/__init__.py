@@ -1,4 +1,5 @@
 
+# super_class_updated
 eg.RegisterPlugin(
     name = "Timer",
     author = "Bartman",
@@ -184,6 +185,7 @@ class Timer(eg.PluginClass):
     started = False
 
     def __init__(self):
+        super(Timer, self).__init__()
         self.AddAction(TimerAction)
 
         #timer names are kept for usability reasons

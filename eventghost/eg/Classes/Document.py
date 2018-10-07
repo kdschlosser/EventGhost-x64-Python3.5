@@ -74,8 +74,6 @@ class Document(object):
             self.AutostartItem.xmlTag.lower(): self.AutostartItem
         }
 
-        eg.stderr.write(str(self.XMLTag2ClassDict) + '\n')
-
         self.TreeLink = eg.TreeLink
 #        self.TreeItem = MakeCls("TreeItem")
 #        self.ContainerItem = MakeCls("ContainerItem")
@@ -553,7 +551,7 @@ class Document(object):
         os.close(tmpFile)
         try:
             tmpFile = open(tmpPath, "wb+")
-            tmpFile.write('<?xml version="1.0" encoding="UTF-8" ?>\r\n')
+            tmpFile.write(b'<?xml version="1.0" encoding="UTF-8" ?>\r\n')
             self.root.WriteXmlString(tmpFile.write)
             tmpFile.close()
             try:

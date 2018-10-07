@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -101,6 +102,8 @@ DEVICES = {
 
 
 class AtiRemoteWonder2(eg.PluginBase):
+    def __init__(self):
+        super(AtiRemoteWonder2, self).__init__()
 
     def __start__(self):
         self.winUsb = eg.WinUsb(self)
@@ -122,7 +125,8 @@ class AtiRemoteWonder2(eg.PluginBase):
         self.timer.Stop()
 
 
-    def Callback1(self, (device, x, y)):
+    def Callback1(self, item):
+        device, x, y = item
         if x > 127:
             x -= 256
         if y > 127:
@@ -134,7 +138,8 @@ class AtiRemoteWonder2(eg.PluginBase):
         self.timer.Reset(100)
 
 
-    def Callback2(self, (device, event, code)):
+    def Callback2(self, item):
+        device, event, code = item
         if device != self.currentDevice:
             self.currentDevice = device
             self.TriggerEvent(DEVICES[device])

@@ -1,4 +1,5 @@
 import eg
+# super_class_updated
 import socket
 import select
 from time import sleep
@@ -35,6 +36,7 @@ class OnkyoISCP(eg.PluginBase):
     unittype   = 1 # receiver
 
     def __init__(self):
+        super(OnkyoISCP, self).__init__()
         self.AddAction(SendCommand)
 
     def __start__(self, ip, port, timeout):

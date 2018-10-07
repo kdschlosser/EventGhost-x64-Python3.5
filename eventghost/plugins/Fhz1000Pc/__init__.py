@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -49,6 +50,7 @@ FT_OPEN_BY_DESCRIPTION = 2
 class Fhz1000Pc(eg.PluginBase):
 
     def __init__(self):
+        super(Fhz1000Pc, self).__init__()
         self.AddAction(Off)
         self.AddAction(On)
         self.AddAction(Dim)

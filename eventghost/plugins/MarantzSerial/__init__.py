@@ -1,4 +1,5 @@
 eg.RegisterPlugin(
+# super_class_updated
     name = "Marantz AV Receiver",
     author = "Dexter",
     version = "1.0.1093",
@@ -171,6 +172,7 @@ class MarantzSerialSetVolumeRelative(eg.ActionWithStringParameter):
 class MarantzSerial(eg.PluginClass):
 
     def __init__(self):
+        super(MarantzSerial, self).__init__()
         self.serial = None
         self.response = None
         self.method = 0

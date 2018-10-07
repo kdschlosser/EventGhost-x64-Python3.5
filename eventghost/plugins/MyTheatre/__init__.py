@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # plugins/MyTheatre/__init__.py
 #
@@ -263,6 +264,7 @@ MyActionList = (
 class MyTheatre(eg.PluginClass):
 
     def __init__(self):
+        super(MyTheatre, self).__init__()
         self.AddActionsFromList(MyActionList)
 
 

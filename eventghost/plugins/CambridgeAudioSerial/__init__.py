@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # plugins/CambridgeAudioSerial/__init__.py
 #
@@ -222,6 +223,7 @@ class ToggleMuteAction(eg.ActionClass):
 class CambridgeAudioSerial(eg.PluginClass):
 
     def __init__(self):
+        super(CambridgeAudioSerial, self).__init__()
         self.serialThread = eg.SerialThread()
 
         group = self

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # plugins/MceRemote/__init__.py
 #
@@ -269,6 +270,7 @@ class MceRemote(eg.PluginBase):
         )
 
     def __init__(self):
+        super(MceRemote, self).__init__()
         self.AddEvents()
         self.AddAction(TransmitIr)
 

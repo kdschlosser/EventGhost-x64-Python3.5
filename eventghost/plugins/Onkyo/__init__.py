@@ -1,4 +1,5 @@
 #
+# super_class_updated
 # Onkyo Serial
 # ================
 
@@ -535,6 +536,7 @@ class Raw(eg.ActionWithStringParameter):
 class OnkyoSerial(eg.PluginClass):
 
     def __init__(self):
+        super(OnkyoSerial, self).__init__()
         self.serial = None
         group = self
 

@@ -36,7 +36,7 @@ class Scheduler(threading.Thread):
         self.keepRunning = True
         self.event = threading.Event()
         self.lock = threading.Lock()
-        self.heap = [(time() + 100000000, None, None, None)]
+        self.heap = [(time() + threading.TIMEOUT_MAX, None, None, None)]
         threading.Thread.__init__(
             self,
             target=self.MainLoop,

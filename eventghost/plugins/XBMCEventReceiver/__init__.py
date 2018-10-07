@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # plugins/XBMCEventReceiver/__init__.py
 #
@@ -123,6 +124,7 @@ class XbmceventbroadcastListener(eg.PluginClass):
     text = Text
 
     def __init__(self):
+        super(XbmceventbroadcastListener, self).__init__()
         self.AddAction(self.Xbmceventbroadcast)
 
     def __start__(self, prefix=None, xbmcip="None", xbmchttpport=8080, zone="255.255.255.255", port=8279, selfXbmceventbroadcast=False, payDelim="&&"):

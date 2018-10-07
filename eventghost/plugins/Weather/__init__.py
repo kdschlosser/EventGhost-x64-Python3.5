@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 #
 # plugins/Weather/__init__.py
 #
@@ -63,6 +65,7 @@ class Weather(eg.PluginClass):
     weather_data = None
 
     def __init__(self):
+        super(Weather, self).__init__()
         self.AddAction(GetWeatherFromGoogle)
         self.AddAction(GetCountriesFromGoogle)
         self.AddAction(GetCitiesFromGoogle)
@@ -247,7 +250,7 @@ class GetWeatherFieldValue(eg.ActionClass):
              return None
         elif parameter_name1 == "" and parameter_name2 == "":
              return self.plugin.weather_data
-        elif parameter_name1 <> "" and parameter_name2 == "":
+        elif parameter_name1 != "" and parameter_name2 == "":
              return self.plugin.weather_data[parameter_name1]
         else:
              if type( self.plugin.weather_data[parameter_name1] ) == type (list()):

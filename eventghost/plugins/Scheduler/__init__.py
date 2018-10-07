@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 #
 # plugins/Scheduler/__init__.py
 #
@@ -496,7 +498,7 @@ class SchedulerThread(Thread):
                     SendEvent(j+i*6)
 
             if self.doLogLoops and init == 0:
-                print(()
+                print(
                     self.text.nxt_1+
                     self.name+
                     self.text.nxt_2+
@@ -518,6 +520,7 @@ class Scheduler(eg.PluginClass):
     text = Text
 
     def __init__(self):
+        super(Scheduler, self).__init__()
         self.AddAction(SchedulerAction)
         self.AddAction(SetVacationON)
         self.AddAction(SetVacationOFF)
@@ -542,8 +545,8 @@ class Scheduler(eg.PluginClass):
 
     def __start__(
         self,
-        fixedHolidays = "0101,0501,0606,1224,1225,1226,1231",
-        variableHolidays = "0106,0321,0324,0620",
+        fixedHolidays = "0101,0o501,0o606,1224,1225,1226,1231",
+        variableHolidays = "0106,0o321,0o324,0o620",
         vacation_m = False,
         emptyHouse_m = False,
         eventPrefix = "Main"
@@ -593,8 +596,8 @@ class Scheduler(eg.PluginClass):
         trItem = self.info.treeItem
         args = list(trItem.GetArguments())
         if(
-            self.emptyHouse_m <> prm['3'] or
-            self.vacation_m <> prm['2']
+            self.emptyHouse_m != prm['3'] or
+            self.vacation_m != prm['2']
         ):
             self.restarted = True
             for i in prm:
@@ -700,8 +703,8 @@ class Scheduler(eg.PluginClass):
 
     def Configure(
         self,
-        fixedHolidays = "0101,0501,0606,1224,1225,1226,1231",
-        variableHolidays = "0106,0321,0324,0620",
+        fixedHolidays = "0101,0o501,0o606,1224,1225,1226,1231",
+        variableHolidays = "0106,0o321,0o324,0o620",
         vacation_m = False,
         emptyHouse_m = False,
         eventPrefix = "Main",
@@ -1322,8 +1325,8 @@ class SchedulerAction(eg.ActionClass):
         vacationOFF_1 = "----",
         vacationOFF_2 = "----",
         vacationOFF_3 = "----",
-        fixedHolidays = "0101,0501,0606,1224,1225,1226,1231",
-        variableHolidays = "0106,0321,0324,0620",
+        fixedHolidays = "0101,0o501,0o606,1224,1225,1226,1231",
+        variableHolidays = "0106,0o321,0o324,0o620",
         iNbrOfBurstsON = 1,
         iNbrOfBurstsOFF = 1,
         cmdDelay = 1.5,

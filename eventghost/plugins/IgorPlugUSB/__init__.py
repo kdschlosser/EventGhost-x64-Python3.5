@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -42,6 +43,7 @@ from functools import partial
 class IgorPlugUSB(eg.IrDecoderPlugin):
 
     def __init__(self):
+        super(IgorPlugUSB, self).__init__()
         eg.IrDecoderPlugin.__init__(self, 85.3)
 
 

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -16,7 +18,7 @@
 # You should have received a copy of the GNU General Public License along
 # with EventGhost. If not, see <http://www.gnu.org/licenses/>.
 
-ur"""<rst>
+r"""<rst>
 Plugin for the TechniSat USB IR Receiver
 
 |
@@ -62,7 +64,7 @@ CODES = {
     (1, 0, 38, 0): "Num9",
     (1, 0, 39, 0): "Num0",
     (1, 0, 40, 0): "Ok",
-    (1, 0, 59, 0): "Menu",
+    (1, 0, 59, 0): "Men",
     (1, 0, 62, 0): "Red",
     (1, 0, 63, 0): "Green",
     (1, 0, 64, 0): "Yellow",
@@ -77,6 +79,8 @@ CODES = {
 
 
 class TechniSatUsb(eg.PluginBase):
+    def __init__(self):
+        super(TechniSatUsb, self).__init__()
 
     def __start__(self):
         self.winUsb = eg.WinUsb(self)

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 
 version = "0.1.14"
 
@@ -180,10 +182,10 @@ class Key(eg.ActionClass):
                 text = self.plugin.text
                 modeLst = (text.string,text.numpad,text.singleKey)
                 formatLst = (text.genSuffix,text.genPayload)
-                label = u'  '+text.labelMode+u'\n      \u2022 '+modeLst[item[4]]+\
-                    u'\n\n  '+text.evtString+u'\n      \u2022 '+item[1]+\
-                    u'\n      \u2022 '+formatLst[item[2]]+u'\n\n  '+\
-                    text.labelTimeout1+u'\n      \u2022 '+str(item[3])
+                label = '  '+text.labelMode+'\n      \u2022 '+modeLst[item[4]]+\
+                    '\n\n  '+text.evtString+'\n      \u2022 '+item[1]+\
+                    '\n      \u2022 '+formatLst[item[2]]+'\n\n  '+\
+                    text.labelTimeout1+'\n      \u2022 '+str(item[3])
                 summary.SetLabel(label)
 
                 if len(rightSizer.GetChildren()):
@@ -270,7 +272,7 @@ class Key(eg.ActionClass):
                         txt.eventPayload if item[2] else txt.eventSuffix
                     )
                     labelCtrl=wx.TextCtrl(panel,-1,'')
-                    if self.listKeys<>[]:
+                    if self.listKeys!=[]:
                         labelCtrl.SetValue(self.listKeys[0])
                     dynamicSizer = wx.FlexGridSizer(4,2,2,8)
                     dynamicSizer.Add(previewLbl)
@@ -306,14 +308,14 @@ class Key(eg.ActionClass):
                     buttonSizer.Add(btnApp,0,wx.TOP,5)
 
                     def OnTextChange(evt=None):
-                        if self.listKeys<>[]:
+                        if self.listKeys!=[]:
                             flag = False
                             sel = self.oldSel
                             label = labelCtrl.GetValue()
                             self.listKeys[sel] = label
                             listBoxCtrl.Set(self.listKeys)
                             listBoxCtrl.SetSelection(sel)
-                            if label.strip()<>"":
+                            if label.strip()!="":
                                 if self.listKeys.count(label)==1:
                                     flag = True
                             panel.EnableButtons(flag)
@@ -343,7 +345,7 @@ class Key(eg.ActionClass):
                     def OnClick(evt):
                         sel = listBoxCtrl.GetSelection()
                         label = labelCtrl.GetValue()
-                        if label.strip()<>"":
+                        if label.strip()!="":
                             if self.listKeys.count(label)==1:
                                 self.oldSel=sel
                                 item = self.listKeys[sel]
@@ -471,6 +473,8 @@ ACTIONS = (
 #===============================================================================
 
 class Multitap(eg.PluginClass):
+    def __init__(self):
+        super(Multitap, self).__init__()
     configs = []
     osDialog = None
     config = 0
@@ -979,7 +983,7 @@ class Multitap(eg.PluginClass):
             self.flag = False
             sel = listBoxCtrl.GetSelection()
             label = labelCtrl.GetValue()
-            if label.strip()<>"":
+            if label.strip()!="":
                 if [n[0] for n in self.configs].count(label)==1:
                     self.oldSel=sel
                     item = self.configs[sel]
@@ -1062,7 +1066,7 @@ class Multitap(eg.PluginClass):
         rb1.Bind(wx.EVT_RADIOBUTTON,onEvtFormat)
 
         def OnTxtChange(evt):
-            if self.configs<>[] and self.flag:
+            if self.configs!=[] and self.flag:
                 flag = False
                 sel = self.oldSel
                 label = labelCtrl.GetValue()
@@ -1071,8 +1075,8 @@ class Multitap(eg.PluginClass):
                 self.configs[sel][1]=event
                 listBoxCtrl.Set([n[0] for n in self.configs])
                 listBoxCtrl.SetSelection(sel)
-                if label.strip()<>"":
-                    if event.strip()<>"":
+                if label.strip()!="":
+                    if event.strip()!="":
                         if [n[0] for n in self.configs].count(label)==1:
                             flag = True
                 panel.dialog.buttonRow.applyButton.Enable(flag)

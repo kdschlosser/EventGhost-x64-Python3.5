@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # plugins/SunTracker/__init__.py
@@ -619,7 +621,7 @@ class SuntrackerThread(Thread):
                 if(
                   (int(trigTime) < int(StrCheck(night_OFF))
                     and int(csSR) >= int(StrCheck(night_OFF))
-                    and int(trigTime) < 0600
+                    and int(trigTime) < 0o600
                     and(
                             int(trigTimeSR) < int(csSR)
                             or int(trigTime) < int(csSR)
@@ -660,16 +662,16 @@ class SuntrackerThread(Thread):
             ):
                 if(
                    (int(trigTime) >= int(StrCheck(night_OFF))
-                    and int(StrCheck(night_OFF)) < 0600
+                    and int(StrCheck(night_OFF)) < 0o600
                     and int(trigTime) < int(StrCheck(morning_ON)))
                     or self.lastAction[1] == "OFF"
                 ):
                     light = 0
                 if(
                     int(trigTime) >= int(StrCheck(night_OFF))
-                    and int(StrCheck(night_OFF)) < 0600
+                    and int(StrCheck(night_OFF)) < 0o600
                     and morning_ON == "----"
-                    and int(trigTime) < 0600
+                    and int(trigTime) < 0o600
                 ):
                     light = 0
             if(
@@ -682,8 +684,8 @@ class SuntrackerThread(Thread):
                 )
             ):
                 if(
-                   (int(trigTime) > 0000
-                    and int(trigTime) < 0600
+                   (int(trigTime) > 0o000
+                    and int(trigTime) < 0o600
                     and(
                         int(trigTime) < int(StrCheck(morning_ON))
                         or morning_ON == "----"
@@ -1234,7 +1236,7 @@ class SuntrackerThread(Thread):
                 bMghost = True
 
             # Set the conditions depending on the weather
-            if self.iWeather <> 0:
+            if self.iWeather != 0:
                 self.currCondition = self.plugin.currCondition
 
                 # Adjust the sunrise/sunset trig times to weather condition
@@ -1504,6 +1506,7 @@ class Suntracker(eg.PluginClass):
     text = Text
 
     def __init__(self):
+        super(Suntracker, self).__init__()
         self.AddAction(SuntrackerAction)
         self.AddAction(SetLocation)
         self.AddAction(SetVacationON)
@@ -1561,8 +1564,8 @@ class Suntracker(eg.PluginClass):
         myLongitude = "18.0000",
         myLatitude = "59.2500",
         location_id = "905335",
-        fixedHolidays = "0101,0501,0606,1224,1225,1226",
-        variableHolidays = "0106,0402,0405,0512,0522,0523,0625",
+        fixedHolidays = "0101,0o501,0o606,1224,1225,1226",
+        variableHolidays = "0106,0o402,0o405,0o512,0o522,0o523,0o625",
         summerSeasonBegins = "--",
         summerSeasonEnds = "--",
         vacation_m = False,
@@ -1888,7 +1891,7 @@ class Suntracker(eg.PluginClass):
         dat1 = str(t1).split(".")
         dat2 = str(t2).split(".")
 
-        if int(strTz[0]) < 0 and strTz[1] <> '00':
+        if int(strTz[0]) < 0 and strTz[1] != '00':
             strTz[1] = '-' + strTz[1]
 
         if int(dat1[0]) < 0 and int(dat1[1]) > 0:
@@ -2045,7 +2048,7 @@ class Suntracker(eg.PluginClass):
                 if self.weatherStatus:
                     if(
                         (self.weatherChange and
-                             self.currCondition <> self.prevcurrCondition)
+                             self.currCondition != self.prevcurrCondition)
                         or not self.weatherChange
                     ):
                         eg.TriggerEvent(
@@ -2224,8 +2227,8 @@ class Suntracker(eg.PluginClass):
         myLongitude = "18.0000",
         myLatitude = "59.2500",
         location_id = "905335",
-        fixedHolidays = "0101,0501,0606,1224,1225,1226",
-        variableHolidays = "0106,0402,0405,0512,0522,0523,0625",
+        fixedHolidays = "0101,0o501,0o606,1224,1225,1226",
+        variableHolidays = "0106,0o402,0o405,0o512,0o522,0o523,0o625",
         summerSeasonBegins = "--",
         summerSeasonEnds = "--",
         vacation_m = False,
@@ -3249,8 +3252,8 @@ class SuntrackerAction(eg.ActionClass):
         vaNight_OFF = "----",
         vaMorning_ON = "----",
         vaEvening_OFF = "----",
-        fixedHolidays = "0101,0501,0606,1224,1225,1226,1231",
-        variableHolidays = "0106,0321,0324,0620",
+        fixedHolidays = "0101,0o501,0o606,1224,1225,1226,1231",
+        variableHolidays = "0106,0o321,0o324,0o620",
         iNbrOfBurstsON = 1,
         iNbrOfBurstsOFF = 1,
         cmdDelay = 1.5,
@@ -4497,7 +4500,7 @@ class GetSunStatusWeatherCompensated(eg.ActionClass):
             trigTimeSR = self.plugin.GetOffsetTimeSR(0)
             trigTimeSS = self.plugin.GetOffsetTimeSS(0)
 
-            if self.iWeather <> 0:
+            if self.iWeather != 0:
                 currCondition = self.plugin.currCondition
 
                 # Adjust the sunrise/sunset trig times to weather condition

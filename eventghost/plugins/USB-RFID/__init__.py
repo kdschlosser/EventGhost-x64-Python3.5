@@ -1,4 +1,5 @@
 """<rst>
+# super_class_updated
 Receives events from ELV USB/RFID-Interface.
 
 |
@@ -39,6 +40,7 @@ class USB_RFID(eg.PluginClass):
     text = Text
 
     def __init__(self):
+        super(USB_RFID, self).__init__()
         self.version = None
         self.thread = None
 

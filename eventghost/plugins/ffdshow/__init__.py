@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -610,6 +611,7 @@ CMDS = (
 class Ffdshow(eg.PluginClass):
 
     def __init__(self):
+        super(Ffdshow, self).__init__()
         groups = {}
         for filterName, internalName, description, filterId, isId, showId, orderId, fullId, halfId in FILTERS:
             if not description:

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # Plugins/GOMlayer/__init__.py
 #
@@ -132,4 +133,5 @@ class ActionPrototype(eg.ActionClass):
 class GOMPlayer(eg.PluginClass):
 
     def __init__(self):
+        super(GOMPlayer, self).__init__()
         self.AddActionsFromList(ACTIONS, ActionPrototype)

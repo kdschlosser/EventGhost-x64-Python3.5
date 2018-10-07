@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 # plugins/DynamicWebserver/__init__.py
 #
 # This file is a plugin for EventGhost.
@@ -250,6 +251,7 @@ class DynamicWebserver(eg.PluginClass):
 
 
     def __init__(self):
+        super(DynamicWebserver, self).__init__()
         self.running = False
 
 

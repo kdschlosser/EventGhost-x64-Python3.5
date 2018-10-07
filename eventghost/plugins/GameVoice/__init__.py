@@ -1,4 +1,5 @@
 eg.RegisterPlugin(
+# super_class_updated
     name = "Sidewinder Game Voice",
     author = "Bartman",
     version = "0.1.614",
@@ -34,6 +35,7 @@ ButtonMapping = {
 
 class GameVoice(eg.PluginClass):
     def __init__(self):
+        super(GameVoice, self).__init__()
         self.thread = None
 
     def ButtonCallback(self, data):

@@ -121,7 +121,7 @@ class EventGhostEvent(object):
         for key, val in eg.eventTable.items():
             if (
                 eventString == key or
-                (("*" in key or "?" in key) and fnmatchcase(eventString, key))
+                ((b'*' in key or b'?' in key) and fnmatchcase(eventString.encode('utf-8'), key))
             ):
                 eventHandlerList += val
 

@@ -134,9 +134,6 @@ class PluginItem(ActionItem):
         text = base64.b64encode(pickle.dumps(self.info.args, 2))
         return attr, text
 
-    def GetLabel(self):
-        return self.name
-
     def GetTypeName(self):
         return self.executable.info.name
 

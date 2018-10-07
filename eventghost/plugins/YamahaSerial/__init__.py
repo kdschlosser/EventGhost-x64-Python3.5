@@ -1,4 +1,5 @@
 # -*- coding: latin-1 -*-
+# super_class_updated
 #
 # YamahaSerial V0.0.1
 # ================
@@ -129,6 +130,7 @@ cmdList = (
 class YamahaSerial(eg.PluginClass):
 
     def __init__(self):
+        super(YamahaSerial, self).__init__()
         self.serial = None
         group = self
         self.currentVolume = -99

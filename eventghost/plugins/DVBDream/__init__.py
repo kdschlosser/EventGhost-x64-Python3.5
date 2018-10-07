@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # Plugins/DVBDream/__init__.py
 #
@@ -116,4 +117,5 @@ class MyActionTemplate(eg.ActionClass):
 class DVBDream(eg.PluginClass):
 
     def __init__(self):
+        super(DVBDream, self).__init__()
         self.AddActionsFromList(ACTIONS, MyActionTemplate)

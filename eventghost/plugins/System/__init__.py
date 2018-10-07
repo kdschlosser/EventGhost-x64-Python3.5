@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 #
 # This file is part of EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -60,12 +62,12 @@ from eg.WinApi.Dynamic import (
     TOKEN_ADJUST_PRIVILEGES, TOKEN_QUERY, WM_SYSCOMMAND,
 )
 from eg.WinApi.Utils import BringHwndToFront, GetMonitorDimensions
-import Registry
-from ChangeDisplaySettings import ChangeDisplaySettings
-from Command import Command
-from DeviceChangeNotifier import DeviceChangeNotifier
-from Execute import Execute
-from PowerBroadcastNotifier import PowerBroadcastNotifier
+from . import Registry
+from .ChangeDisplaySettings import ChangeDisplaySettings
+from .Command import Command
+from .DeviceChangeNotifier import DeviceChangeNotifier
+from .Execute import Execute
+from .PowerBroadcastNotifier import PowerBroadcastNotifier
 
 eg.RegisterPlugin(
     name = "System",
@@ -153,6 +155,7 @@ class System(eg.PluginBase):
     images = {}
 
     def __init__(self):
+        super(System, self).__init__()
         text = self.text
 
         self.AddEvents(*EVENT_LIST)
@@ -238,7 +241,7 @@ class System(eg.PluginBase):
 
         # start the session change notifications (only on Win XP and above)
         if eg.WindowsVersion >= 'XP':
-            from SessionChangeNotifier import SessionChangeNotifier
+            from .SessionChangeNotifier import SessionChangeNotifier
             self.sessionChangeNotifier = SessionChangeNotifier(self)
 
         self.StartHookCode()
@@ -488,8 +491,8 @@ class RefreshEnvironment(eg.ActionBase):
             EventGhost won't pass your changes along to the programs it
             launches because it doesn't know those changes took place. If
             you update your %PATH%, for example, then open a Command
-            Prompt from EventGhost, you'll find you're unable to run
-            commands from the new folders you've added.
+            Prompt from EventGhost, yo'll find yo're unable to run
+            commands from the new folders yo've added.
 
             In the past, the only solution to this problem was to restart
             EventGhost. Now, with the aid of this action (or "Refresh
@@ -850,7 +853,7 @@ class ShapedFrame(wx.Frame):
             wx.BORDER_DOUBLE,
             wx.BORDER_SUNKEN,
             wx.BORDER_RAISED)[border] if sizeMode != 3 else wx.NO_BORDER
-        wx.Frame.__init__(self, None, -1, u"EG.System.DisplayImage.%s" % name, style = style)
+        wx.Frame.__init__(self, None, -1, "EG.System.DisplayImage.%s" % name, style = style)
         self.SetBackgroundColour(back)
 
         self.hasShape = False
@@ -1116,7 +1119,7 @@ class DisplayImage(eg.ActionBase):
             "Nearest",
         )
         bckgrnd = "Background and alpha channel"
-        bckgrndColour = "Background colour"
+        bckgrndColour = "Background color"
         shaped = "Shaped window (if alpha channel exists)"
         timeout1 = "The window automatically disappears after"
         timeout2 = "seconds (0 = feature disabled)"
@@ -1989,6 +1992,10 @@ class MuteOn(eg.ActionBase):
         return self.text.name
 
 
+import wx.adv
+SOUND_SYNC = wx.adv.SOUND_SYNC
+SOUND_ASYNC = wx.adv.SOUND_ASYNC
+
 class PlaySound(eg.ActionWithStringParameter):
     name = "Play Sound"
     description = "Plays the specified sound."
@@ -2009,17 +2016,17 @@ class PlaySound(eg.ActionWithStringParameter):
             self.prefix = prefix
 
         def run(self):
-            self.sound.Play(wx.SOUND_SYNC)
+            self.sound.Play(SOUND_SYNC)
             eg.TriggerEvent(self.suffix, prefix = self.prefix)
 
-    def __call__(self, wavfile, flags=wx.SOUND_ASYNC, evt = False):
+    def __call__(self, wavfile, flags=SOUND_ASYNC, evt = False):
         self.sound = wx.Sound(wavfile)
         suffix = "%s.%s" % (
             "%s.%s" % (self.name.replace(' ', ''), self.text.eventSuffix),
             os.path.splitext(os.path.split(wavfile)[1])[0].replace('.', '_')
         )
         prefix = self.plugin.name.replace(' ', '')
-        if flags == wx.SOUND_SYNC:
+        if flags == SOUND_SYNC:
             self.sound.Play(flags)
             if evt:
                 eg.TriggerEvent(suffix, prefix = prefix)
@@ -2029,11 +2036,11 @@ class PlaySound(eg.ActionWithStringParameter):
         else:
             self.sound.Play(flags)
 
-    def Configure(self, wavfile='', flags=wx.SOUND_ASYNC, evt = False):
+    def Configure(self, wavfile='', flags=SOUND_ASYNC, evt = False):
         panel = eg.ConfigPanel()
         text = self.text
         filepathCtrl = panel.FileBrowseButton(wavfile, fileMask=text.fileMask)
-        waitCheckbox = panel.CheckBox(flags == wx.SOUND_SYNC, text.text2)
+        waitCheckbox = panel.CheckBox(flags == SOUND_SYNC, text.text2)
         eventCheckbox = panel.CheckBox(evt, text.text3)
 
         panel.sizer.Add(panel.StaticText(text.text1), 0, wx.EXPAND)
@@ -2043,9 +2050,9 @@ class PlaySound(eg.ActionWithStringParameter):
 
         while panel.Affirmed():
             if waitCheckbox.IsChecked():
-                flags = wx.SOUND_SYNC
+                flags = SOUND_SYNC
             else:
-                flags = wx.SOUND_ASYNC
+                flags = SOUND_ASYNC
             panel.SetResult(
                 filepathCtrl.GetValue(),
                 flags,

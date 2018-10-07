@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -16,7 +18,7 @@
 # You should have received a copy of the GNU General Public License along
 # with EventGhost. If not, see <http://www.gnu.org/licenses/>.
 
-ur"""<rst>
+r"""<rst>
 Plugin for the `Conceptronic Remote Control for Windows\u00ae Media Center`__.
 
 |
@@ -44,7 +46,7 @@ eg.RegisterPlugin(
 BUTTON_CODES = {
     (2,): 'Power',
     (0, 13): 'Start',
-    (0, 36): 'DVDMenu',
+    (0, 36): 'DVDMen',
     (0, 37): 'TV',
     (0, 39): 'AspectRatio',
     (0, 71): 'Music',
@@ -98,6 +100,8 @@ KEYPAD_CODES = {
 
 
 class Conceptronic(eg.PluginBase):
+    def __init__(self):
+        super(Conceptronic, self).__init__()
 
     def __start__(self):
         self.buffer = []

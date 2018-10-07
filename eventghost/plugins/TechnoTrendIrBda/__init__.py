@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # plugins/TechnoTrendIrBda/__init__.py
 #
@@ -94,6 +95,7 @@ IRCALLBACKFUNC = CFUNCTYPE(None, c_int, POINTER(c_uint))
 class TTIRBDA(eg.PluginBase):
 
     def __init__(self):
+        super(TTIRBDA, self).__init__()
         pass
 
     def __close__(self):

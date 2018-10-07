@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # plugins/MceRemote_Vista/__init__.py
 #
@@ -686,6 +687,7 @@ class MCE_Vista(eg.IrDecoderPlugin):
     """
 
     def __init__(self):
+        super(MCE_Vista, self).__init__()
         eg.IrDecoderPlugin.__init__(self,1.0)
         self.AddAction(GetDeviceInfo)
         self.AddAction(TransmitIR)

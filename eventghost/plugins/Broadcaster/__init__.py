@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -121,6 +122,7 @@ class BroadcastListener(eg.PluginBase):
     canMultiLoad = True
 
     def __init__(self):
+        super(BroadcastListener, self).__init__()
         self.AddAction(Broadcast)
 
     def __start__(self, prefix=None, zone="255.255.255.255", port=33333, selfBroadcast=False, payDelim="&&", listenAddr=""):

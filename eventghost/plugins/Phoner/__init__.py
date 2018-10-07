@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 #
 # /plugins/Phoner/__init__.py
 #
@@ -57,7 +59,7 @@ eg.RegisterPlugin(
     guid = "{FF763E14-7253-4025-99F2-32D9AC43FA9C}",
     createMacrosOnAdd = True,
 #  ToDo:  description - Add some text about CallID ...,
-    description = ur'''<rst>
+    description = r'''<rst>
 Adds support functions to control Phoner_.
 
 .. _Phoner: http://www.phoner.de/index_en.htm''',
@@ -91,9 +93,9 @@ Adds support functions to control Phoner_.
 
 def PhonerWin():
     FindPhonerWindow = eg.WindowMatcher(
-        u'phoner.exe',
+        'phoner.exe',
         None,
-        u'T{*}rmMain',
+        'T{*}rmMain',
         None,
         None,
         None,
@@ -284,6 +286,7 @@ class Phoner(eg.PluginBase):
     EventHandler = None
 
     def __init__(self):
+        super(Phoner, self).__init__()
         self.AddActionsFromList(ACTIONS)
 
     def __start__(self, path = None):

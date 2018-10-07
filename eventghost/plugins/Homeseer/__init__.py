@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # plugins/Homeseer/__init__.py
 #
@@ -38,6 +39,7 @@ from win32com.client import Dispatch
 class HomeseerPlugin(eg.PluginClass):
 
     def __init__(self):
+        super(HomeseerPlugin, self).__init__()
         self.AddAction(OnOffCommand)
         self.AddAction(OffCommand)
         self.AddAction(OnCommand)

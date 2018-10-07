@@ -1,4 +1,5 @@
 #
+# super_class_updated
 # JVC HD-1 Serial V0.1
 # ====================
 # Written by Oliver Wagner, <owagner@hometheatersoftware.com>
@@ -113,6 +114,7 @@ class ActionBase(eg.ActionClass):
 class JVCHD1Serial(eg.PluginClass):
 
     def __init__(self):
+        super(JVCHD1Serial, self).__init__()
         self.info.eventPrefix = "JVC-HD1"
         for evalName, tmpDescription, tmpCmd, tmpData in ACTIONS:
             class TmpAction(ActionBase):

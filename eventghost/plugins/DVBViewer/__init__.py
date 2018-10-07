@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# super_class_updated
 # -*- coding: UTF-8 -*-
 
 PLUGIN_VERSION                       = "3.0.1"
@@ -65,7 +66,7 @@ import eg
 from os.path import join, dirname, abspath, isfile
 import codecs
 
-HELPFILE = abspath(join(dirname(__file__.decode('mbcs')), "DVBViewer-Help.html"))
+HELPFILE = abspath(join(dirname(__file__), "DVBViewer-Help.html"))
 
 def GetHelp():
     try:
@@ -220,7 +221,7 @@ PGM_ACTIONS = (
     ("Fullscreen",                       "Fullscreen",                          None,     (5,True )),
     ("Screenshot",                       "Screenshot",                          None,   (115,True )),
     ("OnTop",                            "Window always On Top",                None,     (1,True )),
-    ("HideMenu",                         "Toggle Menubar",                      None,     (2,True )),
+    ("HideMen",                         "Toggle Menubar",                      None,     (2,True )),
     ("ShowStatusbar",                    "Toggle Statusbar",                    None,     (3,True )),
     ("TitlebarHide",                     "Toggle Window Frame",                 None,    (54,True )),
     ("Toolbar",                          "Toggle Toolbar",                      None,     (4,True )),
@@ -292,7 +293,7 @@ CHANNEL_ACTIONS = (
 )
 
 OSD_ACTIONS = (
-    ("OSDMenu",                          "OSD-Menu",                            None,   (111,True )),
+    ("OSDMen",                          "OSD-Men",                            None,   (111,True )),
     ("OSDLeft",                          "OSD-Left",                            None,  (2000,True )),
     ("OSDRight",                         "OSD-Right",                           None,  (2100,True )),
     ("OSDUp",                            "OSD-Up",                              None,    (78,True )),
@@ -320,8 +321,8 @@ OSD_ACTIONS = (
     ("OSDShowChannels",                  "OSD-Show Channels",                   None,  (8199,True )),
     ("OSDShowFavourites",                "OSD-Show Favourites",                 None,  (8200,True )),
     ("OSDShowTimeline",                  "OSD-Show Timeline",                   None,  (8201,True )),
-    ("OSDShowSubtitlemenu",              "OSD-Show Subtitlemenu",               None,  (8247,True )),
-    ("OSDShowAudiomenu",                 "OSD-Show Audiomenu",                  None,  (8248,True )),
+    ("OSDShowSubtitlemen",              "OSD-Show Subtitlemen",               None,  (8247,True )),
+    ("OSDShowAudiomen",                 "OSD-Show Audiomen",                  None,  (8248,True )),
     ("OSDShowPicture",                   "OSD-Show Picture",                    None,  (8202,True )),
     ("OSDShowMusic",                     "OSD-Show Music",                      None,  (8203,True )),
     ("OSDShowVideo",                     "OSD-Show Video",                      None,  (8204,True )),
@@ -365,7 +366,7 @@ PLAY_ACTIONS = (
     ("PlayAudioCD",                      "Play AudioCD",                        None,  (8257,True )),
     ("PlayDVD",                          "Play DVD",                            None,  (8250,True )),
     ("EjectCD",                          "Eject CD",                            None, (12299,True )),
-    ("DVDMenu",                          "DVD Menu",                            None,  (8246,True )),
+    ("DVDMen",                          "DVD Men",                            None,  (8246,True )),
 )
 
 VIDEO_AUDIO_ACTIONS = (
@@ -651,7 +652,7 @@ class Text:
         date                  = "Date of recording: "
         start                 = "Start time: "
         end                   = "End time: "
-        days                  = ( "Mo","Tu", "We","Th","Fr","Sa","Su" )
+        days                  = ( "Mo","T", "We","Th","Fr","Sa","S" )
         recordingDescription  = "Description: "
         disableAV             = "Disable AV"
         enabled               = "Enable recording"
@@ -730,8 +731,8 @@ def toRecordingEntry(recID, channel, startDate, description, duration, filename,
 
 @eg.LogItWithReturn
 def WaitForDVBViewerWindow( timeout=60.0 ) :
-    winmatcher = eg.WindowMatcher( u'dvbviewer.exe',
-                          winName=u'DVB Viewer{*}',
+    winmatcher = eg.WindowMatcher( 'dvbviewer.exe',
+                          winName='DVB Viewer{*}',
                           includeInvisible=True,
                           timeout=timeout )
     return winmatcher()
@@ -751,6 +752,7 @@ class DVBViewer(eg.PluginClass):
 
     @eg.LogIt
     def __init__(self):
+        super(DVBViewer, self).__init__()
         self.AddEvents(*EVENT_LIST)
 
         group = self.AddGroup("DVBViewer program actions", "DVBViewer program management")
@@ -3071,7 +3073,7 @@ class IsDVBViewerProcessRunning(eg.ActionClass):
 
 class WaitUntilPluginIdle(eg.ActionClass):
     name = "Prepare for Standby"
-    description = u"""Prepares for Standby or Hibernate and waits until the plugin is idle. This action should be called before
+    description = """Prepares for Standby or Hibernate and waits until the plugin is idle. This action should be called before
 suspending the system (i.e. before calling Standby or Hibernate). See Description page for more info.
 
 This action waits until the plugin is idle and pauses background execution of the WatchDogThread.
@@ -4110,7 +4112,7 @@ The result is provided as a data dictionary in 'eg.result'."""
 
 class DeleteRecordings( eg.ActionClass ) :
     name = "Delete Recordings"
-    description = u'''Delete Recordings according to search criteria and filters.
+    description = '''Delete Recordings according to search criteria and filters.
 May be used to implement an automated housekeeping, especially for recorded TV series.
 IT'S POWERFUL, USE IT WITH CARE !
 
@@ -4168,8 +4170,8 @@ from the Recording Service. This is done transparently, you don't have to care f
         keepAtLeast1 = "Keep at least the last"
         keepAtLeast2 = "recordings that match the filters, regardless of age"
 
-        dryMode = "Dry mode => do not really perform the delete operation but print(the result to the log file")
-        dryModeHint = "Hint: You're in dry mode. Simply press the 'Test' button to check the query results."
+        dryMode = "Dry mode => do not really perform the delete operation but print(the result to the log file"
+        dryModeHint = "Hint: Yo're in dry mode. Simply press the 'Test' button to check the query results."
 
         deletePreview1 = "*** DryMode - Nothing will be deleted. ***"
         deletePreview2 = "*** This operation would delete %s records! ***"

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -16,7 +17,7 @@
 # You should have received a copy of the GNU General Public License along
 # with EventGhost. If not, see <http://www.gnu.org/licenses/>.
 
-ur"""<rst>
+r"""<rst>
 A plugin for the ASUS PSR-2000 remote.
 """
 
@@ -58,7 +59,7 @@ BUTTONS = {
     (64, 0, 17, 15): "Mute",
     (64, 0, 18, 15): "ChannelUp",
     (64, 0, 19, 15): "ChannelDown",
-    (64, 0, 20, 15): "Menu",
+    (64, 0, 20, 15): "Men",
     (64, 0, 21, 15): "Bookmark",
     (64, 0, 22, 15): "NumLock",
     (64, 0, 23, 15): "Num1",
@@ -78,6 +79,8 @@ BUTTONS = {
 
 
 class AsusPsr2000(eg.PluginBase):
+    def __init__(self):
+        super(AsusPsr2000, self).__init__()
 
     def __start__(self):
         self.winUsb = eg.WinUsb(self)

@@ -87,11 +87,10 @@ def InitGui():
     import builtins
     builtins.raw_input = RawInput
     builtins.input = Input
+
     eg.scheduler.start()
     eg.messageReceiver.Start()
-
     eg.document = eg.Document()
-
     if eg.config.showTrayIcon:
         if not (eg.config.hideOnStartup or eg.startupArguments.hideOnStartup):
             eg.document.ShowFrame()
@@ -127,18 +126,16 @@ def InitGui():
     #         config.lastUpdateCheckDate = today
     #         wx.CallAfter(eg.CheckUpdate.Start)
 
-    eg.stderr.write('registering crash revovery\n')
-
     # Register restart handler for easy crash recovery.
-    if eg.WindowsVersion >= 'Vista':
-        args = " ".join(eg.app.GetArguments())
-        windll.kernel32.RegisterApplicationRestart(args, 8)
+    # if eg.WindowsVersion >= 'Vista':
+    #     args = " ".join(eg.app.GetArguments())
+    #     windll.kernel32.RegisterApplicationRestart(args, 8)
 
     eg.Print(eg.text.MainFrame.Logger.welcomeText)
 
 def InitPathsAndBuiltins():
-    import __builtin__
-    import cFunctions
+    import builtins
+    builtins.wx = wx
 
     eg.folderPath = eg.FolderPath()
     eg.mainDir = eg.folderPath.mainDir
@@ -152,13 +149,13 @@ def InitPathsAndBuiltins():
     if not exists(eg.configDir):
         try:
             makedirs(eg.configDir)
-        except:
+        except WindowsError:
             pass
 
     if not exists(eg.localPluginDir):
         try:
             makedirs(eg.localPluginDir)
-        except:
+        except WindowsError:
             eg.localPluginDir = eg.corePluginDir
 
     if eg.Cli.args.isMain:
@@ -167,21 +164,20 @@ def InitPathsAndBuiltins():
         else:
             chdir(eg.mainDir)
 
-    __builtin__.wx = wx
-
-    corePluginPackage = types.ModuleType("eg.CorePluginModule")
-    corePluginPackage.__path__ = [eg.corePluginDir]
-    userPluginPackage = types.ModuleType("eg.UserPluginModule")
-    userPluginPackage.__path__ = [eg.localPluginDir]
-
-    sys.modules["eg.CorePluginModule"] = corePluginPackage
-    sys.modules["eg.UserPluginModule"] = userPluginPackage
-    sys.modules['eg.cFunctions'] = cFunctions
-
     eg.pluginDirs = [eg.corePluginDir, eg.localPluginDir]
-    eg.cFunctions = cFunctions
-    eg.CorePluginModule = corePluginPackage
-    eg.UserPluginModule = userPluginPackage
+
+    sys.modules['eg.cFunctions'] = eg.cFunctions = __import__('cFunctions')
+
+    CorePluginModule = __import__('PluginModuleLoader', level=1)
+    CorePluginModule.__path__ = [eg.corePluginDir]
+    CorePluginModule.__name__ = 'eg.CorePluginModule'
+    eg.CorePluginModule = CorePluginModule.PluginModuleLoader()
+
+    UserPluginModule = __import__('PluginModuleLoader', level=1)
+    UserPluginModule.__path__ = [eg.localPluginDir]
+    UserPluginModule.__name__ = 'eg.UserPluginModule'
+    eg.UserPluginModule = UserPluginModule.PluginModuleLoader()
+
 
 def InitPil():
     """

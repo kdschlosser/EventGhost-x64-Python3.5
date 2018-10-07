@@ -150,6 +150,6 @@ def GetMachineKey():
     uuid = ctypes.create_string_buffer(16)
     ctypes.windll.rpcrt4.UuidCreateSequential(uuid)
     mac = uuid.raw[-6:]
-    return volumeSerial + mac
+    return volumeSerial + mac.decode('latin-1')
 
 MACHINE_KEY = GetMachineKey()

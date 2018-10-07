@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is part of EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -71,6 +72,7 @@ class Keyboard(eg.PluginBase):
     text = Text
 
     def __init__(self):
+        super(Keyboard, self).__init__()
         self.AddEvents()
 
     def __start__(self, universalMods = False, *dummyArgs):

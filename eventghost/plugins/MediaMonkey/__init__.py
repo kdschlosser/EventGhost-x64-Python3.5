@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 #
 # plugins/MediaMonkey/__init__.py
 #
@@ -24,12 +26,12 @@
 # -------------------------------------------
 # 0.3.7 by Pako 2014-06-08 12:06 UTC+1
 #     - - changes caused by a new eg.Scheduler
-# 0.3.6 by Pako 2013-02-13 08:38 UTC+1
+# 0.3.6 by Pako 2013-02-13 0o8:38 UTC+1
 #     - bugfix (typing error)
 # 0.3.5 by Pako 2013-02-11 19:37 UTC+1
 #     - on Windows 7, FindWindowEx returns None without raising an error
 #     - on older versions, it raises a FILE_NOT_FOUND error
-# 0.3.4 by Pako 2012-08-17 07:51 UTC+1
+# 0.3.4 by Pako 2012-08-17 0o7:51 UTC+1
 #     - added MediaMonkey.IsRunning event
 #     - added GetPlaylists action
 #     - improved routine for periodic testing "is running ?"
@@ -39,7 +41,7 @@
 #     - action Exit renamed
 # 0.3.1 by Pako 2011-12-24 10:05 UTC+1
 #     - plugin automatically connects and disconnects to MM through ActiveX/COM
-# 0.3.0 by Pako 2011-11-28 07:12 UTC+1
+# 0.3.0 by Pako 2011-11-28 0o7:12 UTC+1
 #     - for MM version 4.0 and later
 #     - removed file EventGhost.vbs
 # 0.2.12 by Pako 2010-02-10 12:24  GMT+1
@@ -83,7 +85,7 @@ eg.RegisterPlugin(
     kind = "program",
     guid = "{50602341-ABC3-47AD-B859-FCB8C03ED4EF}",
     createMacrosOnAdd = True,
-    description = ur'''<rst>
+    description = r'''<rst>
 Adds support functions to control MediaMonkey_.
 
 This plugin requires MediaMonkey_ version 4.0 or later.
@@ -103,10 +105,10 @@ This plugin requires MediaMonkey_ version 4.0 or later.
 | *Payload:* this will depend on the results of the action
 
 For example, if you try to add a track to a playlist 'test', the payload will be either:
-*u"Track already exists in playlist test"* or *u"Track added to playlist test"*.
+*"Track already exists in playlist test"* or *"Track added to playlist test"*.
 
 | Another example: executing 'Load Playlist by Filter', where you choose name
-  the filter 'Beatles', the result may be: MediaMonkey.playlist (u'Beatles','220') .
+  the filter 'Beatles', the result may be: MediaMonkey.playlist ('Beatles','220') .
 | Number 220 indicates, that there are 220 tracks in the library that match your query.
 
 .. _MediaMonkey: http://www.MediaMonkey.com/ ''',
@@ -157,7 +159,7 @@ For example, if you try to add a track to a playlist 'test', the payload will be
         "dR/V5XFDVRM2vl8tE6CnqX3KD8auzdBjlN7uJuO3in+xi/r5qEbMmvcM9Pa/xqz5MAES"
         "+KBHJMDhJBJeDGF/U4+xOtaaPhYJOnUIFWdocM0FachMN5MVpMBKUFGtQrNnEla88Ges"
         "rU2mzFHPaThN1TOfun3JXenBv8cN10Zvm0f1xogG0EMbExCwmtxfFbmdP/Evdi93nnYQ"
-        "F//bIoTaPpYkHq36PhG4SIBY3Hj7HwE8/2GP2xoMAanGEO64TI1zx6dBo9VJ4NUieC4u"
+        "F//bIoTaPpYkHq36PhG4SIBY3Hj7HwE8/2GP2xoMAanGEO64TI1zx6dBo9VJ4NUieC4"
         "w3S89cxDWFWTLdoB3oDx+30PU1cGTgGKwBFidtSQrKL3s3ZHbAA99CQ175EnKU2mgcBv"
         "JvX/Of8wa3y495IcTJw+RVr/vjgCvBHwTe1uLH4vgM92K2LADJSAnNQAHpmtwMjiVAJL"
         "01RoYgkgLRAsM/DB0/fhua0FFFL7JHcYWELdeZ1TYiIcjhuWEqfQf1D9UcQLhIKhm6j5"
@@ -342,7 +344,7 @@ SONG_TABLE_FIELDS=(
 MM_WindowMatcher = eg.WindowMatcher(
     "MediaMonkey.exe",
     None,
-    u'TFMainWindow{*}',
+    'TFMainWindow{*}',
     None,
     None,
     1,
@@ -675,7 +677,7 @@ class MediaMonkeyWorkerThread(eg.ThreadWorker):
         if self.isRunning():
             idSong=self.MM.Player.CurrentSong.ID
             IDPlaylist=self.MM.PlaylistByTitle(plString).ID
-            if IDPlaylist <> 0:
+            if IDPlaylist != 0:
                 sql="SELECT COUNT(*) FROM PlaylistSongs WHERE PlaylistSongs.IDSong="+\
                     str(idSong)+" AND PlaylistSongs.IDPlaylist="+str(IDPlaylist)
                 if self.MM.Database.OpenSQL(sql).ValueByIndex(0) == "0":
@@ -695,7 +697,7 @@ class MediaMonkeyWorkerThread(eg.ThreadWorker):
             Player = self.MM.Player
             idSong=Player.CurrentSong.ID
             IDPlaylist=self.MM.PlaylistByTitle(plString).ID
-            if IDPlaylist <> 0:
+            if IDPlaylist != 0:
                 sql=" FROM PlaylistSongs WHERE IDPlaylist="+str(IDPlaylist)+" AND IDSong="+str(idSong)
                 if self.MM.Database.OpenSQL("SELECT COUNT(*)"+sql).ValueByIndex(0) == "1":
                     self.MM.Database.ExecSQL("DELETE"+sql)
@@ -801,7 +803,7 @@ class MediaMonkeyWorkerThread(eg.ThreadWorker):
                 substValues3=(op,propertiesList[rule[0]][0])
                 dateType=propertiesList[rule[0]][1]
                 emptVal = '""'  if dateType == "T" else '"-1"'
-                tuplOper=("=","<>",">",">=","<","<=")
+                tuplOper=("=","!=",">",">=","<","<=")
 
                 if dateType=="D":
                     if rule[1]<6:
@@ -837,7 +839,7 @@ class MediaMonkeyWorkerThread(eg.ThreadWorker):
                     elif rule[1]==12:
                         sql+='%s%s=' % substValues3 + emptVal
                     elif rule[1]==13:
-                        sql+='%s%s<>' % substValues3 + emptVal
+                        sql+='%s%s!=' % substValues3 + emptVal
             sql=(sql[5:] if mode==0 else sql[4:])
             if random:
                 sql += " ORDER BY RANDOM()"
@@ -1208,6 +1210,7 @@ class MediaMonkey(eg.PluginBase):
     text = Text
 
     def __init__(self):
+        super(MediaMonkey, self).__init__()
         group = self.AddGroup(
             self.text.mainGrpName,
             self.text.mainGrpDescr
@@ -2123,7 +2126,7 @@ class GetBasicStatistics(eg.ActionBase):
 
 class GetNotAccessibleTracks(eg.ActionBase):
     name = "Show/Edit inaccessible tracks"
-    description = u'''<rst>**Show/Edit tracks that MediaMonkey cannot access.**
+    description = '''<rst>**Show/Edit tracks that MediaMonkey cannot access.**
 
 ATTENTION !!! This operation may take several minutes !!!
 List of found tracks is exported to selected file.
@@ -3236,7 +3239,7 @@ class LoadPlaylistByFilter(eg.ActionBase):
         self,
         plName="",
         mode=0,
-        listRules=[[-1,-1,u""]],
+        listRules=[[-1,-1,""]],
         order=False,
         trend=0,
         crit=0,
@@ -3259,8 +3262,8 @@ class LoadPlaylistByFilter(eg.ActionBase):
                         flag=False
                         break
                     else:
-                        if SONG_TABLE_FIELDS[choice0][1] <> "D":
-                            if choice1 < 12 and listRules2[i][2]==u"":
+                        if SONG_TABLE_FIELDS[choice0][1] != "D":
+                            if choice1 < 12 and listRules2[i][2]=="":
                                 flag=False
                                 break
                         else:
@@ -3385,7 +3388,7 @@ class LoadPlaylistByFilter(eg.ActionBase):
         def CreateStrCtrl(row):
 #Called from: UpdateStr, AddRow
             tp=SONG_TABLE_FIELDS[listRules2[row][0]][1]
-            if tp<>"D":
+            if tp!="D":
                 strCtrl=wx.TextCtrl(panel, row+150, "",size=(168, 22))
                 strCtrl.Bind(wx.EVT_TEXT, OnStrChange)
                 strCtrl.SetValue(listRules2[row][2])
@@ -3450,7 +3453,7 @@ class LoadPlaylistByFilter(eg.ActionBase):
             cnt=self.mySizer.FindItemAtPosition((row,1)).GetWindow().GetCount()
             tp=SONG_TABLE_FIELDS[listRules2[row][0]][1]
             myWnd=wx.FindWindowById(row+100)
-            if cnt==0 or (tp=="D" and cnt==14) or (tp<>"D" and cnt<>14):
+            if cnt==0 or (tp=="D" and cnt==14) or (tp!="D" and cnt!=14):
                 self.mySizer.Detach(myWnd)
                 myWnd.Destroy()
                 CreateExprCtrl(row)
@@ -3475,7 +3478,7 @@ class LoadPlaylistByFilter(eg.ActionBase):
                 elif lng==3 and tp2>5:
                     rng=(2,1,0)
                     flag=True
-            else: #tp<>"D"
+            else: #tp!="D"
                 if lng==2:
                     rng=(1,0,)
                     flag=True
@@ -3528,7 +3531,7 @@ class LoadPlaylistByFilter(eg.ActionBase):
             if tp=="D" and cnt==14: # change to absolute date/time format
                 listRules2[row][2]=str(datetime.datetime.today())[:11]+'00:00:00'
                 flg=True
-            elif tp<>"D" and cnt<>14: #change to no date/time (single column) format
+            elif tp!="D" and cnt!=14: #change to no date/time (single column) format
                 listRules2[row][2]=""
                 flg=True
             if flg: # set selection Expr to "no selection"
@@ -3544,7 +3547,7 @@ class LoadPlaylistByFilter(eg.ActionBase):
             listRules2[row][1]=value
             #enable=False if value>11 else True
             wnd=wx.FindWindowById(row+150)
-            if SONG_TABLE_FIELDS[listRules2[row][0]][1]<>"D":
+            if SONG_TABLE_FIELDS[listRules2[row][0]][1]!="D":
                 if value>11:
                     wnd.Enable(False)
                     wnd.Clear()
@@ -3596,7 +3599,7 @@ class LoadPlaylistByFilter(eg.ActionBase):
             """Event handler for the button '+' click."""
             if self.i<maxRules:
                 #Insert new record at requested position
-                listRules2.insert(evt.GetId()+1,[-1,-1,u""])
+                listRules2.insert(evt.GetId()+1,[-1,-1,""])
                 #Create new row (bottom)
                 AddRow(self.i)
                 self.i+=1
@@ -3616,7 +3619,7 @@ class LoadPlaylistByFilter(eg.ActionBase):
             row=evt.GetId()
             if self.i>1:
                 tp=SONG_TABLE_FIELDS[listRules2[self.i-1][0]][1]
-                if tp<>"D":
+                if tp!="D":
                     rng=(0,)
                 else:
                     if listRules2[self.i-1][1]>5:
@@ -3767,7 +3770,7 @@ class LoadPlaylistByFilter(eg.ActionBase):
 
 class LoadPlaylistBySql(eg.ActionBase):
     name = "Load Playlist by SQL query"
-    description = ur'''<rst>**Loads a MediaMonkey playlist defined by SQL query.**
+    description = r'''<rst>**Loads a MediaMonkey playlist defined by SQL query.**
 
 This action is for advanced users only. Here you can write your own SQL
 query and use it to select specific songs from **MediaMonkey**'s
@@ -3907,7 +3910,7 @@ Pay particular attention to the `WHERE Clause`_ .
 
 class Jukebox(eg.ActionBase):
     name = "Album jukebox"
-    description = u'''<rst>**Album jukebox**.
+    description = '''<rst>**Album jukebox**.
 
 Thanks to this action, your PC can function like a jukebox. In order to work
 properly, the event which triggers this action, must be carrying a payload.
@@ -4045,7 +4048,7 @@ You can this file import for example to MS Excel or OOo Calc''',
 
 class SongJukebox(eg.ActionBase):
     name = "Song jukebox"
-    description = u'''<rst>**Song jukebox**.
+    description = '''<rst>**Song jukebox**.
 
 Thanks to this action, your PC can function like a jukebox. In order to work
 properly, the event which triggers this action, must be carrying a payload.
@@ -4173,7 +4176,7 @@ you can label the keystrokes with your own description.'''
     def __call__(self, descr = "",keys = ""):
         hwnds = MM_WindowMatcher()
         if hwnds:
-            eg.SendKeys(hwnds[0],u'{'+keys+u'}', False)
+            eg.SendKeys(hwnds[0],'{'+keys+'}', False)
 
     def Configure(self,descr="",keys = ""):
         text  = self.Text

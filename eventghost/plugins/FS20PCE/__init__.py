@@ -1,4 +1,5 @@
 """<rst>
+# super_class_updated
 Allows to receive events from FS20 remote controls.
 
 |
@@ -100,6 +101,7 @@ def CheckPattern(pattern, value):
 
 class FS20PCE(eg.PluginClass):
     def __init__(self):
+        super(FS20PCE, self).__init__()
         self.version = None
         self.thread = None
         self.PendingEvents = {}

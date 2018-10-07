@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -16,7 +18,7 @@
 # You should have received a copy of the GNU General Public License along
 # with EventGhost. If not, see <http://www.gnu.org/licenses/>.
 
-ur"""<rst>
+r"""<rst>
 Plugin for the CyberLink Universal Remote Control
 """
 
@@ -73,7 +75,7 @@ KEY_CODES_3 = {
     (3, 128, 0): "Record",
     (4, 0, 1):   "Angel",
     (4, 0, 2):   "Language",
-    (4, 0, 4):   "DvdMenu",
+    (4, 0, 4):   "DvdMen",
     (4, 0, 8):   "Subtitle",
     (4, 0, 16):  "SAP",
     (4, 0, 32):  "Teletext",
@@ -91,6 +93,8 @@ KEY_CODES_4 = {
 }
 
 class CyberlinkUniversalRemote(eg.PluginBase):
+    def __init__(self):
+        super(CyberlinkUniversalRemote, self).__init__()
 
     def __start__(self):
         self.buffer = []

@@ -16,8 +16,9 @@
 # You should have received a copy of the GNU General Public License along
 # with EventGhost. If not, see <http://www.gnu.org/licenses/>.
 
-from ctypes import byref, c_int, c_void_p, GetLastError, POINTER, WinDLL
+from ctypes import byref, c_int, c_void_p, GetLastError, POINTER, windll
 from ctypes.wintypes import BOOL, DWORD, HANDLE, HWND, LPWSTR
+import wx
 
 # Local imports
 import eg
@@ -25,7 +26,7 @@ import eg
 PVOID = c_void_p
 LPTSTR = LPWSTR
 
-_WtsApi32 = WinDLL("WtsApi32")
+_WtsApi32 = windll.WtsApi32
 
 WTSRegisterSessionNotification = _WtsApi32.WTSRegisterSessionNotification
 WTSRegisterSessionNotification.restype = BOOL
@@ -90,7 +91,7 @@ class SessionChangeNotifier:
             WM_WTSSESSION_CHANGE,
             self.OnSessionChange
         )
-        eg.scheduler.AddTask(0, self.Register)
+        wx.CallAfter(self.Register)
 
     def Close(self):
         if self.inited:
@@ -137,7 +138,8 @@ class SessionChangeNotifier:
                 # if we tried it to often, give up
                 eg.PrintError("WTSRegisterSessionNotification timeout")
                 return
-            eg.scheduler.AddTask(2.0, self.Register)
+
+            wx.CallLater(2000, self.Register)
             return
         # some other error has happened
         raise SystemError("WTSRegisterSessionNotification", errorNum)

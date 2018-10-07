@@ -184,7 +184,7 @@ class Execute(eg.ActionBase):
                 )
                 priorityClass = GetPriorityClass(processInformation.hProcess)
                 if priorityClass != PRIORITY_FLAGS[priority]:
-                    raise
+                    raise Exception
             except:
                 pid = windll.kernel32.GetProcessId(processInformation.hProcess)
                 pi = SHELLEXECUTEINFO()

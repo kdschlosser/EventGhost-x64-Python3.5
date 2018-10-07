@@ -36,5 +36,5 @@ class TranslatableStringsMeta(type):
         return defaultText
 
 
-class TranslatableStrings(object):
-    __metaclass__ = TranslatableStringsMeta
+class TranslatableStrings(object, metaclass=TranslatableStringsMeta):
+    pass

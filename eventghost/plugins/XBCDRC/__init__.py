@@ -1,4 +1,5 @@
 # Xbox(original) remote control plugin for EventGhost by jinxdone. Based on the Generic HID plugin by Bartman.
+# super_class_updated
 #
 """<rst>
 Xbox remote control plugin, based on the Generic Human Interface Device (HID) plugin.
@@ -652,6 +653,8 @@ class HIDThread(threading.Thread):
 
 
 class XBCDRC(eg.PluginClass):
+    def __init__(self):
+        super(XBCDRC, self).__init__()
     helper = None
     text = Text
     thread = None

@@ -437,6 +437,7 @@ class WinUsb(object):
 
     @staticmethod
     def ListDevices():
+        return {}
         devices = {}
         guid = GUID()
         CLSIDFromString("{A5DCBF10-6530-11D2-901F-00C04FB951ED}", byref(guid))

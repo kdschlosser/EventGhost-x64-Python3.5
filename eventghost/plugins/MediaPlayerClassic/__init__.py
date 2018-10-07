@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # plugins/MediaPlayerClassic/__init__.py
 #
@@ -2458,6 +2459,7 @@ class MediaPlayerClassic(eg.PluginBase):
 
 
     def __init__(self):
+        super(MediaPlayerClassic, self).__init__()
         self.mr = eg.MessageReceiver("MPC-HC_plugin_")
         self.mr.AddHandler(WM_COPYDATA, self.Handler)
         self.mr.Start()

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# update_complete
 #
 # This file is part of EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -38,7 +39,7 @@ from eg.WinApi.Utils import GetMonitorDimensions
 HWND_FLAGS = SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_FRAMECHANGED
 
 SKIN_DIR = join(
-    abspath(dirname(__file__.decode('mbcs'))),
+    abspath(dirname(__file__)),
     "OsdSkins"
 )
 SKINS = [name[:-3] for name in listdir(SKIN_DIR) if name.endswith(".py")]

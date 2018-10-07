@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # Plugins/DScaler/__init__.py
 # DScaler Plugin for EventGhost.
@@ -184,6 +185,7 @@ def SendCommand(mesg, wParam, lParam=0):
 class Dscaler(eg.PluginClass):
 
     def __init__(self):
+        super(Dscaler, self).__init__()
         self.AddAction(ChannelPlus)
         self.AddAction(ChannelMinus)
         self.AddAction(ChannelPrevious)

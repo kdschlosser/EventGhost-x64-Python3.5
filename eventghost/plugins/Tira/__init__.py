@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -86,6 +87,7 @@ TIRA_SIX_BYTE_CALLBACK = WINFUNCTYPE(c_int, c_char_p)
 class Tira(eg.RawReceiverPlugin):
 
     def __init__(self):
+        super(Tira, self).__init__()
         self.dll = None
         eg.RawReceiverPlugin.__init__(self)
         self.inTest = False

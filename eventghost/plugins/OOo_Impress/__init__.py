@@ -1,4 +1,6 @@
 version="0.2"
+# update_complete
+# super_class_updated
 # plugins/Impress/__init__.py
 #
 # Copyright (C)  2008-2013 Pako  (lubos.ruckl@quick.cz)
@@ -17,7 +19,7 @@ version="0.2"
 #
 # You should have received a copy of the GNU General Public License
 # along with EventGhost; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  0o2110-1301  USA
 
 # Changelog (in reverse chronological order):
 # -------------------------------------------
@@ -32,7 +34,7 @@ eg.RegisterPlugin(
     guid = "{D8767FB1-CCC0-402D-AF65-D961D2D7C20F}",
     version = version,
     kind = "program",
-    description = ur'''<rst>
+    description = r'''<rst>
 Adds actions to control ...
 
 | `Appache OpenOffice Impress`__
@@ -75,7 +77,7 @@ __ https://www.libreoffice.org/features/impress/
         "iBwzCZMwgwhMwjRsUmZktDFBTgDACTJCxkgJJBgqjfxHB0RExMwYaMUQSRjEkm2iAxIA"
         "IOiMkTEcA7cLq5l5cDWFWQQQiDRTTVli7/l6RrjD8h98qn/7XBJlBEdwAiikQeNWByLM"
         "TMI8aIIZkI4zWdiy0wfL089t2AHHQbTwTsogBgsESLsrtwgAMLHwQBwoCNR7sZd1l3V1"
-        "22aGIJ6/EM691jciESggbrx3i0AbI8IiDGGIKNFKqbd7xfa/zgzXpoTf56CVggiFjXju"
+        "22aGIJ6/EM691jciESggbrx3i0AbI8IiDGGIKNFKqbd7xfa/zgzXpoTf56CVggiFjXj"
         "jXju1TWvHujfWwkX54pbZwBYrS2gRBSUglIwWmkbK/v3yxf2NZ9ef2Tr7ZrE9db+txSQ"
         "0zAaeYvmxb8OCEiBlSaljbEAWCmbz4vw2aB+b/XcxgLd7paeBjGcQePNl6YeeASAbXWj"
         "lBUpo60HQAuzNkqZV5OZh/nmzvwi/p9wDK0QOaD5jrhM2dy/AXgELaIVSkc/AAAAAElF"
@@ -106,7 +108,7 @@ SC_MINIMIZE   = 61472
 findPresentation = eg.WindowMatcher(
     None,
     None,
-    u'SALTMPSUBFRAME',
+    'SALTMPSUBFRAME',
     None,
     None,
     None,
@@ -188,7 +190,7 @@ class Menu(wx.Frame):
             self,
             None,
             -1,
-            'Impress_menu',
+            'Impress_men',
             style = wx.STAY_ON_TOP|wx.SIMPLE_BORDER
         )
         self.data = data
@@ -839,10 +841,10 @@ class ShowMenu(eg.ActionClass):
         delete = 'Delete'
         insert = 'Insert new'
         menuFont = 'Menu font:'
-        txtColour = 'Text colour'
-        background = 'Background colour'
-        txtColourSel = 'Selected text colour'
-        backgroundSel = 'Selected background colour'
+        txtColour = 'Text color'
+        background = 'Background color'
+        txtColourSel = 'Selected text color'
+        backgroundSel = 'Selected background color'
         inverted = "Use inverted colours"
         title = "Choose a file"
         OSELabel = 'Menu show on:'
@@ -1224,7 +1226,7 @@ class ShowMenu(eg.ActionClass):
             sel = listBoxCtrl.GetSelection()
             label = labelCtrl.GetValue()
             filepath = filepathCtrl.GetValue()
-            if label.strip()<>"":
+            if label.strip()!="":
                 if os.path.isfile(filepath):
                     if [item[0] for item in self.choices].count(label)==1:
                         if [item[1] for item in self.choices].count(filepath)==1:
@@ -1359,7 +1361,7 @@ class ShowMenu(eg.ActionClass):
         btnDEL.Bind(wx.EVT_BUTTON, OnButtonDelete)
 
         def OnTextChange(evt):
-            if self.choices <> []:
+            if self.choices != []:
                 flag = False
                 sel = self.oldSel
                 label = labelCtrl.GetValue()
@@ -1368,7 +1370,7 @@ class ShowMenu(eg.ActionClass):
                 self.choices[sel][1] = filepath
                 listBoxCtrl.Set(self.choices)
                 listBoxCtrl.SetSelection(sel)
-                if label.strip()<>"":
+                if label.strip()!="":
                     if os.path.isfile(filepath):
                         if [item[0] for item in self.choices].count(label)==1:
                             if [item[1] for item in self.choices].count(filepath)==1:
@@ -1561,24 +1563,24 @@ ACTIONS = (
     ( eg.ActionGroup, 'Other', 'Other actions', 'Other actions', (
         (StartPresentation, 'StartPresentation', 'Start presentation', 'Start presentation.', None),
         (Exit, 'Exit', 'End presentation', 'End presentation.', None ),
-        (ComAction, 'stopSound', 'Stop all sounds', 'Stop all currently played sounds.', u'stopSound' ),
+        (ComAction, 'stopSound', 'Stop all sounds', 'Stop all currently played sounds.', 'stopSound' ),
         (blankScreen, 'Blank', 'Blank screen', 'Pauses the slide show and blanks the screen in the given color.', None ),
-        (ComAction, 'getCurrentSlideIndex', 'Get current slide index', 'Returns the index of the current slide.', u'getCurrentSlideIndex'),
-        (ShowMenu, 'ShowMenu', 'Show menu', 'Show menu.', None),
-        (ComAction, 'Pause', 'Pause presentation', 'Pause presentation.', u'pause' ),
-        (ComAction, 'Resume', 'Resume presentation', 'Resume presentation.', u'resume' ),
-        (ComAction, 'Next', 'Play next effect/slide', 'Play next effect (if any, else go to next slide).', u'gotoNextEffect' ),
+        (ComAction, 'getCurrentSlideIndex', 'Get current slide index', 'Returns the index of the current slide.', 'getCurrentSlideIndex'),
+        (ShowMenu, 'ShowMen', 'Show men', 'Show menu.', None),
+        (ComAction, 'Pause', 'Pause presentation', 'Pause presentation.', 'pause' ),
+        (ComAction, 'Resume', 'Resume presentation', 'Resume presentation.', 'resume' ),
+        (ComAction, 'Next', 'Play next effect/slide', 'Play next effect (if any, else go to next slide).', 'gotoNextEffect' ),
         (ComAction,
             'Previous', 'Play previous effect/slide',
             'Play previous effect again. If no previous effect exists on this slide, show previous slide.',
-            u'gotoPreviousEffect'
+            'gotoPreviousEffect'
         ),
-        (ComAction, 'NextWithout', 'Next slide without effects', 'Go to next slide without playing effects.', u'gotoNextSlide' ),
-        (ComAction, 'PreviousWithout', 'Previous slide without effects', 'Go to the previous slide without playing effects.', u'gotoPreviousSlide' ),
-        (ComAction, 'First', 'First slide', 'Jump to first slide in the slide show.', u'gotoFirstSlide' ),
-        (ComAction, 'Last', 'Last slide', 'Jump to the last slide in the slide show.', u'gotoLastSlide' ),
-        (ComAction, 'GetSlide', 'GetSlide', 'GetSlide.', u'getCurrentSlide' ),
-        (ComAction, 'getNextSlideIndex', 'getNextSlideIndex', 'getNextSlideIndex.', u'getNextSlideIndex' ),
+        (ComAction, 'NextWithout', 'Next slide without effects', 'Go to next slide without playing effects.', 'gotoNextSlide' ),
+        (ComAction, 'PreviousWithout', 'Previous slide without effects', 'Go to the previous slide without playing effects.', 'gotoPreviousSlide' ),
+        (ComAction, 'First', 'First slide', 'Jump to first slide in the slide show.', 'gotoFirstSlide' ),
+        (ComAction, 'Last', 'Last slide', 'Jump to the last slide in the slide show.', 'gotoLastSlide' ),
+        (ComAction, 'GetSlide', 'GetSlide', 'GetSlide.', 'getCurrentSlide' ),
+        (ComAction, 'getNextSlideIndex', 'getNextSlideIndex', 'getNextSlideIndex.', 'getNextSlideIndex' ),
     )),
 )
 #====================================================================
@@ -1594,6 +1596,7 @@ class Impress(eg.PluginClass):
     text = Text
 
     def __init__(self):
+        super(Impress, self).__init__()
         self.AddActionsFromList(ACTIONS)
 
 

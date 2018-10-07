@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -135,6 +136,7 @@ class IgorPlugUDP(eg.IrDecoderPlugin):
     text = Text
 
     def __init__(self):
+        super(IgorPlugUDP, self).__init__()
         eg.IrDecoderPlugin.__init__(self, 51.2)
 
     def __start__(self, prefix="IgorUDP", locPort=6668, remAddress="192.168.1.7"):

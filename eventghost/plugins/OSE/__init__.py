@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # plugins/OSE/__init__.py
 # Copyright (C)  2010 Pako  (lubos.ruckl@quick.cz)
@@ -1058,6 +1059,7 @@ class OSE(eg.PluginBase):
 
 
     def __init__(self):
+        super(OSE, self).__init__()
         global MY_COMPUTER
         MY_COMPUTER = self.MyComputer()
         self.AddActionsFromList(ACTIONS)

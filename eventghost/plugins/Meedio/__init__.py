@@ -1,4 +1,5 @@
 eg.RegisterPlugin(
+# super_class_updated
     name = "Meedio",
     author = "jorel1969",
     version = "0.1.1093",
@@ -48,6 +49,7 @@ def controlMeedio(inputVal):
 class MeedioPlugin(eg.PluginClass):
 
   def __init__(self):
+    super(MeedioPlugin, self).__init__()
     self.AddAction(Up)
     self.AddAction(Down)
     self.AddAction(Left)

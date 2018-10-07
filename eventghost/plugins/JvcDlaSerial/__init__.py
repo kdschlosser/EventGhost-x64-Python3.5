@@ -1,4 +1,5 @@
 #
+# super_class_updated
 # JVC DLA Serial Control
 # ======================
 #
@@ -241,6 +242,7 @@ class ActionBase(eg.ActionClass):
 class JvcDlaSerial(eg.PluginClass):
 
     def __init__(self):
+        super(JvcDlaSerial, self).__init__()
         self.info.eventPrefix = "JVC-DLA"
         for groupId, groupExternalName, groupDescription, groupTmpData, actions in ACTIONS:
             group = self.AddGroup(groupExternalName, groupDescription)

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # plugins/CM11A /__init__.py
 #
@@ -97,6 +98,7 @@ class CM11A(eg.PluginClass):
     text = Text
 
     def __init__(self):
+        super(CM11A, self).__init__()
         self.AddAction(StatusCommand)
         self.AddAction(ResetCommand)
         self.AddAction(X10Command)

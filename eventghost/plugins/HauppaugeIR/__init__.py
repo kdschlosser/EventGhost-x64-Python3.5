@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 #
 # plugins/HauppaugeIR/__init__.py
 #
@@ -340,7 +342,7 @@ class HauppaugeIRMessageReceiver(eg.ThreadWorker):
         try:
             regHandle = _winreg.OpenKey(
                            _winreg.HKEY_LOCAL_MACHINE,
-                           'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Hauppauge WinTV Infrared Remote',
+                           r'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Hauppauge WinTV Infrared Remote',
                            0,
                            _winreg.KEY_READ
                         )
@@ -412,7 +414,7 @@ class HauppaugeIRMessageReceiver(eg.ThreadWorker):
         self.lock.acquire()
 
         if self.dll:
-            self.dll.IR_Close(self.hwnd, 0);
+            self.dll.IR_Close(self.hwnd, 0)
 
         #print "Irremote is stopped"
 
@@ -430,7 +432,7 @@ class HauppaugeIRMessageReceiver(eg.ThreadWorker):
 
             regHandle = _winreg.OpenKey(
                             _winreg.HKEY_LOCAL_MACHINE,
-                            'SOFTWARE\hauppauge\IR',
+                            r'SOFTWARE\hauppauge\IR',
                             0,
                             _winreg.KEY_WRITE | _winreg.KEY_READ
             )
@@ -445,7 +447,7 @@ class HauppaugeIRMessageReceiver(eg.ThreadWorker):
 
     def MyWndProc(self, hwnd, mesg, wParam, lParam) :
         if mesg == WM_TIMER:
-            keyHit = self.IR_GetSystemKeyCode(byref(self.repeatCode), byref(self.systemCode), byref(self.keyCode) );
+            keyHit = self.IR_GetSystemKeyCode(byref(self.repeatCode), byref(self.systemCode), byref(self.keyCode) )
             if  keyHit == 1:
                 #print "RepeatCode = ", self.repeatCode, "  systemCode = ", self.systemCode, "  keyCode = ", self.keyCode, "  time = ", time()
                 if self.timerKey :
@@ -498,7 +500,7 @@ class HauppaugeIRMessageReceiver(eg.ThreadWorker):
 
             regHandle = _winreg.OpenKey(
                             _winreg.HKEY_LOCAL_MACHINE,
-                            'SOFTWARE\hauppauge\IR',
+                            r'SOFTWARE\hauppauge\IR',
                             0,
                             _winreg.KEY_WRITE | _winreg.KEY_READ
             )
@@ -507,7 +509,7 @@ class HauppaugeIRMessageReceiver(eg.ThreadWorker):
 
             _winreg.SetValueEx( regHandle, 'PollRate', 0, _winreg.REG_DWORD, int(self.pollTime) )
 
-            returnVal = self.IR_Open(self.hwnd, 0, 0, 0);
+            returnVal = self.IR_Open(self.hwnd, 0, 0, 0)
 
             _winreg.SetValueEx( regHandle, 'PollRate', 0, _winreg.REG_DWORD, int(self.defaultPollTime) )
 
@@ -516,7 +518,7 @@ class HauppaugeIRMessageReceiver(eg.ThreadWorker):
             self.defaultPollTime = -1
 
         else :
-            returnVal = self.IR_Open(self.hwnd, 0, 0, 0);
+            returnVal = self.IR_Open(self.hwnd, 0, 0, 0)
 
         self.timerInit.cancel()
 
@@ -560,6 +562,7 @@ class HauppaugeIR(eg.PluginClass):
         checkRepeatFlag = "Use the repeat flag of the IR"
 
     def __init__( self ) :
+        super(HauppaugeIR, self).__init__()
         self.AddAction(Restart)
         self.AddAction(OnComputerSuspend, hidden = True )   # For test only
         self.AddAction(OnComputerResume, hidden = True )    # For test only

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 #
 # This file is a plugin for EventGhost.
 # Copyright © 2005-2016 EventGhost Project <http://www.eventghost.org/>
@@ -118,6 +119,7 @@ class YardWorkerThread(eg.ThreadWorker):
 class YARD(eg.PluginBase):
 
     def __init__(self):
+        super(YARD, self).__init__()
         self.AddEvents()
         self.isEnabled = False
         self.mapTable = {}

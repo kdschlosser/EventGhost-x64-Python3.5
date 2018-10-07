@@ -1,4 +1,5 @@
 # EventGhost receiver for iPhone/iPod Touch native application client
+# super_class_updated
 # Copyright (C) 2008 Melloware <info@melloware.com>
 # http://www.melloware.com/products/eventphone
 #
@@ -244,6 +245,7 @@ class EventPhone(eg.PluginBase):
     text = Text
 
     def __init__(self):
+        super(EventPhone, self).__init__()
         self.AddEvents()
 
     def __start__(self, port, password, prefix):

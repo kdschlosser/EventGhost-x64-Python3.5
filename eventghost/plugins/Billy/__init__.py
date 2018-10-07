@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 
 version="0.3.5"
 
@@ -171,6 +172,7 @@ class Billy(eg.PluginClass):
             self.PrintError(self.text.text1)
 
     def __init__(self):
+        super(Billy, self).__init__()
         text=Text
         self.AddActionsFromList(ACTIONS)
 

@@ -1,4 +1,5 @@
 #
+# super_class_updated
 # H79Serial V0.2
 # ==============
 # Written by Oliver Wagner, <owagner@hometheatersoftware.com>
@@ -113,6 +114,7 @@ cmdList = (
 class H79Serial(eg.PluginClass):
 
     def __init__(self):
+        super(H79Serial, self).__init__()
         self.serial = None
         group = topGroup = self
 

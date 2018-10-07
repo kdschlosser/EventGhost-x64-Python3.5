@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# update_complete
+# super_class_updated
 
 version="0.1.6"
 
@@ -71,7 +73,7 @@ eg.RegisterPlugin(
 #     * increased version to 0.1.3
 # 2008-07-29 Pako
 #     * now uses AddActionsFromList
-#     * add "On screeen menu" for choice of favorite
+#     * add "On screeen men" for choice of favorite
 #     * increased version to 0.1.4
 # 2008-09-01 Pako
 #     * add option Start/Stop Event Sender
@@ -122,9 +124,9 @@ SC_RESTORE    = 61728
 
 def FindWindowFunction(key,case,match):
     return eg.WindowMatcher(
-                u'screamer.exe',
+                'screamer.exe',
                 None,
-                u'#32770',
+                '#32770',
                 key,
                 case,
                 match,
@@ -215,6 +217,7 @@ class ScreamerRadio(eg.PluginClass):
 
 
     def __init__(self):
+        super(ScreamerRadio, self).__init__()
         text=Text
         favList=[]
         self.AddActionsFromList(Actions)
@@ -456,7 +459,7 @@ class Close(eg.ActionClass):
 class PlayStop(eg.ActionClass):
     def __call__(self):
         key = self.plugin.dh.document['NotPlaying']
-        FindWindow = FindWindowFunction(key,u'Static',1)
+        FindWindow = FindWindowFunction(key,'Static',1)
         hwnds = FindWindow()
         if len(hwnds) > 0: #Not playing
             key = eval("self.plugin.dh.document[self.value[0]]")
@@ -464,7 +467,7 @@ class PlayStop(eg.ActionClass):
         else:              #Playing
             key = eval("self.plugin.dh.document[self.value[1]]")
             ret = "0"
-        FindWindow = FindWindowFunction(key,u'Button',1)
+        FindWindow = FindWindowFunction(key,'Button',1)
         hwnds = FindWindow()
         if len(hwnds) != 0:
             SendMessageTimeout(hwnds[0], BM_CLICK, 0, 0)
@@ -478,13 +481,13 @@ class PlayStop(eg.ActionClass):
 class OtherActions(eg.ActionClass):
     def __call__(self):
         key = eval("self.plugin.dh.document[self.value[0]]")
-        FindWindow = FindWindowFunction(key,u'Button',1)
+        FindWindow = FindWindowFunction(key,'Button',1)
         hwnds = FindWindow()
         if self.value[1] != "": #for toggle actions
             ret = "0"
             if len(hwnds) == 0:
                 key = eval("self.plugin.dh.document[self.value[1]]")
-                FindWindow = FindWindowFunction(key,u'Button',1)
+                FindWindow = FindWindowFunction(key,'Button',1)
                 hwnds = FindWindow()
                 ret = "1"
         else:
@@ -499,7 +502,7 @@ class OtherActions(eg.ActionClass):
 #===============================================================================
 class VolumeUpDown(eg.ActionClass):
     def __call__(self):
-        FindWindow = FindWindowFunction(u'Slider1',u'msctls_trackbar32',1)
+        FindWindow = FindWindowFunction('Slider1','msctls_trackbar32',1)
         hwnds = FindWindow()
         if len(hwnds) != 0:
             volume=SendMessageTimeout(hwnds[0], TBM_GETPOS, 0, 0)
@@ -519,13 +522,13 @@ class SetVolume(eg.ActionClass):
         label="Set volume (0-100%):"
 
     def __call__(self,volume):
-        FindWindow = FindWindowFunction(u'Slider1',u'msctls_trackbar32',1)
+        FindWindow = FindWindowFunction('Slider1','msctls_trackbar32',1)
         hwnds = FindWindow()
         if len(hwnds) != 0:
             vol=SendMessageTimeout(hwnds[0], TBM_GETPOS, 0, 0)
             step = -20+vol+volume/5
-            if step<>0:
-                key = u'{Up}' if step>0 else u'{Down}'
+            if step!=0:
+                key = '{Up}' if step>0 else '{Down}'
                 for n in range(abs(step)):
                     eg.SendKeys(hwnds[0], key, False)
         else:
@@ -555,7 +558,7 @@ class SetVolume(eg.ActionClass):
 #===============================================================================
 class GetVolume(eg.ActionClass):
     def __call__(self):
-        FindWindow = FindWindowFunction(u'Slider1',u'msctls_trackbar32',1)
+        FindWindow = FindWindowFunction('Slider1','msctls_trackbar32',1)
         hwnds = FindWindow()
         if len(hwnds) != 0:
             return 100-5*SendMessageTimeout(hwnds[0], TBM_GETPOS, 0, 0)
@@ -646,8 +649,8 @@ class ShowMenu(eg.ActionClass):
     class text:
         menuPreview = 'On screen menu preview:'
         menuFont = 'Menu font:'
-        txtColour = 'Text colour'
-        background = 'Background colour'
+        txtColour = 'Text color'
+        background = 'Background color'
 
 #===============================================================================
     class MenuColourSelectButton(wx.BitmapButton):
@@ -804,7 +807,7 @@ class ShowMenu(eg.ActionClass):
         choices = self.plugin.favList
 
         self.plugin.menuDlg = wx.Frame(
-                None, -1, 'OS_Menu',
+                None, -1, 'OS_Men',
                 style=wx.STAY_ON_TOP | wx.SIMPLE_BORDER
             )
         favChoiceCtrl=wx.ListBox(
@@ -1028,8 +1031,8 @@ Actions = (
     (OtherActions,"MuteOff","Mute on","Mute on.",("MuteOff","")),
     (OtherActions,"MuteOn","Mute off","Mute off.",("MuteOn","")),
     (OtherActions,"MuteOnOff","Mute On/Off","Mute On/Off.",("MuteOn","MuteOff")),
-    (VolumeUpDown,"VolumeUp","Volume up","Volume up.", ('volume > 0',u'{Up}',1,-1)),
-    (VolumeUpDown,"VolumeDown","Volume down","Volume down.", ('volume < 20',u'{Down}',19,1)),
+    (VolumeUpDown,"VolumeUp","Volume up","Volume up.", ('volume > 0','{Up}',1,-1)),
+    (VolumeUpDown,"VolumeDown","Volume down","Volume down.", ('volume < 20','{Down}',19,1)),
     (SetVolume,"SetVolume","Set volume","Set volume.", None),
     (GetVolume,"GetVolume","Get volume","Get volume.", None),
     ( eg.ActionGroup, 'Favorites', 'Favorites', 'Favorites',(
@@ -1037,8 +1040,8 @@ Actions = (
         (NextPrevFav,"NextFav","Next favorite","Next favorite.", (1, '0', 'self.plugin.fav_num < len(self.plugin.favList)-1')),
         (NextPrevFav,"PreviousFav","Previous favorite","Previous favorite.", (-1, 'len(self.plugin.favList)-1', 'self.plugin.fav_num < (len(self.plugin.favList)-1) and self.plugin.fav_num>0')),
         (GetPlayingTitle,"GetPlayingTitle","Get currently playing title","Gets the name of currently playing title.", None),
-        ( eg.ActionGroup, 'Menu', 'Menu', 'Menu',(
-            (ShowMenu, 'ShowMenu', 'Show menu', 'Show on screen menu.', None),
+        ( eg.ActionGroup, 'Men', 'Men', 'Men',(
+            (ShowMenu, 'ShowMen', 'Show men', 'Show on screen menu.', None),
             (MoveCursor, 'MoveDown', 'Cursor down', 'Cursor down.', ('max-1', '-1', 1)),
             (MoveCursor, 'MoveUp', 'Cursor up', 'Cursor up.', ('0', 'max', -1)),
             (OK_Btn, 'OK_Btn', 'OK', 'OK button pressed.', None),
@@ -1046,4 +1049,3 @@ Actions = (
         )),
     )),
 )
-

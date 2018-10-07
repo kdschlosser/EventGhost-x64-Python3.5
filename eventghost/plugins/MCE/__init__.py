@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
 
 version="0.1"
 
@@ -124,6 +125,7 @@ predefinedCustomActions = {
 class MCE(eg.PluginClass):
 
     def __init__(self):
+        super(MCE, self).__init__()
         self.windowMatch = FindMCE
         self.AddActionsFromList(ACTIONS)
         self.predefinedCustomActions = predefinedCustomActions

@@ -32,5 +32,6 @@ class PersistentDataMeta(type):
         return cls
 
 
-class PersistentData:
-    __metaclass__ = PersistentDataMeta
+class PersistentData(metaclass=PersistentDataMeta):
+    pass
+    

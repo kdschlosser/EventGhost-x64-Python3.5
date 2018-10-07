@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# super_class_updated
+# update_complete
 
 version = "0.1.9"
 
@@ -17,7 +19,7 @@ version = "0.1.9"
 #
 # You should have received a copy of the GNU General Public License
 # along with EventGhost; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  0o2110-1301  USA
 #
 #
 # Changelog (in reverse chronological order):
@@ -25,7 +27,7 @@ version = "0.1.9"
 # 0.1.9 (2018-02-03) by topix
 #     - some changes for EG0.5 because wxPython 3.0 handles some sizer
 #       related things differently.
-# 0.1.8 by Pako 2013-03-25 08:42 UTC+1
+# 0.1.8 by Pako 2013-03-25 0o8:42 UTC+1
 #     - added wx.ComboBox for event suffix (action "Start observation")
 #===============================================================================
 #Structure of setup/account (one record):
@@ -251,7 +253,7 @@ def DecodeSection(section, coding=None):
             pass
         else:
             return section.strip(' "')
-    return u''
+    return ''
 
 
 def ParseItem(item):
@@ -306,7 +308,7 @@ def GetParts(msg, ext = False):
                     body.append(unicode(part.get_payload(decode=True),
                                     'us-ascii',
                                     "replace"))
-            return u"\n".join(body).strip()+u"\n"
+            return "\n".join(body).strip()+"\n"
 
         else: # if it is not multipart, the payload will be a string
               # representing the message body
@@ -318,7 +320,7 @@ def GetParts(msg, ext = False):
                 body = unicode(message.get_payload(decode=True),
                                'us-ascii',
                                "replace")
-            return body.strip()+u"\n"
+            return body.strip()+"\n"
 
     if not ext:
         return [ParseItem(msg['Subject']),msg['From'], get_body(msg)]
@@ -468,7 +470,7 @@ class MessageFrame(wx.MiniFrame):
             else:
                 indx = 0
             From = ["%s <%s> - %s" % (item[2],item[3],item[0]) for item in self.plugin.configs][indx]
-            sbjct = u"Re: "+self.message[0]
+            sbjct = "Re: "+self.message[0]
             replAddr = parseaddr(self.message[6])
             fromAddr = parseaddr(self.message[1])
             if replAddr[1] != '':
@@ -488,7 +490,7 @@ class MessageFrame(wx.MiniFrame):
             reBody.append('')
             for line in body:
                 reBody.append('> '+line)
-            reBody = u'\n'.join(reBody)
+            reBody = '\n'.join(reBody)
 
             myDlg = SendMailDlg(parent = self)
             myDlg.ShowSendMailDlg(
@@ -1221,7 +1223,7 @@ class outServerDialog(wx.MiniFrame):
         btn1.Bind(wx.EVT_BUTTON,onOK)
 
         def OnLabelAndPassword(evt):
-            if self.servers <> []:
+            if self.servers != []:
                 srvrs = [item[8] for item in self.cfgs]
                 oldLbl = listBoxCtrl.GetStringSelection()
                 sel = self.oldSel
@@ -1245,7 +1247,7 @@ class outServerDialog(wx.MiniFrame):
         passwCtrl.Bind(wx.EVT_TEXT, OnLabelAndPassword)
 
         def onServerName(event):
-            if self.servers<>[]:
+            if self.servers!=[]:
                 val = outServerCtrl.GetValue().strip()
                 sel = self.oldSel
                 self.servers[sel][1] = val
@@ -1254,7 +1256,7 @@ class outServerDialog(wx.MiniFrame):
         outServerCtrl.Bind(wx.EVT_TEXT, onServerName)
 
         def onPort(event):
-            if self.servers<>[]:
+            if self.servers!=[]:
                 val = outPortCtrl.GetValue()
                 sel = self.oldSel
                 self.servers[sel][2] = val
@@ -1263,7 +1265,7 @@ class outServerDialog(wx.MiniFrame):
         outPortCtrl.Bind(wx.EVT_TEXT, onPort)
 
         def onSSL(event):
-            if self.servers<>[]:
+            if self.servers!=[]:
                 ports=(25,587,587,465)
                 val = choiceSecureCtrl.GetSelection()
                 port = ports[val]
@@ -1292,7 +1294,7 @@ class outServerDialog(wx.MiniFrame):
         useSecureCtrl.Bind(wx.EVT_CHECKBOX,onCheckbox)
 
         def onUser(event):
-            if self.servers<>[]:
+            if self.servers!=[]:
                 val = userCtrl.GetValue().strip()
                 sel = self.oldSel
                 self.servers[sel][5] = val
@@ -1303,7 +1305,7 @@ class outServerDialog(wx.MiniFrame):
         def onClick(evt):
             sel = listBoxCtrl.GetSelection()
             label = labelCtrl.GetValue()
-            if label.strip() <> "":
+            if label.strip() != "":
                 if [n[0] for n in self.servers].count(label) == 1:
                     self.oldSel=sel
                     item = self.servers[sel]
@@ -1567,7 +1569,7 @@ class outTextsDialog(wx.MiniFrame):
             btnApp.Enable(flag)
 
         def OnTxtChange(evt):
-            if self.texts<>[]:
+            if self.texts!=[]:
                 sel = self.oldSel
                 label = labelCtrl.GetValue().strip()
                 self.texts[sel][0]=label
@@ -1578,7 +1580,7 @@ class outTextsDialog(wx.MiniFrame):
         labelCtrl.Bind(wx.EVT_TEXT, OnTxtChange)
 
         def ontextName(event):
-            if self.texts<>[]:
+            if self.texts!=[]:
                 val = outTextCtrl.GetValue().strip()
                 sel = self.oldSel
                 self.texts[sel][1] = val
@@ -1589,7 +1591,7 @@ class outTextsDialog(wx.MiniFrame):
         def onClick(evt):
             sel = listBoxCtrl.GetSelection()
             label = labelCtrl.GetValue()
-            if label.strip()<>"":
+            if label.strip()!="":
                 if [n[0] for n in self.texts].count(label)==1:
                     self.oldSel=sel
                     item = self.texts[sel]
@@ -1877,7 +1879,7 @@ class groupsDialog(wx.MiniFrame):
             btnApp.Enable(flag and flag2)
 
         def OnTxtChange(evt):
-            if self.groups<>[]:
+            if self.groups!=[]:
                 sel = self.oldSel
                 label = labelCtrl.GetValue().strip()
                 self.groups[sel][0]=label
@@ -1896,7 +1898,7 @@ class groupsDialog(wx.MiniFrame):
                         flag = False
                         break
                 label = labelCtrl.GetValue()
-                if label.strip()<>"":
+                if label.strip()!="":
                     if [n[0] for n in self.groups].count(label)>1:
                         flag = False
                 if flag:
@@ -1979,7 +1981,7 @@ class groupsDialog(wx.MiniFrame):
 
         def OnLabelChange(evt):
             sel = self.oldSel
-            if self.groups[sel][1]<>[]:
+            if self.groups[sel][1]!=[]:
                 sel2 = self.oldSel2
                 label = labelCtrl2.GetValue().strip()
                 self.groups[sel][1][sel2]=label
@@ -2270,14 +2272,14 @@ class SendMailThread(Thread):
         msg["User-agent"]= "EventGhost %s" % eg.Version.string
         if account[4] != '':
             msg["Reply-to"]= formataddr((sender_name,account[4]))
-        #msg["Date"] = formatdate() #return: Wed, 03 Dec 2008 12:17:35 -0000
-        msg["Date"] = formatdate(None, True) #return: Wed, 03 Dec 2008 13:17:35 +0100
+        #msg["Date"] = formatdate() #return: Wed, 0o3 Dec 2008 12:17:35 -0000
+        msg["Date"] = formatdate(None, True) #return: Wed, 0o3 Dec 2008 13:17:35 +0100
         if self.messageID is not None:
             msg['In-Reply-To'] = self.messageID
             if self.references is None:
-                msg['References'] = self.messageID+u'\r\n'
+                msg['References'] = self.messageID+'\r\n'
             else:
-                msg['References'] = self.references+self.messageID+u'\r\n'
+                msg['References'] = self.references+self.messageID+'\r\n'
         case = server[3] #secure connection ?
         try:
             if case < 3:
@@ -2567,7 +2569,7 @@ class WorkThread(Thread):
                             suff = self.setup[12]
                             if suff in itms:
                                 suff = itms.index(suff)
-                                suff = u"%s.%s" % (self.setup[12],parts[suff])
+                                suff = "%s.%s" % (self.setup[12],parts[suff])
                             if self.setup[13] > 0:
                                 eg.TriggerEvent(suff, payload = parts[self.setup[13]-1], prefix = 'E-mail')
                             else:
@@ -3466,8 +3468,9 @@ class E_mail(eg.PluginClass):
     groups = []
 
     def __init__(
-        self,
+        self
     ):
+        super(E_mail, self).__init__()
         self.AddActionsFromList(ACTIONS)
         self.observThreads = {}
 
@@ -3766,7 +3769,7 @@ class E_mail(eg.PluginClass):
         panel.sizer.Layout()
 
         def OnLabelAndPassword(evt):
-            if panel.cfgs<>[]:
+            if panel.cfgs!=[]:
                 sel = self.oldSel
                 label = labelCtrl.GetValue().strip()
                 val = userPasswordCtrl.GetValue().strip()
@@ -3798,7 +3801,7 @@ class E_mail(eg.PluginClass):
         choiceType.Bind(wx.EVT_RADIOBOX, onChoiceType)
 
         def onUserName(evt):
-            if panel.cfgs<>[]:
+            if panel.cfgs!=[]:
                 val = userNameCtrl.GetValue().strip()
                 sel = self.oldSel
                 panel.cfgs[sel][2] = val
@@ -3807,7 +3810,7 @@ class E_mail(eg.PluginClass):
         userNameCtrl.Bind(wx.EVT_TEXT, onUserName)
 
         def onMailAddress(evt):
-            if panel.cfgs<>[]:
+            if panel.cfgs!=[]:
                 val = mailAddressCtrl.GetValue().strip()
                 sel = self.oldSel
                 panel.cfgs[sel][3] = val
@@ -3816,7 +3819,7 @@ class E_mail(eg.PluginClass):
         mailAddressCtrl.Bind(wx.EVT_TEXT, onMailAddress)
 
         def onReplAddress(evt):
-            if panel.cfgs<>[]:
+            if panel.cfgs!=[]:
                 val = replAddressCtrl.GetValue().strip()
                 sel = self.oldSel
                 panel.cfgs[sel][4] = val
@@ -3825,7 +3828,7 @@ class E_mail(eg.PluginClass):
         replAddressCtrl.Bind(wx.EVT_TEXT, onReplAddress)
 
         def onIncServer(evt):
-            if panel.cfgs<>[]:
+            if panel.cfgs!=[]:
                 val = incServerCtrl.GetValue().strip()
                 sel = self.oldSel
                 panel.cfgs[sel][5] = val
@@ -3834,7 +3837,7 @@ class E_mail(eg.PluginClass):
         incServerCtrl.Bind(wx.EVT_TEXT, onIncServer)
 
         def onIncPort(evt):
-            if panel.cfgs<>[]:
+            if panel.cfgs!=[]:
                 val = incPortCtrl.GetValue()
                 sel = self.oldSel
                 panel.cfgs[sel][6] = val
@@ -3843,7 +3846,7 @@ class E_mail(eg.PluginClass):
         incPortCtrl.Bind(wx.EVT_TEXT, onIncPort)
 
         def onUserLogin(evt):
-            if panel.cfgs<>[]:
+            if panel.cfgs!=[]:
                 val = userLoginCtrl.GetValue().strip()
                 sel = self.oldSel
                 panel.cfgs[sel][7] = val
@@ -3852,7 +3855,7 @@ class E_mail(eg.PluginClass):
         userLoginCtrl.Bind(wx.EVT_TEXT, onUserLogin)
 
         def onOutServer(evt):
-            if panel.cfgs<>[]:
+            if panel.cfgs!=[]:
                 val = panel.outServerCtrl.GetStringSelection()
                 sel = self.oldSel
                 panel.cfgs[sel][8] = val
@@ -3861,7 +3864,7 @@ class E_mail(eg.PluginClass):
         panel.outServerCtrl.Bind(wx.EVT_CHOICE, onOutServer)
 
         def onChoiceSecure(evt):
-            if panel.cfgs<>[]:
+            if panel.cfgs!=[]:
                 val = choiceSecureCtrl.GetSelection()
                 sel = self.oldSel
                 panel.cfgs[sel][9] = val
@@ -3871,7 +3874,7 @@ class E_mail(eg.PluginClass):
         choiceSecureCtrl.Bind(wx.EVT_CHOICE, onChoiceSecure)
 
         def onUseSecure(evt):
-            if panel.cfgs<>[]:
+            if panel.cfgs!=[]:
                 val = useSecureCtrl.GetValue()
                 sel = self.oldSel
                 panel.cfgs[sel][10] = val
@@ -3924,7 +3927,7 @@ class E_mail(eg.PluginClass):
         def onListClick(evt):
             sel = listBoxCtrl.GetSelection()
             label = labelCtrl.GetValue()
-            if label.strip()<>"":
+            if label.strip()!="":
                 if [n[0] for n in panel.cfgs].count(label)==1:
                     self.oldSel=sel
                     item = panel.cfgs[sel]
