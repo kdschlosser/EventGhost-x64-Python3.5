@@ -36,7 +36,8 @@ install:
 
   #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - ps: |
-      $Env:PATH = $Env:PYTHONPATH + ";" + $Env:PATH
+      $Env:PATH = $Env:PYTHON + ";" + $Env:PATH
+
       If (-not (Test-Path $Env:PYTHON)) {
         " "
         "=============== Creating EventGhost build environment ==============="
@@ -46,7 +47,7 @@ install:
         $StacklessURL = "http://www.stackless.com/binaries/MSI/3.5.4/stackless-3.5.4-amd64.exe"
         Start-FileDownload $StacklessURL -Timeout 60000 -FileName $StacklessInstaller
         "Installing Stackless 3.5.4..."
-        Start-Process $StacklessInstaller "/quiet InstallAllUsers=1 TargetDir=$Env:PYTHONPATH" -Wait
+        Start-Process $StacklessInstaller "/quiet InstallAllUsers=1 TargetDir=$Env:PYTHON" -Wait
         "Done."
         " "
 
@@ -67,8 +68,9 @@ install:
         " "
 
         Function PipInstall ($mod) {
+          $PIPPath = $Env:PYTHON + "\Scripts\pip.exe"
           "Installing $mod"
-          Start-Process "pip" "install --no-cache-dir -q $mod"  -Wait
+          Start-Process $PIPPath "install --no-cache-dir -q $mod"  -Wait
           if ($LASTEXITCODE -eq 0) {
             $host.SetShouldExit(0)
           }
