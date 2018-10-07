@@ -12,141 +12,141 @@ version: '{build}-{branch}'
 
 
 environment:
-  PYTHON: 'C:\Stackless35'
-  PYTHONPATH: 'C:\Stackless35;C:\Stackless35\Scripts;C:\Stackless35\DLLs;C:\Stackless35\Lib;C:\Stackless35\Lib\site-packages;'
+    PYTHON: 'C:\Stackless35'
+    PYTHONPATH: 'C:\Stackless35;C:\Stackless35\Scripts;C:\Stackless35\DLLs;C:\Stackless35\Lib;C:\Stackless35\Lib\site-packages;'
 
 matrix:
-  fast_finish: true
+    fast_finish: true
 
 cache:
-  # Invalidate cache if .appveyor.yml has changed
-  - C:\Stackless35 -> .appveyor.yml
-  # Manually clear cache:
-  # from agithub.AppVeyor import AppVeyor
-  # ci = AppVeyor(<your appveyor API token>)
-  # status, data = ci.api.projects.<appveyor username>.<appveyor projectname>.buildcache.delete()
-  # print status  # 204 = Ok, cache deleted
+    # Invalidate cache if .appveyor.yml has changed
+    - C:\Stackless35 -> .appveyor.yml
+    # Manually clear cache:
+    # from agithub.AppVeyor import AppVeyor
+    # ci = AppVeyor(<your appveyor API token>)
+    # status, data = ci.api.projects.<appveyor username>.<appveyor projectname>.buildcache.delete()
+    # print status  # 204 = Ok, cache deleted
 
 install:
-  # HTML Help Workshop 1.32
-  - cinst html-help-workshop
+    # HTML Help Workshop 1.32
+    - cinst html-help-workshop
 
-  # Microsoft Visual C++ Redistributable 2008 (version min: 9.0.21022.8)
-  # - cinst vcredist2008
+    # Microsoft Visual C++ Redistributable 2008 (version min: 9.0.21022.8)
+    # - cinst vcredist2008
 
-  #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-  - ps: |
-    $Env:PATH = $Env:PYTHONPATH + $Env:PATH
-    $Env:APPVEYOR_BUILD_FOLDER
-    If (-not (Test-Path $Env:PYTHON)) {
-      " "
-      "=============== Creating EventGhost build environment ==============="
-      " "
+    #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+    - ps: |
+        $Env:PATH = $Env:PYTHONPATH + $Env:PATH
+        $Env:APPVEYOR_BUILD_FOLDER
+        If (-not (Test-Path $Env:PYTHON)) {
+            " "
+            "=============== Creating EventGhost build environment ==============="
+            " "
 
-      $StacklessInstaller = $Env:APPVEYOR_BUILD_FOLDER + "stackless-3.5.4-amd64.exe"
-      $StacklessURL = "http://www.stackless.com/binaries/MSI/3.5.4/stackless-3.5.4-amd64.exe"
-      Start-FileDownload $StacklessURL -Timeout 60000 -FileName $StacklessInstaller
-      "Installing Stackless 3.5.4..."
-      Start-Process $StacklessInstaller "/quiet InstallAllUsers=1 TargetDir=$Env:PYTHON" -Wait
-      "Done."
-      " "
+            $StacklessInstaller = $Env:APPVEYOR_BUILD_FOLDER + "stackless-3.5.4-amd64.exe"
+            $StacklessURL = "http://www.stackless.com/binaries/MSI/3.5.4/stackless-3.5.4-amd64.exe"
+            Start-FileDownload $StacklessURL -Timeout 60000 -FileName $StacklessInstaller
+            "Installing Stackless 3.5.4..."
+            Start-Process $StacklessInstaller "/quiet InstallAllUsers=1 TargetDir=$Env:PYTHON" -Wait
+            "Done."
+            " "
 
-      "Updating pip"
-      Start-Process "python" "-m pip install --no-cache-dir -q -U pip" -Wait
-      if ($LASTEXITCODE -eq 0) {
-          $host.SetShouldExit(0)
-      }
-      "Done"
-      " "
+            "Updating pip"
+            Start-Process "python" "-m pip install --no-cache-dir -q -U pip" -Wait
+            if ($LASTEXITCODE -eq 0) {
+                $host.SetShouldExit(0)
+            }
+            "Done"
+            " "
 
-      "Updating setuptools"
-      Start-Process "python" "-m pip install --no-cache-dir -q -U setuptools" -Wait
-      if ($LASTEXITCODE -eq 0) {
-          $host.SetShouldExit(0)
-      }
-      "Done"
-      " "
+            "Updating setuptools"
+            Start-Process "python" "-m pip install --no-cache-dir -q -U setuptools" -Wait
+            if ($LASTEXITCODE -eq 0) {
+                $host.SetShouldExit(0)
+            }
+            "Done"
+            " "
 
-      Function PipInstall ($mod) {
-        "Installing $mod"
-        pip install --no-cache-dir -q $mod
-        if ($LASTEXITCODE -eq 0) {
-          $host.SetShouldExit(0)
+            Function PipInstall ($mod) {
+                "Installing $mod"
+                pip install --no-cache-dir -q $mod
+                if ($LASTEXITCODE -eq 0) {
+                    $host.SetShouldExit(0)
+                }
+                "Done"
+                " "
+            }
+
+            PipInstall sphinx
+            PipInstall commonmark
+            PipInstall pillow
+            PipInstall pycrypto
+            PipInstall comtypes
+            PipInstall paramiko
+            PipInstall pywin32
+            PipInstall wxPython
+            PipInstall websocket-client-py3
+            PipInstall psutil
+            PipInstall tornado
+            PipInstall qrcode
+            PipInstall pycurl
+            PipInstall agithub
+            PipInstall requests
+            PipInstall cx_Freeze
+        } else {
+            " "
+            "============= Using cached EventGhost build environment ============="
+            " "
+            $Env:APPVEYOR_CACHE_SKIP_SAVE = "true"
         }
-        "Done"
-        " "
-      }
-
-      PipInstall sphinx
-      PipInstall commonmark
-      PipInstall pillow
-      PipInstall pycrypto
-      PipInstall comtypes
-      PipInstall paramiko
-      PipInstall pywin32
-      PipInstall wxPython
-      PipInstall websocket-client-py3
-      PipInstall psutil
-      PipInstall tornado
-      PipInstall qrcode
-      PipInstall pycurl
-      PipInstall agithub
-      PipInstall requests
-      PipInstall cx_Freeze
-    } else {
-      " "
-      "============= Using cached EventGhost build environment ============="
-      " "
-      $Env:APPVEYOR_CACHE_SKIP_SAVE = "true"
-    }
 
 
 build_script:
-  - ps: |
-    " "
-    "===================== Start the EventGhost build ===================="
-    " "
-    python "setup.py" build_exe
-    $ExitCode = $LASTEXITCODE
+    - ps: |
+        " "
+        "===================== Start the EventGhost build ===================="
+        " "
+        python "setup.py" build_exe
+        $ExitCode = $LASTEXITCODE
 
-    if (-not (Test-Path "output\Build.log")) {
-      " "
-      "====================== EventGhost build FAILED ======================"
-      " "
-      $host.SetShouldExit(1)
-    } else {
-      Push-AppveyorArtifact $Output + "" -FileName "Build.log" -DeploymentName "Build Log"
-
-      if ($ExitCode -eq 0) {
-        $SetupExe = gci -recurse -filter "output\*Setup.exe" -name
-        if (-not (Test-Path $SetupExe)) {
-          " "
-          "====================== EventGhost build FAILED ======================"
-          " "
-          $host.SetShouldExit(1)
+        if (-not (Test-Path "output\Build.log")) {
+            " "
+            "====================== EventGhost build FAILED ======================"
+            " "
+            $host.SetShouldExit(1)
         } else {
-          # update the appveyor build version to be the same as the EventGhost version
-          $start = $SetupExe.IndexOf("_")
-          $length = $SetupExe.LastIndexOf("_") - $start
-          $build_version = $SetupExe.Substring($start + 1, $length - 1)
-          Update-AppveyorBuild -Version "$build_version"
+            Push-AppveyorArtifact $Output + "" -FileName "Build.log" -DeploymentName "Build Log"
 
-          7z a -bsp1 -bb3 output\no_installer.zip -r build\eventghost\*.*
-          Push-AppveyorArtifact "output\$SetupExe" -FileName "$SetupExe" -DeploymentName "Installer"
-          Push-AppveyorArtifact "output\no_installer.zip" -FileName "no_installer.zip" -DeploymentName "NO Installer"
+            if ($ExitCode -eq 0) {
+                $SetupExe = gci -recurse -filter "output\*Setup.exe" -name
+                if (-not (Test-Path $SetupExe)) {
+                    " "
+                    "====================== EventGhost build FAILED ======================"
+                    " "
+                    $host.SetShouldExit(1)
+                } else {
+                    # update the appveyor build version to be the same as the EventGhost version
+                    $start = $SetupExe.IndexOf("_")
+                    $length = $SetupExe.LastIndexOf("_") - $start
+                    $build_version = $SetupExe.Substring($start + 1, $length - 1)
+                    Update-AppveyorBuild -Version "$build_version"
 
-          " "
-          "===================== EventGhost build SUCEEDED ====================="
-          " "
-          $host.SetShouldExit(0)
+                    7z a -bsp1 -bb3 output\no_installer.zip -r build\eventghost\*.*
+                    Push-AppveyorArtifact "output\$SetupExe" -FileName "$SetupExe" -DeploymentName "Installer"
+                    Push-AppveyorArtifact "output\no_installer.zip" -FileName "no_installer.zip" -DeploymentName "NO Installer"
+
+                    " "
+                    "===================== EventGhost build SUCEEDED ====================="
+                    " "
+                    $host.SetShouldExit(0)
+                }
+            } else {
+                " "
+                "====================== EventGhost build FAILED ======================"
+                " "
+                $host.SetShouldExit(1)
+            }
         }
-      } else {
-        " "
-        "====================== EventGhost build FAILED ======================"
-        " "
-        $host.SetShouldExit(1)
-      }
-    }
 
 
 # artifacts:
