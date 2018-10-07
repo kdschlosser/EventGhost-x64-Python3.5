@@ -74,8 +74,7 @@ PACKAGES = [
     'wx',
     'websocket',
     'docutils',
-    'winsound',
-    'difflib',
+    'winsound'
 ]
 
 INCLUDES = [
@@ -130,6 +129,7 @@ INCLUDES = [
     'win32com.propsys',
     'win32com.shell',
     'win32com.taskscheduler',
+    'difflib'
 ]
 
 EXCLUDES = [
