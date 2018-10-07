@@ -67,8 +67,8 @@ install:
         " "
 
         Function PipInstall ($mod) {
-          "Installing " + $mod
-          Start-Process "pip" "install --no-cache-dir -q " + $mod -Wait
+          "Installing $mod"
+          Start-Process "pip" "install --no-cache-dir -q $mod"  -Wait
           if ($LASTEXITCODE -eq 0) {
             $host.SetShouldExit(0)
           }
@@ -76,22 +76,22 @@ install:
           " "
         }
 
-        PipInstall "sphinx"
-        PipInstall "commonmark"
-        PipInstall "pillow"
-        PipInstall "pycrypto"
-        PipInstall "comtypes"
-        PipInstall "paramiko"
-        PipInstall "pywin32"
-        PipInstall "wxPython"
-        PipInstall "websocket-client-py3"
-        PipInstall "psutil"
-        PipInstall "tornado"
-        PipInstall "qrcode"
-        PipInstall "pycurl"
-        PipInstall "agithub"
-        PipInstall "requests"
-        PipInstall "cx_Freeze"
+        PipInstall sphinx
+        PipInstall commonmark
+        PipInstall pillow
+        PipInstall pycrypto
+        PipInstall comtypes
+        PipInstall paramiko
+        PipInstall pywin32
+        PipInstall wxPython
+        PipInstall websocket-client-py3
+        PipInstall psutil
+        PipInstall tornado
+        PipInstall qrcode
+        PipInstall pycurl
+        PipInstall agithub
+        PipInstall requests
+        PipInstall cx_Freeze
       } else {
         " "
         "============= Using cached EventGhost build environment ============="
@@ -107,32 +107,40 @@ build_script:
       " "
       python "setup.py" build_exe
 
-      Push-AppveyorArtifact "output\Build.log" -FileName "Build.log" -DeploymentName "Build Log"
+      $Output = $Env:APPVEYOR_BUILD_FOLDER + "output"
 
-      # Make sure the appveyor cache is only saved if our build was successfull
-      $SetupExe = gci -recurse -filter "output\*Setup.exe" -name
-      If ($SetupExe) {
-        # update the appveyor build version to be the same as the EventGhost version
-        $start = $SetupExe.IndexOf("_")
-        $length = $SetupExe.LastIndexOf("_") - $start
-        $build_version = $SetupExe.Substring($start + 1, $length - 1)
-        Update-AppveyorBuild -Version "$build_version"
-
-        7z a -bsp1 -bb3 output\no_installer.zip -r build\eventghost\*.*
-        Push-AppveyorArtifact "output\$SetupExe" -FileName "$SetupExe" -DeploymentName "Installer"
-        Push-AppveyorArtifact "output\no_installer.zip" -FileName "no_installer.zip" -DeploymentName "NO Installer"
-
-        " "
-        "===================== EventGhost build SUCEEDED ====================="
-        " "
-
-        $host.SetShouldExit(0)
-      } else {
+      if (-not (Test-Path $Output)) {
         " "
         "====================== EventGhost build FAILED ======================"
         " "
-
         $host.SetShouldExit(1)
+      } else {
+        Push-AppveyorArtifact $Output + "\Build.log" -FileName "Build.log" -DeploymentName "Build Log"
+
+        # Make sure the appveyor cache is only saved if our build was successfull
+        $SetupExe = gci -recurse -filter "output\*Setup.exe" -name
+        if (-not (Test-Path $SetupExe)) {
+          " "
+          "====================== EventGhost build FAILED ======================"
+          " "
+          $host.SetShouldExit(1)
+        } else {
+
+          # update the appveyor build version to be the same as the EventGhost version
+          $start = $SetupExe.IndexOf("_")
+          $length = $SetupExe.LastIndexOf("_") - $start
+          $build_version = $SetupExe.Substring($start + 1, $length - 1)
+          Update-AppveyorBuild -Version "$build_version"
+
+          7z a -bsp1 -bb3 output\no_installer.zip -r build\eventghost\*.*
+          Push-AppveyorArtifact "output\$SetupExe" -FileName "$SetupExe" -DeploymentName "Installer"
+          Push-AppveyorArtifact "output\no_installer.zip" -FileName "no_installer.zip" -DeploymentName "NO Installer"
+
+          " "
+          "===================== EventGhost build SUCEEDED ====================="
+          " "
+          $host.SetShouldExit(0)
+        }
       }
 
 
