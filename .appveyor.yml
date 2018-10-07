@@ -118,7 +118,7 @@ build_script:
             Push-AppveyorArtifact $buildLog -FileName "Build.log" -DeploymentName "Build Log"
 
             $SetupExe = gci -recurse -filter "output\*Setup.exe" -name
-            if (-not (Test-Path $SetupExe)) {
+            if (-not ($SetupExe)) {
                 " "
                 "====================== EventGhost build FAILED ======================"
                 " "
