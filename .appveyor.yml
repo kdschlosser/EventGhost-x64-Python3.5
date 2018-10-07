@@ -36,7 +36,7 @@ install:
 
   #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - ps: |
-      $Env:PATH = $Env:PYTHON + ";" + $Env:PATH
+      $Env:PATH = $Env:PYTHONPATH + $Env:PATH
 
       If (-not (Test-Path $Env:PYTHON)) {
         " "
@@ -68,9 +68,8 @@ install:
         " "
 
         Function PipInstall ($mod) {
-          $PIPPath = $Env:PYTHON + "\Scripts\pip.exe"
           "Installing $mod"
-          Start-Process $PIPPath "install --no-cache-dir -q $mod"  -Wait
+          Start-Process "pip" "install --no-cache-dir -q $mod"  -Wait
           if ($LASTEXITCODE -eq 0) {
             $host.SetShouldExit(0)
           }
