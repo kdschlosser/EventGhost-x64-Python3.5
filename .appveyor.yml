@@ -37,13 +37,12 @@ install:
     #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
     - ps: |
         $Env:PATH = $Env:PYTHONPATH + $Env:PATH
-        $Env:APPVEYOR_BUILD_FOLDER
         If (-not (Test-Path $Env:PYTHON)) {
             " "
             "=============== Creating EventGhost build environment ==============="
             " "
 
-            $StacklessInstaller = $Env:APPVEYOR_BUILD_FOLDER + "stackless-3.5.4-amd64.exe"
+            $StacklessInstaller = $Env:APPVEYOR_BUILD_FOLDER + "\stackless-3.5.4-amd64.exe"
             $StacklessURL = "http://www.stackless.com/binaries/MSI/3.5.4/stackless-3.5.4-amd64.exe"
             Start-FileDownload $StacklessURL -Timeout 60000 -FileName $StacklessInstaller
             "Installing Stackless 3.5.4..."
@@ -109,13 +108,15 @@ build_script:
         python "setup.py" build_exe
         $ExitCode = $LASTEXITCODE
 
-        if (-not (Test-Path "output\Build.log")) {
+        $buildLog = $Env:APPVEYOR_BUILD_FOLDER + "\output\Build.log"
+
+        if (-not (Test-Path $buildLog)) {
             " "
             "====================== EventGhost build FAILED ======================"
             " "
             $host.SetShouldExit(1)
         } else {
-            Push-AppveyorArtifact $Output + "" -FileName "Build.log" -DeploymentName "Build Log"
+            Push-AppveyorArtifact $buildLog -FileName "Build.log" -DeploymentName "Build Log"
 
             if ($ExitCode -eq 0) {
                 $SetupExe = gci -recurse -filter "output\*Setup.exe" -name
