@@ -51,6 +51,8 @@ install:
         "Done."
         " "
 
+        python --version
+
         "Updating pip"
         Start-Process "python" "-m pip install --no-cache-dir -q -U pip" -Wait
         if ($LASTEXITCODE -eq 0) {
@@ -69,7 +71,7 @@ install:
 
         Function PipInstall ($mod) {
           "Installing $mod"
-          Start-Process "pip" "install --no-cache-dir -q $mod"  -Wait
+          pip install --no-cache-dir -q $mod
           if ($LASTEXITCODE -eq 0) {
             $host.SetShouldExit(0)
           }
