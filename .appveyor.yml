@@ -106,7 +106,6 @@ build_script:
         "===================== Start the EventGhost build ===================="
         " "
         python "setup.py" build_exe
-        $ExitCode = $LASTEXITCODE
 
         $buildLog = $Env:APPVEYOR_BUILD_FOLDER + "\output\Build.log"
 
@@ -118,34 +117,27 @@ build_script:
         } else {
             Push-AppveyorArtifact $buildLog -FileName "Build.log" -DeploymentName "Build Log"
 
-            if ($ExitCode -eq 0) {
-                $SetupExe = gci -recurse -filter "output\*Setup.exe" -name
-                if (-not (Test-Path $SetupExe)) {
-                    " "
-                    "====================== EventGhost build FAILED ======================"
-                    " "
-                    $host.SetShouldExit(1)
-                } else {
-                    # update the appveyor build version to be the same as the EventGhost version
-                    $start = $SetupExe.IndexOf("_")
-                    $length = $SetupExe.LastIndexOf("_") - $start
-                    $build_version = $SetupExe.Substring($start + 1, $length - 1)
-                    Update-AppveyorBuild -Version "$build_version"
-
-                    7z a -bsp1 -bb3 output\no_installer.zip -r build\eventghost\*.*
-                    Push-AppveyorArtifact "output\$SetupExe" -FileName "$SetupExe" -DeploymentName "Installer"
-                    Push-AppveyorArtifact "output\no_installer.zip" -FileName "no_installer.zip" -DeploymentName "NO Installer"
-
-                    " "
-                    "===================== EventGhost build SUCEEDED ====================="
-                    " "
-                    $host.SetShouldExit(0)
-                }
-            } else {
+            $SetupExe = gci -recurse -filter "output\*Setup.exe" -name
+            if (-not (Test-Path $SetupExe)) {
                 " "
                 "====================== EventGhost build FAILED ======================"
                 " "
                 $host.SetShouldExit(1)
+            } else {
+                # update the appveyor build version to be the same as the EventGhost version
+                $start = $SetupExe.IndexOf("_")
+                $length = $SetupExe.LastIndexOf("_") - $start
+                $build_version = $SetupExe.Substring($start + 1, $length - 1)
+                Update-AppveyorBuild -Version "$build_version"
+
+                7z a -bsp1 -bb3 output\no_installer.zip -r build\eventghost\*.*
+                Push-AppveyorArtifact "output\$SetupExe" -FileName "$SetupExe" -DeploymentName "Installer"
+                Push-AppveyorArtifact "output\no_installer.zip" -FileName "no_installer.zip" -DeploymentName "NO Installer"
+
+                " "
+                "===================== EventGhost build SUCEEDED ====================="
+                " "
+                $host.SetShouldExit(0)
             }
         }
 
