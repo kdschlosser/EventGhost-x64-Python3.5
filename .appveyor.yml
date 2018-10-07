@@ -14,11 +14,16 @@ version: '{build}-{branch}'
 environment:
   PYTHON: 'C:\Stackless35'
   PYTHONPATH: 'C:\Stackless35;C:\Stackless35\Scripts;C:\Stackless35\DLLs;C:\Stackless35\Lib;C:\Stackless35\Lib\site-packages;'
-
+  - ps: |
+    $Env:PATH = $Env:PYTHONPATH + ";" + $Env:PATH
+    $Env:SITEPACKAGES = $Env:PYTHONPATH + "\lib\site-packages"
+    $Env:INSTALL = $Env:APPVEYOR_BUILD_FOLDER + "\downloaded_installers\"
+    if (-not (Test-Path $Env:INSTALL)) {
+      New-Item -Path $Env:INSTALL -ItemType directory
+    }
 
 matrix:
   fast_finish: true
-
 
 cache:
   # Invalidate cache if .appveyor.yml has changed
@@ -29,7 +34,6 @@ cache:
   # status, data = ci.api.projects.<appveyor username>.<appveyor projectname>.buildcache.delete()
   # print status  # 204 = Ok, cache deleted
 
-
 install:
   # HTML Help Workshop 1.32
   - cinst html-help-workshop
@@ -39,55 +43,45 @@ install:
 
   #- ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
   - ps: |
-      $Env:PATH = $Env:PYTHONPATH + ";" + $Env:PATH
-      $PythonFolder = $Env:PYTHON
-      $PythonScripts = $PythonFolder + "\Scripts"
-      $SitePackages = $PythonFolder + "\lib\site-packages"
-      $SysWOW = $Env:SYSTEMROOT + "\SysWOW64"
-      $PythonWindowsDLL = $SysWOW + "\python35.dll"
-      $PythonDLL = $PythonFolder + "\python35.dll"
-      $InstallersFolder = $Env:APPVEYOR_BUILD_FOLDER + "\output\"
-
-      " "
-      "=============== prepare EventGhost build environment ==============="
-      If (-not (Test-Path $PythonFolder))
-      {
-        Function PipInstall ($mod)
-        {
-          " "
-          "--- " + $mod
-          "    Installing..."
-          Start-Process "pip" "install --no-cache-dir -q $mod" -Wait
-          if ($LASTEXITCODE -eq 0) {
-            $host.SetShouldExit(0)
-          }
-          "    Done."
-        }
+      If (-not (Test-Path $Env:PYTHON)) {
         " "
-        "--- Stackless 3.5.4 x86-64"
-        $StacklessInstaller = $InstallersFolder + "stackless-3.5.4-amd64.exe"
-        $StacklessInstallDir = $PythonFolder
+        "=============== Creating EventGhost build environment ==============="
+        " "
+
+        $StacklessInstaller = $Env:INSTALL + "stackless-3.5.4-amd64.exe"
         $StacklessURL = "http://www.stackless.com/binaries/MSI/3.5.4/stackless-3.5.4-amd64.exe"
         Start-FileDownload $StacklessURL -Timeout 60000 -FileName $StacklessInstaller
-        "    Installing Stackless 3.5.4..."
-        Start-Process $StacklessInstaller "/quiet InstallAllUsers=1 TargetDir=$StacklessInstallDir" -Wait
-        "    Done."
+        "Installing Stackless 3.5.4..."
+        Start-Process $StacklessInstaller "/quiet InstallAllUsers=1 TargetDir=$Env:PYTHONPATH" -Wait
+        "Done."
         " "
 
-        "    Updating pip..."
+        "Updating pip"
         Start-Process "python" "-m pip install --no-cache-dir -q -U pip" -Wait
         if ($LASTEXITCODE -eq 0) {
             $host.SetShouldExit(0)
         }
-        "    Done."
+        "Done"
         " "
-        "    Updating setuptools..."
+
+        "Updating setuptools"
         Start-Process "python" "-m pip install --no-cache-dir -q -U setuptools" -Wait
         if ($LASTEXITCODE -eq 0) {
             $host.SetShouldExit(0)
         }
-        "    Done."
+        "Done"
         " "
+
+        Function PipInstall ($mod) {
+          "Installing " + $mod
+          Start-Process "pip" "install --no-cache-dir -q " + $mod -Wait
+          if ($LASTEXITCODE -eq 0) {
+            $host.SetShouldExit(0)
+          }
+          "Done"
+          " "
+        }
+
         PipInstall "sphinx"
         PipInstall "commonmark"
         PipInstall "pillow"
@@ -105,46 +99,48 @@ install:
         PipInstall "requests"
         PipInstall "cx_Freeze"
       } else {
-        $env:APPVEYOR_CACHE_SKIP_SAVE = "true"
+        " "
+        "============= Using cached EventGhost build environment ============="
+        " "
+        $Env:APPVEYOR_CACHE_SKIP_SAVE = "true"
       }
-      #"--- Inno Setup 5.5.9"
-      #$InnoInstaller = $InstallersFolder + "innosetup-5.5.9-unicode.exe"
-      #$InnoURL = "http://files.jrsoftware.org/is/5/innosetup-5.5.9-unicode.exe"
-      #Start-FileDownload $InnoURL -Timeout 60000 -FileName $InnoInstaller | ForEach-Object { Write-Host "    " + $_ }
-      #"    Installing Inno Setup 5.5.9..."
-      #Start-Process $InnoInstaller -Arg "/SP /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /RESTARTAPPLICATIONS /NOICONS" -NoNewWindow -Wait
-      #"    Done."
-      " "
+
 
 build_script:
   - ps: |
-      "=============== start the EventGhost build ==============="
+      " "
+      "===================== Start the EventGhost build ===================="
       " "
       python "setup.py" build_exe
-      
-      Push-AppveyorArtifact "output\Build.log" -FileName "Build.log" -DeploymentName "Build Log
+
+      Push-AppveyorArtifact "output\Build.log" -FileName "Build.log" -DeploymentName "Build Log"
 
       # Make sure the appveyor cache is only saved if our build was successfull
-      $Env:SetupExe = gci -recurse -filter "output\*Setup.exe" -name
-      If ($Env:SetupExe) {
+      $SetupExe = gci -recurse -filter "output\*Setup.exe" -name
+      If ($SetupExe) {
         # update the appveyor build version to be the same as the EventGhost version
-        $start = $env:SetupExe.IndexOf("_")
-        $length = $env:SetupExe.LastIndexOf("_") - $start
-        $build_version = $env:SetupExe.Substring($start + 1, $length - 1)
+        $start = $SetupExe.IndexOf("_")
+        $length = $SetupExe.LastIndexOf("_") - $start
+        $build_version = $SetupExe.Substring($start + 1, $length - 1)
         Update-AppveyorBuild -Version "$build_version"
 
         7z a -bsp1 -bb3 output\no_installer.zip -r build\eventghost\*.*
-        Push-AppveyorArtifact "output\$Env:SetupExe" -FileName $Env:SetupExe -DeploymentName "Installer"
+        Push-AppveyorArtifact "output\$SetupExe" -FileName "$SetupExe" -DeploymentName "Installer"
         Push-AppveyorArtifact "output\no_installer.zip" -FileName "no_installer.zip" -DeploymentName "NO Installer"
+
+        " "
+        "===================== EventGhost build SUCEEDED ====================="
+        " "
+
         $host.SetShouldExit(0)
       } else {
+        " "
+        "====================== EventGhost build FAILED ======================"
+        " "
+
         $host.SetShouldExit(1)
+      }
 
-      " "
-
-      "=============== EventGhost build finished ==============="
-      " "
-      " "
 
 # artifacts:
   # - path: _build\output\CHANGELOG.md
