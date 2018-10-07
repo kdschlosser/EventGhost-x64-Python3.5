@@ -129,7 +129,7 @@ INCLUDES = [
     'win32com.propsys',
     'win32com.shell',
     'win32com.taskscheduler',
-    'difflib'
+    'difflib',
 ]
 
 EXCLUDES = [
@@ -173,7 +173,6 @@ EXCLUDES = [
     'pydoc',
     'pygments',
     'pdb',
-    'difflib',
     'numpy',
     'dbi',
     'regcheck',

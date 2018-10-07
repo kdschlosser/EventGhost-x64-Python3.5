@@ -95,6 +95,8 @@ install:
         PipInstall "agithub"
         PipInstall "requests"
         PipInstall "cx_Freeze"
+      } else {
+        $env:APPVEYOR_CACHE_SKIP_SAVE = "true"
       }
       #"--- Inno Setup 5.5.9"
       #$InnoInstaller = $InstallersFolder + "innosetup-5.5.9-unicode.exe"
@@ -111,9 +113,7 @@ install:
 
       # Make sure the appveyor cache is only saved if our build was successfull
       $Env:SetupExe = gci -recurse -filter "output\*Setup.exe" -name
-      If (-Not $Env:SetupExe) {
-        $env:APPVEYOR_CACHE_SKIP_SAVE = "true"
-      } else {
+      If ($Env:SetupExe) {
         # update the appveyor build version to be the same as the EventGhost version
         $start = $env:SetupExe.IndexOf("_")
         $length = $env:SetupExe.LastIndexOf("_") - $start
