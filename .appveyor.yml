@@ -65,33 +65,7 @@ install:
             }
             "Done"
             " "
-
-            Function PipInstall ($mod) {
-                "Installing $mod"
-                pip install --no-cache-dir -q $mod
-                if ($LASTEXITCODE -eq 0) {
-                    $host.SetShouldExit(0)
-                }
-                "Done"
-                " "
-            }
-
-            PipInstall sphinx
-            PipInstall commonmark
-            PipInstall pillow
-            PipInstall pycrypto
-            PipInstall comtypes
-            PipInstall paramiko
-            PipInstall pywin32
-            PipInstall wxPython
-            PipInstall websocket-client-py3
-            PipInstall psutil
-            PipInstall tornado
-            PipInstall qrcode
-            PipInstall pycurl
-            PipInstall agithub
-            PipInstall requests
-            PipInstall cx_Freeze
+          
         } else {
             " "
             "============= Using cached EventGhost build environment ============="
