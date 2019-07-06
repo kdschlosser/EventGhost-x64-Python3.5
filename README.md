@@ -13,7 +13,7 @@ This test version runs on Python 3.5 x64
 * cx_Freeze >= 5.1.1
 * requests >= 2.19.1
 * agithub >= 2.1
-* pycurl >= 1.43.0.2
+* pycurl >= 7.43.0.2
 * qrcode >= 6.0
 * tornado >= 5.1
 * psutil >= 5.4.7
