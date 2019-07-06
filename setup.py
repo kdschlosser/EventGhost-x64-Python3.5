@@ -20,6 +20,7 @@ import msvc
 import os
 import sys
 import shutil
+import site
 from pkg_resources import parse_version
 
 try:
@@ -36,15 +37,61 @@ except ImportError:
     )
 
 try:
-    import cx_Freeze
-
-    version = list(int(v) for v in cx_Freeze.__version__.split('.'))
-
-    if version[0] < 5 or version[1] < 1 or version[2] < 1:
-        raise RuntimeError('cx_Freeze needs to be version 5.1.1 or greater')
-
+    import setuptools
 except ImportError:
-    RuntimeError('cx_Freeze >= 5.1.1 needs to be installed')
+    raise RuntimeError(
+        'The setuptools module is needed to build EventGhost '
+        '(python -m pip install setuptools)'
+    )
+print('Checking if any modules need to be installed.')
+print('This may take a bit so be patient....')
+setuptools.setup(
+    script_args=['install'],
+    name='EventGhost module dependencies',
+    setup_requires=[
+        'cx_Freeze>=5.1.1',
+        'requests>=2.19.1',
+        'agithub>=2.1',
+        'qrcode>=6.0',
+        'tornado>=5.1',
+        'psutil>=5.4.7',
+        'websocket-client-py3>=0.15.0',
+        'CommonMark>=0.7.5',
+        'comtypes>=1.1.7',
+        'future>=0.16.0',
+        'Pillow>=5.2.0',
+        'PyCrypto>=2.6.1',
+        'Sphinx>=1.8.0b1',
+        'wxPython>=4.0.3',
+        'pywin32>=223',
+        'pycurl==7.43.0.2'
+    ],
+    dependency_links=[
+        'https://files.pythonhosted.org/packages/41/67/5b85efde1641b71446c'
+        '2bdea194be860c5cea4efc42b4f69933213ec69f4/pycurl-7.43.0.2-cp35-cp'
+        '35m-win_amd64.whl'
+    ],
+)
+
+BASE_PATH = os.path.abspath(os.path.dirname(__file__))
+EGG_PATH = os.path.join(BASE_PATH, '.eggs')
+
+if os.path.exists(EGG_PATH):
+    pth_data = ''
+
+    for f in os.listdir(EGG_PATH):
+        mod = os.path.join(EGG_PATH, f)
+        if os.path.isdir(mod):
+            has_pth = list('pth' for p in os.listdir(mod) if p.endswith('pth'))
+            if has_pth:
+                site.addsitedir(mod)
+            else:
+                pth_data += './' + f + '\n'
+
+    with open(os.path.join(EGG_PATH, 'modules.pth'), 'w') as f:
+        f.write(pth_data)
+
+    site.addsitedir(EGG_PATH)
 
 __import__('inno_setup')
 __import__('docs')
@@ -61,31 +108,11 @@ COPYRIGHT = (
     '<http://www.eventghost.net/>'
 )
 
-REQUIRES = [
-    'cx_Freeze >= 5.1.1',
-    'requests >= 2.19.1',
-    'agithub >= 2.1',
-    'pycurl >= 1.43.0.2',
-    'qrcode >= 6.0',
-    'tornado >= 5.1',
-    'psutil >= 5.4.7',
-    'websocket-client-py3 >= 0.15.0',
-    'CommonMark >= 0.7.5',
-    'comtypes >= 1.1.7',
-    'future >= 0.16.0',
-    'Pillow >= 5.2.0',
-    'PyCrypto >= 2.6.1',
-    'Sphinx >= 1.8.0b1',
-    'wxPython >= 4.0.3',
-    'pywin32 >= 223',
-    'setuptools >= 40.2'
-]
 
 PY_VERSION = "%d%d" % sys.version_info[:2]
 PY_BASE_NAME = "py%s" % PY_VERSION
 PYW_BASE_NAME = "pyw%s" % PY_VERSION
 
-BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 SOURCE_PATH = os.path.join(BASE_PATH, 'EventGhost')
 BUILD_PATH = os.path.join(BASE_PATH, 'build')
 EG_BUILD_PATH = os.path.join(BUILD_PATH, 'eventghost')
@@ -151,20 +178,19 @@ for path in (
 ):
     os.mkdir(path)
 
-import eventghost_build_logging
+import eventghost_build_logging # NOQA
 sys.stdout = eventghost_build_logging.STD(sys.stdout, 'INFO')
 sys.stderr = eventghost_build_logging.STD(sys.stderr, 'ERROR')
 
 iter_copy(SOURCE_PATH, EG_BUILD_PATH)
 iter_copy(DOCS_PATH, DOCS_BUILD_PATH)
 
-import setuptools
-import cx_Freeze
-import includes
-import eventghost_build_ext
-import eventghost_build_exe
-import eventghost_build
-import eventghost_build_docs
+import cx_Freeze # NOQA
+import includes # NOQA
+import eventghost_build_ext # NOQA
+import eventghost_build_exe # NOQA
+import eventghost_build # NOQA
+import eventghost_build_docs # NOQA
 
 
 RawInputHook = setuptools.Extension(
@@ -467,7 +493,6 @@ cx_Freeze.setup(
     description=DESCRIPTION,
     verbose=1,
     # zip_safe=False,
-    setup_requires=REQUIRES,
     executables=[eventghost, pyw, py],
     options=dict(
         build=dict(

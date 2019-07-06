@@ -4,6 +4,9 @@
 /*.exe
 /build
 /output
+/.eggs
+/dist
+*.egg-info
 
 # IDE storage
 /.*/
