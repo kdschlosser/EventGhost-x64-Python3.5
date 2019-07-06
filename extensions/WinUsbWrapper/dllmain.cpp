@@ -31,7 +31,7 @@ while(__pragma(warning(disable:4127)) a __pragma(warning(disable:4127)))
 static HINSTANCE hInstance = NULL;
 
 typedef struct _ThreadParams {
-    PWCHAR devicePath;
+    LPCSTR devicePath;
     HANDLE startEvent;
     HANDLE endEvent;
     HANDLE thread;
@@ -158,7 +158,7 @@ PThreadParams Start(HWND notifyWnd, UINT msg, WCHAR* devicePath, UINT chunkSize,
         printf("Start.HeapAlloc failed!");
         return NULL;
     }
-    threadParams->devicePath = devicePath;
+    threadParams->devicePath = (LPCSTR) devicePath;
     threadParams->startEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
     if (!threadParams->startEvent)
     {

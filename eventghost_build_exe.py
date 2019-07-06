@@ -32,26 +32,52 @@ INNO_SETUP_DEFINES = '''
 #define APPICON "{icon}"
 #define APPLOGOSMALL "{logo_small}"
 #define APPLOGOLARGE "{logo_large}"
-
+#define APPGUID "{app_guid}"
 '''
 
 
 class BuildEXE(build_exe):
 
-    def build_extension(self, name, **_):
-        pass
-
     def run(self):
-        command = self.distribution.get_command_obj('build_ext')
-        command.run()
+
+        self.run_command('build_ext')
         #
         # self.distribution.get_command_obj('build_docs').run()
+        build_ext = self.distribution.get_command_obj('build_ext')
+        build_lib = build_ext.build_lib
+        sys.path.insert(0, build_lib)
+
+        build_base = os.path.split(self.build_exe)[0]
+
+        eg_build_path = os.path.join(build_base, 'eventghost')
+        plugins_path = os.path.join(eg_build_path, 'plugins')
+
+        import shutil
+        src = os.path.join(build_lib, 'MceIr.dll')
+        dst = os.path.join(plugins_path, 'MceRemote', 'MceIr.dll')
+        print('copying {0} --> {1}'.format(src, dst))
+        shutil.copyfile(src, dst)
+
+        src = os.path.join(build_lib, 'RawInputHook.dll')
+        dst = os.path.join(plugins_path, 'RawInput', 'RawInputHook.dll')
+        print('copying {0} --> {1}'.format(src, dst))
+        shutil.copyfile(src, dst)
+
+        src = os.path.join(build_lib, 'TaskHook.dll')
+        dst = os.path.join(plugins_path, 'Task', 'TaskHook.dll')
+        print('copying {0} --> {1}'.format(src, dst))
+        shutil.copyfile(src, dst)
+
+        src = os.path.join(build_lib, 'WinUsbWrapper.dll')
+        dst = os.path.join(eg_build_path, 'eg', 'WinApi', 'WinUsbWrapper.dll')
+        print('copying {0} --> {1}'.format(src, dst))
+        shutil.copyfile(src, dst)
+
         build_exe.run(self)
 
         from inno_setup import COMPILER_PATH
         from docs import ICON, LOGO_SMALL, LOGO_LARGE
 
-        build_base = os.path.split(self.build_exe)[0]
         inno_build_path = os.path.join(build_base, 'inno_setup')
 
         base_path = os.path.dirname(__file__)
@@ -77,7 +103,8 @@ class BuildEXE(build_exe):
             output_dir=output_path,
             icon=ICON,
             logo_small=LOGO_SMALL,
-            logo_large=LOGO_LARGE
+            logo_large=LOGO_LARGE,
+            app_guid='7EB106DC-468D-4345-9CFE-B0021039114B'
         )
 
         with open(template, 'r', encoding='utf-8') as f:

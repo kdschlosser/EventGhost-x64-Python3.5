@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License along
 # with EventGhost. If not, see <http://www.gnu.org/licenses/>.
 
+import msvc
 import os
 import sys
 import shutil
@@ -33,6 +34,17 @@ except ImportError:
     raise RuntimeError(
         'Stackless Python >= 3.5.0 is required to build EventGhost'
     )
+
+try:
+    import cx_Freeze
+
+    version = list(int(v) for v in cx_Freeze.__version__.split('.'))
+
+    if version[0] < 5 or version[1] < 1 or version[2] < 1:
+        raise RuntimeError('cx_Freeze needs to be version 5.1.1 or greater')
+
+except ImportError:
+    RuntimeError('cx_Freeze >= 5.1.1 needs to be installed')
 
 __import__('inno_setup')
 __import__('docs')
@@ -73,7 +85,6 @@ PY_VERSION = "%d%d" % sys.version_info[:2]
 PY_BASE_NAME = "py%s" % PY_VERSION
 PYW_BASE_NAME = "pyw%s" % PY_VERSION
 
-
 BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 SOURCE_PATH = os.path.join(BASE_PATH, 'EventGhost')
 BUILD_PATH = os.path.join(BASE_PATH, 'build')
@@ -88,30 +99,13 @@ INNO_BUILD_PATH = os.path.join(BUILD_PATH, 'inno_setup')
 INIT_SCRIPT = os.path.join(BASE_PATH, 'init_scripts', 'init_script.py')
 
 EXTENSIONS_PATH = os.path.join(BASE_PATH, 'extensions')
-EXTENSIONS_BUILD_PATH = os.path.join(BUILD_PATH, 'extensions')
-PYD_IMPORTS_PATH = os.path.join(EXTENSIONS_BUILD_PATH, 'pyd_imports')
-PLUGINS_PATH = os.path.join(EG_BUILD_PATH, 'plugins')
-
 RAW_INPUT_HOOK_SRC = os.path.join(EXTENSIONS_PATH, 'RawInputHook.dll')
-RAW_INPUT_HOOK_DST = os.path.join(PLUGINS_PATH, 'RawInput')
-
 MCE_IR_SRC = os.path.join(EXTENSIONS_PATH, 'MceIr.dll')
-MCE_IR_DST = os.path.join(PLUGINS_PATH, 'MceRemote')
-
 TASK_HOOK_SRC = os.path.join(EXTENSIONS_PATH, 'TaskHook.dll')
-TASK_HOOK_DST = os.path.join(PLUGINS_PATH, 'Task')
-
 C_FUNCTIONS_SRC = os.path.join(EXTENSIONS_PATH, 'cFunctions')
-C_FUNCTIONS_DST = PYD_IMPORTS_PATH
-
 DX_JOYSTICK_SRC = os.path.join(EXTENSIONS_PATH, '_dxJoystick')
-DX_JOYSTICK_DST = PYD_IMPORTS_PATH
-
 VISTA_VOL_EVENTS_SRC = os.path.join(EXTENSIONS_PATH, 'VistaVolEvents')
-VISTA_VOL_EVENTS_DST = PYD_IMPORTS_PATH
-
 WIN_USB_SRC = os.path.join(EXTENSIONS_PATH, 'WinUsbWrapper')
-WIN_USB_DST = os.path.join(EG_BUILD_PATH, 'eg', 'WinApi')
 
 import docs # NOQA
 
@@ -153,8 +147,6 @@ for path in (
     EG_BUILD_PATH,
     HELP_DOCS_PATH,
     INNO_BUILD_PATH,
-    EXTENSIONS_BUILD_PATH,
-    PYD_IMPORTS_PATH,
     DOCS_BUILD_PATH
 ):
     os.mkdir(path)
@@ -166,8 +158,6 @@ sys.stderr = eventghost_build_logging.STD(sys.stderr, 'ERROR')
 iter_copy(SOURCE_PATH, EG_BUILD_PATH)
 iter_copy(DOCS_PATH, DOCS_BUILD_PATH)
 
-sys.path.append(PYD_IMPORTS_PATH)
-
 import setuptools
 import cx_Freeze
 import includes
@@ -177,47 +167,276 @@ import eventghost_build
 import eventghost_build_docs
 
 
-RawInputHook = eventghost_build_ext.Extension(
-    'RawInputHook.dll',
-    RAW_INPUT_HOOK_SRC,
-    RAW_INPUT_HOOK_DST
+RawInputHook = setuptools.Extension(
+    'RawInputHook',
+    sources=[
+        os.path.join(RAW_INPUT_HOOK_SRC, 'RawInputHook.cpp'),
+        os.path.join(RAW_INPUT_HOOK_SRC, 'stdafx.cpp'),
+    ],
+    include_dirs=[RAW_INPUT_HOOK_SRC],
+    library_dirs=msvc.environment.windows_sdk.lib,
+    extra_link_args=[
+        '/def:"' + os.path.join(RAW_INPUT_HOOK_SRC, 'RawInputHook.def') + '"'
+    ],
+    extra_compile_args=[
+        # Enables function-level linking.
+        '/Gy',
+        # Creates fast code.
+        '/O2',
+        # Uses the __cdecl calling convention (x86 only).
+        '/Gd',
+        # Omits frame pointer (x86 only).
+        '/Oy',
+        # Generates intrinsic functions.
+        '/Oi',
+        # Specify floating-point behavior.
+        '/fp:precise',
+        # Specifies standard behavior
+        '/Zc:wchar_t',
+        # Specifies standard behavior
+        '/Zc:forScope',
+        # I cannot remember what this does. I do know it does get rid of
+        # a compiler warning
+        '/EHsc',
+    ],
+    define_macros=[
+        ('WIN64', 1),
+        ('NDEBUG', 1),
+        ('_WINDOWS', 1),
+        ('_USRDLL', 1),
+        ('HOOK_EXPORTS', 1)
+    ],
+    libraries=['user32']
 )
 
-MceIr = eventghost_build_ext.Extension(
-    'MceIr.dll',
-    MCE_IR_SRC,
-    MCE_IR_DST
+MceIr = setuptools.Extension(
+    'MceIr',
+    sources=[
+        os.path.join(MCE_IR_SRC, 'IrDec.cpp'),
+        os.path.join(MCE_IR_SRC, 'MceIr.cpp'),
+        os.path.join(MCE_IR_SRC, 'StdAfx.cpp'),
+    ],
+    include_dirs=[MCE_IR_SRC],
+    library_dirs=msvc.environment.windows_sdk.lib,
+    extra_link_args=[
+        '/def:"' + os.path.join(MCE_IR_SRC, 'MceIr.def') + '"'
+    ],
+    extra_compile_args=[
+        '/Gy',
+        '/O2',
+        '/Gd',
+        '/Oy',
+        '/Oi',
+        '/fp:precise',
+        '/Zc:wchar_t',
+        '/Zc:forScope',
+        '/EHsc',
+    ],
+    define_macros=[
+        ('WIN64', 1),
+        ('NDEBUG', 1),
+        ('_WINDOWS', 1),
+        ('_USRDLL', 1),
+        ('MCEIR_EXPORTS', 1)
+    ],
+    libraries=['setupapi', 'user32']
 )
 
-TaskHook = eventghost_build_ext.Extension(
-    'TaskHook.dll',
-    TASK_HOOK_SRC,
-    TASK_HOOK_DST
+
+TaskHook = setuptools.Extension(
+    'TaskHook',
+    sources=[
+        os.path.join(TASK_HOOK_SRC, 'hook.cpp'),
+        os.path.join(TASK_HOOK_SRC, 'stdafx.cpp'),
+    ],
+    include_dirs=[TASK_HOOK_SRC],
+    library_dirs=msvc.environment.windows_sdk.lib,
+    extra_link_args=[
+        '/def:"' + os.path.join(TASK_HOOK_SRC, 'hook.def') + '"'
+    ],
+    extra_compile_args=[
+        '/Gy',
+        '/O2',
+        '/Gd',
+        '/Oy',
+        '/Oi',
+        '/fp:precise',
+        '/Zc:wchar_t',
+        '/Zc:forScope',
+        '/EHsc',
+    ],
+    define_macros=[
+        ('WIN64', 1),
+        ('NDEBUG', 1),
+        ('_WINDOWS', 1),
+        ('_USRDLL', 1),
+        ('HOOK_EXPORTS', 1)
+    ],
+    libraries=['user32']
 )
 
-cFunctions = eventghost_build_ext.Extension(
-    'cFunctions.pyd',
-    C_FUNCTIONS_SRC,
-    C_FUNCTIONS_DST
+
+lib_path = msvc.environment.windows_sdk.lib[0]
+lib_path = lib_path.replace('ucrt', 'km').replace('um', 'km')
+
+WinUsbWrapper = setuptools.Extension(
+    'WinUsbWrapper',
+    sources=[
+        os.path.join(WIN_USB_SRC, 'dllmain.cpp'),
+        os.path.join(WIN_USB_SRC, 'stdafx.cpp'),
+    ],
+    include_dirs=[WIN_USB_SRC],
+    library_dirs=[lib_path] + msvc.environment.windows_sdk.lib,
+    extra_link_args=[
+        '/def:"' + os.path.join(WIN_USB_SRC, 'dllmain.def') + '"'
+    ],
+    extra_compile_args=[
+        '/Gy',
+        '/O2',
+        '/Gd',
+        '/Oy',
+        '/Oi',
+        '/fp:precise',
+        '/Zc:wchar_t',
+        '/Zc:forScope',
+        '/EHsc',
+    ],
+    define_macros=[
+        ('WIN64', 1),
+        ('NDEBUG', 1),
+        ('_WINDOWS', 1),
+        ('_USRDLL', 1),
+        ('WINUSBWRAPPER_EXPORTS', 1)
+    ],
+    libraries=['kernel32', 'user32', 'ole32', 'setupapi', 'winusb']
 )
 
-_dxJoystick = eventghost_build_ext.Extension(
-    '_dxJoystick.pyd',
-    DX_JOYSTICK_SRC,
-    DX_JOYSTICK_DST
+cFunctions = setuptools.Extension(
+    'cFunctions',
+    sources=[
+        os.path.join(C_FUNCTIONS_SRC, 'hooks.c'),
+        os.path.join(C_FUNCTIONS_SRC, 'keyhook.c'),
+        os.path.join(C_FUNCTIONS_SRC, 'main.c'),
+        os.path.join(C_FUNCTIONS_SRC, 'mousehook.c'),
+        os.path.join(C_FUNCTIONS_SRC, 'registry_funcs.c'),
+        os.path.join(C_FUNCTIONS_SRC, 'utils.c'),
+        os.path.join(C_FUNCTIONS_SRC, 'win_funcs.c')
+    ],
+    include_dirs=[C_FUNCTIONS_SRC] + msvc.environment.python.includes,
+    library_dirs=(
+        msvc.environment.windows_sdk.lib +
+        msvc.environment.python.libraries
+    ),
+    extra_link_args=[
+        '/def:"' + os.path.join(C_FUNCTIONS_SRC, 'main.def') + '"'
+    ],
+    extra_compile_args=[
+        '/Gy',
+        '/O2',
+        '/Gd',
+        '/Oy',
+        '/Oi',
+        '/fp:precise',
+        '/Zc:wchar_t',
+        '/Zc:forScope',
+        '/EHsc',
+    ],
+    define_macros=[
+        ('WIN64', 1),
+        ('NDEBUG', 1),
+        ('_WINDOWS', 1)
+    ],
+    libraries=[
+        'user32',
+        'advapi32',
+        'ole32',
+        msvc.environment.python.dependency[:-4]
+    ]
 )
 
-VistaVolEvents = eventghost_build_ext.Extension(
-    'VistaVolEvents.pyd',
-    VISTA_VOL_EVENTS_SRC,
-    VISTA_VOL_EVENTS_DST
+
+_dxJoystick = setuptools.Extension(
+    '_dxJoystick',
+    sources=[os.path.join(DX_JOYSTICK_SRC, '_dxJoystick.cpp')],
+    include_dirs=msvc.environment.python.includes,
+    library_dirs=msvc.environment.windows_sdk.lib,
+    extra_link_args=[
+        '/def:"' + os.path.join(DX_JOYSTICK_SRC, '_dxJoystick.def') + '"'
+    ],
+    extra_compile_args=[
+        '/Gy',
+        '/O2',
+        '/Gd',
+        '/Oy',
+        '/Oi',
+        '/fp:precise',
+        '/Zc:wchar_t',
+        '/Zc:forScope',
+        '/EHsc',
+    ],
+    define_macros=[
+        ('WIN64', 1),
+        ('NDEBUG', 1),
+        ('_WINDOWS', 1)
+    ],
+    libraries=[
+        'dinput8',
+        'dxguid',
+        'odbc32',
+        'odbccp32',
+    ]
 )
 
-WinUsbWrapper = eventghost_build_ext.Extension(
-    'WinUsbWrapper.dll',
-    WIN_USB_SRC,
-    WIN_USB_DST
+VistaVolEvents = setuptools.Extension(
+    'VistaVolEvents',
+    sources=[
+        os.path.join(VISTA_VOL_EVENTS_SRC, 'dllmain.cpp'),
+        os.path.join(VISTA_VOL_EVENTS_SRC, 'stdafx.cpp'),
+        os.path.join(VISTA_VOL_EVENTS_SRC, 'VistaVolume.cpp')
+    ],
+    include_dirs=[VISTA_VOL_EVENTS_SRC] + msvc.environment.python.includes,
+    library_dirs=(
+        msvc.environment.windows_sdk.lib +
+        msvc.environment.python.libraries
+    ),
+    extra_link_args=[
+        '/def:"' + os.path.join(VISTA_VOL_EVENTS_SRC, 'dllmain.def') + '"'
+    ],
+    extra_compile_args=[
+        '/Gy',
+        '/O2',
+        '/Gd',
+        '/Oy',
+        '/Oi',
+        '/fp:precise',
+        '/Zc:wchar_t',
+        '/Zc:forScope',
+        '/EHsc',
+    ],
+    define_macros=[
+        ('WIN64', 1),
+        ('NDEBUG', 1),
+        ('_WINDOWS', 1),
+        ('_USRDLL', 1),
+        ('VISTAVOLEVENTS_EXPORTS', 1),
+    ],
+    libraries=[
+        'kernel32',
+        'user32',
+        'gdi32',
+        'winspool',
+        'comdlg32',
+        'advapi32',
+        'shell32',
+        'ole32',
+        'oleaut32',
+        'uuid',
+        'odbc32',
+        'odbccp32',
+        msvc.environment.python.dependency[:-4]
+    ]
 )
+
 
 eventghost = cx_Freeze.Executable(
     script=os.path.join(EG_BUILD_PATH, 'EventGhost.pyw'),
@@ -287,16 +506,15 @@ cx_Freeze.setup(
         build=eventghost_build.Build,
     ),
     ext_modules=[
+        WinUsbWrapper,
         RawInputHook,
         MceIr,
         TaskHook,
         cFunctions,
         _dxJoystick,
-        VistaVolEvents,
-        WinUsbWrapper
+        VistaVolEvents
     ]
 )
-
 
 
 print('\n\n-- FINISHED ------------------------------------------------------')

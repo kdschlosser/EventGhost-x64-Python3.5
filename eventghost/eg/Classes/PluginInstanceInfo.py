@@ -139,13 +139,11 @@ class PluginInstanceInfo(PluginModuleInfo):
         if not exists(pathname):
             eg.PrintError("File %s does not exist" % pathname)
             return None
+
         if self.path.startswith(eg.corePluginDir):
             module = getattr(eg.CorePluginModule, self.pluginName)
         else:
             module = getattr(eg.UserPluginModule, self.pluginName)
-
-        if not module:
-            eg.Exceptions.PluginLoadError()
 
         pluginCls = module.__pluginCls__
         self.module = module

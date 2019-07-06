@@ -7,7 +7,9 @@
 //#include <Psapi.h>
 #include "RawInputHook.h"
 
-#pragma message("library is linking with \"Psapi.lib\"")
+#pragma comment(lib, "user32.lib")
+
+//#pragma message("library is linking with \"Psapi.lib\"")
 //#pragma comment(lib, "Psapi.lib")
 
 //
@@ -46,8 +48,8 @@ BOOL WINAPI DllMain(HINSTANCE hInst, ULONG uReason, LPVOID lpReserved)
             // on detaching the DLL, close the MMF
             DBG("HOOK: DLL_PROCESS_DETACH");
             break;
-    }    
-   
+    }
+
     return TRUE;
 }
 
@@ -56,7 +58,7 @@ BOOL WINAPI DllMain(HINSTANCE hInst, ULONG uReason, LPVOID lpReserved)
 // callback function for hooks
 //
 LRESULT CALLBACK KeyboardProc(INT nCode, WPARAM wParam, LPARAM lParam)
-{   
+{
 	DBG("HOOK: HookProc");
     if (nCode != HC_ACTION)
 		return CallNextHookEx(gHook, nCode, wParam, lParam);
@@ -74,12 +76,12 @@ LRESULT CALLBACK KeyboardProc(INT nCode, WPARAM wParam, LPARAM lParam)
 	cds.lpData = &data;
 
 	// ask the controlling program if the hook should be passed
-    BOOL bRes = (BOOL) SendMessage(gHwnd, WM_COPYDATA, 0, (LPARAM)(VOID*)&cds);  
+    BOOL bRes = (BOOL) SendMessage(gHwnd, WM_COPYDATA, 0, (LPARAM)(VOID*)&cds);
 
-    if(!bRes) 
+    if(!bRes)
         // pass hook to next handler
         return CallNextHookEx(gHook, nCode, wParam, lParam);
-    else 
+    else
         // just return
         return(bRes);
 }
@@ -91,6 +93,7 @@ LRESULT CALLBACK KeyboardProc(INT nCode, WPARAM wParam, LPARAM lParam)
 BOOL Start(HWND hWnd)
 {
     // remember the windows and hook handle for further instances
+
     gHwnd = hWnd;
     gHook = SetWindowsHookEx(WH_KEYBOARD, KeyboardProc, gInst, 0);
     return (gHook != NULL);
@@ -111,5 +114,6 @@ BOOL Stop()
         gHook = NULL;
         return (bRes);
     }
-    return(true);
+
+    return (true);
 }
